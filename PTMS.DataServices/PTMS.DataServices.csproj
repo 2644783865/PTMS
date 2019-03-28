@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PTMS.Domain\PTMS.Domain.csproj" />
+    <ProjectReference Include="..\PTMS.Persistance\PTMS.Persistance.csproj" />
+  </ItemGroup>
+
+</Project>
