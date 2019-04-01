@@ -1,0 +1,30 @@
+<div class="row justify-content-center">
+  <div class="col-12 col-md-7 col-lg-5">
+    <form class="form-full-container"
+          [formGroup]="loginForm"
+          (ngSubmit)="onSubmit()">
+      <mat-card>
+        <h4 class="logo-text">
+          <img [src]="logo" />
+          МБУ ЦОДД Воронеж
+        </h4>
+        <h5 style="margin-bottom: 20px;">Введите email и пароль для входа в систему</h5>
+        <mat-form-field>
+          <input matInput placeholder="Email" type="email"
+                 formControlName="email">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Пароль" type="password"
+                 formControlName="password"/>
+        </mat-form-field>
+        <div style="margin-top: 10px;">
+          <button mat-raised-button
+                  color="primary"
+                  type="submit">
+            Войти
+          </button>
+        </div>
+      </mat-card>
+    </form>
+  </div>
+</div>

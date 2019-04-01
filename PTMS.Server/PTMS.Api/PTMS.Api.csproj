@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TypeScriptToolsVersion>3.1</TypeScriptToolsVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PTMS.BusinessLogic\PTMS.BusinessLogic.csproj" />
+    <ProjectReference Include="..\PTMS.Common\PTMS.Common.csproj" />
+    <ProjectReference Include="..\PTMS.DataServices\PTMS.DataServices.csproj" />
+    <ProjectReference Include="..\PTMS.Persistance\PTMS.Persistance.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Model\AccountIdentityDto.ts">
+      <CustomToolNamespace>..\PTMS.BusinessLogic\Models\Account\AccountIdentityModel.cs</CustomToolNamespace>
+    </None>
+    <None Update="Model\LoginDto.ts">
+      <CustomToolNamespace>..\PTMS.BusinessLogic\Models\Account\LoginModel.cs</CustomToolNamespace>
+    </None>
+    <None Update="Model\RegisterDto.ts">
+      <CustomToolNamespace>..\PTMS.BusinessLogic\Models\Account\RegisterModel.cs</CustomToolNamespace>
+    </None>
+    <None Update="Model\RouteDto.ts">
+      <CustomToolNamespace>..\PTMS.BusinessLogic\Models\RouteModel.cs</CustomToolNamespace>
+    </None>
+    <None Update="Model\TransporterDto.ts">
+      <CustomToolNamespace>..\PTMS.BusinessLogic\Models\TransporterModel.cs</CustomToolNamespace>
+    </None>
+    <None Update="Model\VehicleDto.ts">
+      <CustomToolNamespace>..\PTMS.BusinessLogic\Models\VehicleModel.cs</CustomToolNamespace>
+    </None>
+    <None Update="Model\VehicleTypeDto.ts">
+      <CustomToolNamespace>..\PTMS.BusinessLogic\Models\VehicleTypeModel.cs</CustomToolNamespace>
+    </None>
+  </ItemGroup>
+
+</Project>

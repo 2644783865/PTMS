@@ -1,0 +1,17 @@
+@import 'styles-variables';
+
+@import '../node_modules/bootstrap/scss/bootstrap-reboot';
+@import '../node_modules/bootstrap/scss/bootstrap-grid';
+
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+.form-full-container {
+  mat-form-field {
+    width: 100%;
+  }
+}
