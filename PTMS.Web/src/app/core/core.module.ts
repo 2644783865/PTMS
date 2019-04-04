@@ -1,8 +1,6 @@
-import { NgModule, Optional, SkipSelf, ErrorHandler } from '@angular/core';
+import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
-
-import { AuthService } from './auth/auth.service';
+import { HttpClientModule } from '@angular/common/http';
 import { httpInterceptorProviders } from './http-interceptors';
 
 @NgModule({
@@ -12,7 +10,6 @@ import { httpInterceptorProviders } from './http-interceptors';
   ],
   declarations: [],
   providers: [
-    AuthService,
     httpInterceptorProviders
   ]
 })

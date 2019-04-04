@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 public static class ExceptionMiddlewareExtension
 {
@@ -22,7 +23,13 @@ public static class ExceptionMiddlewareExtension
 
                 context.Response.ContentType = "application/json";
                 context.Response.StatusCode = statusCode;
-                await context.Response.WriteAsync(JsonConvert.SerializeObject(error));
+
+                var response = JsonConvert.SerializeObject(error, new JsonSerializerSettings
+                {
+                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                });
+
+                await context.Response.WriteAsync(response);
             });
         });
     }

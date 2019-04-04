@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { AuthQuery } from '@app/core/auth/auth.query';
+import { AuthService } from '@app/core/auth/auth.service';
+import { Router } from '@angular/router';
+
+declare function require(name: string);
 
 @Component({
   selector: 'app-layout',
@@ -13,15 +16,19 @@ export class LayoutComponent implements OnInit {
   navigation = [
     { link: 'home', label: 'Главная' }
   ];
-  isAuthenticated$: Observable<boolean>;
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
-    .pipe(
-      map(result => result.matches)
-    );
+  isAuthenticated$: Observable<boolean>
 
-  constructor(private breakpointObserver: BreakpointObserver) {}
+  constructor(
+    private readonly authQuery: AuthQuery,
+    private readonly authService: AuthService,
+    private readonly router: Router) { }
 
   ngOnInit() {
-    this.isAuthenticated$ = new Observable<boolean>();
+    this.isAuthenticated$ = this.authQuery.isLoggedIn$;
+  }
+
+  onLogoutClick() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

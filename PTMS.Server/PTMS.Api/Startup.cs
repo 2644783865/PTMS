@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Cors.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -46,14 +47,17 @@ namespace PTMS.Api
                 options.SupportedUICultures.Add(defaultCulture);
 
                 options.RequestCultureProviders = null;
-            });            
+            });
+
+            services.ConfigureCors();
 
             services.AddMvc(options =>
             {
                 options.Filters.Add(typeof(ValidatorActionFilter));
                 options.Filters.Add(typeof(NotFoundResultFilter));
+                options.Filters.Add(new CorsAuthorizationFilterFactory("CorsPolicy"));
             })
-            .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,6 +75,7 @@ namespace PTMS.Api
 
             app.ConfigureExceptionHandler();
 
+            app.UseCors("CorsPolicy");
             app.UseAuthentication();
             app.UseMvc();
         }
