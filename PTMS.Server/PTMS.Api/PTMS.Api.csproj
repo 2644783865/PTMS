@@ -23,28 +23,4 @@
     <ProjectReference Include="..\PTMS.Persistance\PTMS.Persistance.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="Model\AccountIdentityDto.ts">
-      <CustomToolNamespace>..\PTMS.BusinessLogic\Models\Account\AccountIdentityModel.cs</CustomToolNamespace>
-    </None>
-    <None Update="Model\LoginDto.ts">
-      <CustomToolNamespace>..\PTMS.BusinessLogic\Models\Account\LoginModel.cs</CustomToolNamespace>
-    </None>
-    <None Update="Model\RegisterDto.ts">
-      <CustomToolNamespace>..\PTMS.BusinessLogic\Models\Account\RegisterModel.cs</CustomToolNamespace>
-    </None>
-    <None Update="Model\RouteDto.ts">
-      <CustomToolNamespace>..\PTMS.BusinessLogic\Models\RouteModel.cs</CustomToolNamespace>
-    </None>
-    <None Update="Model\TransporterDto.ts">
-      <CustomToolNamespace>..\PTMS.BusinessLogic\Models\TransporterModel.cs</CustomToolNamespace>
-    </None>
-    <None Update="Model\VehicleDto.ts">
-      <CustomToolNamespace>..\PTMS.BusinessLogic\Models\VehicleModel.cs</CustomToolNamespace>
-    </None>
-    <None Update="Model\VehicleTypeDto.ts">
-      <CustomToolNamespace>..\PTMS.BusinessLogic\Models\VehicleTypeModel.cs</CustomToolNamespace>
-    </None>
-  </ItemGroup>
-
 </Project>

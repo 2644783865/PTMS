@@ -33,3 +33,13 @@ html, body {
   background-color: $danger;
   color: $white;
 }
+
+.mat-button-wrapper mat-icon {
+  margin-right: 5px;
+}
+
+.table-wrapper {
+  table {
+    width: 100%;
+  }
+}

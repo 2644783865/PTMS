@@ -9,6 +9,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -20,61 +21,47 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatSliderModule } from '@angular/material/';
+import { MatSliderModule, MatTableModule } from '@angular/material/';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material';
+import { PaginatorModule } from './paginator/paginator.module';
+import { PageHeaderModule } from './page-header/page-header.module';
+
+let modules = [
+  //angular
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+
+  //material
+  LayoutModule,
+  MatButtonModule,
+  MatToolbarModule,
+  MatSelectModule,
+  MatTabsModule,
+  MatInputModule,
+  MatProgressBarModule,
+  MatProgressSpinnerModule,
+  MatChipsModule,
+  MatCardModule,
+  MatSidenavModule,
+  MatCheckboxModule,
+  MatListModule,
+  MatMenuModule,
+  MatIconModule,
+  MatTooltipModule,
+  MatSnackBarModule,
+  MatSlideToggleModule,
+  MatDividerModule,
+  MatTableModule,
+
+  //app
+  PaginatorModule,
+  PageHeaderModule
+];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-
-    LayoutModule,
-    MatButtonModule,
-    MatToolbarModule,
-    MatSelectModule,
-    MatTabsModule,
-    MatInputModule,
-    MatProgressSpinnerModule,
-    MatChipsModule,
-    MatCardModule,
-    MatSidenavModule,
-    MatCheckboxModule,
-    MatListModule,
-    MatMenuModule,
-    MatIconModule,
-    MatTooltipModule,
-    MatSnackBarModule,
-    MatSlideToggleModule,
-    MatDividerModule
-  ],
-  declarations: [],
-  exports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-
-    LayoutModule,
-    MatButtonModule,
-    MatMenuModule,
-    MatTabsModule,
-    MatChipsModule,
-    MatInputModule,
-    MatProgressSpinnerModule,
-    MatCheckboxModule,
-    MatCardModule,
-    MatSidenavModule,
-    MatListModule,
-    MatSelectModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatTooltipModule,
-    MatSnackBarModule,
-    MatSlideToggleModule,
-    MatDividerModule,
-    MatSliderModule,
-    MatDatepickerModule,
-    MatNativeDateModule
-  ]
+  imports: modules,
+  exports: modules
 })
 export class SharedModule { }

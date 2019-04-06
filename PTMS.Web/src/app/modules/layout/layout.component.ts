@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AuthQuery } from '@app/core/auth/auth.query';
 import { AuthService } from '@app/core/auth/auth.service';
 import { Router } from '@angular/router';
 
@@ -14,17 +13,19 @@ declare function require(name: string);
 export class LayoutComponent implements OnInit {
   logo = require('../../../assets/logo.png');
   navigation = [
-    { link: 'home', label: 'Главная' }
+    { link: 'home', label: 'Главная' },
+    { link: 'vehicles', label: 'Транспорт' }
   ];
-  isAuthenticated$: Observable<boolean>
+  isAuthenticated$: Observable<boolean>;
+  isStateLoading$: Observable<boolean>;
 
   constructor(
-    private readonly authQuery: AuthQuery,
     private readonly authService: AuthService,
     private readonly router: Router) { }
 
   ngOnInit() {
-    this.isAuthenticated$ = this.authQuery.isLoggedIn$;
+    this.isAuthenticated$ = this.authService.isLoggedIn$;
+    this.isStateLoading$ = this.authService.isLoading$;
   }
 
   onLogoutClick() {

@@ -11,6 +11,7 @@ import { SharedModule } from '@app/shared';
 import { LoginModule } from './modules/login/login.module';
 import { HomeModule } from './modules/home/home.module';
 import { LayoutModule } from './modules/layout/layout.module';
+import { VehicleModule } from './modules/vehicle/vehicle.module';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { LayoutModule } from './modules/layout/layout.module';
     LayoutModule,
     LoginModule,
     HomeModule,
+    VehicleModule,
 
     //app
     AppRoutingModule

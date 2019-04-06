@@ -59,6 +59,7 @@
 
       <div class="content">
         <div class="container">
+          <mat-spinner *ngIf="isStateLoading$ | async" style="margin: 0 auto"></mat-spinner>
           <ng-content></ng-content>
         </div>
       </div>

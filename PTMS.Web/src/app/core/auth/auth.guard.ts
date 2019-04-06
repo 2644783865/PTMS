@@ -1,25 +1,53 @@
-import { Router, CanActivate } from '@angular/router';
+import { Router, CanActivate, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 import { Injectable } from '@angular/core';
-import { map, take } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { AuthQuery } from './auth.query';
+import { AuthService } from './auth.service';
+import { AuthState } from './auth.state';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  constructor(private router: Router, private authQuery: AuthQuery) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService) { }
 
-  canActivate(): Observable<boolean> {
-    return this.authQuery.isLoggedIn$.pipe(
-      map(isAuth => {
-        if (isAuth) {
+  loginPath = 'login';
+  homePath = '/';
+
+  canActivate(route: ActivatedRouteSnapshot, routerStateSnapshot: RouterStateSnapshot): Observable<boolean> {
+    return this.authService.getState()
+      .pipe(
+        map(state => {
+          //if not logged but goes to not login page - redirect to login page
+          if (!state.isLogged && route.routeConfig.path !== this.loginPath) {
+            this.router.navigate([this.loginPath], { queryParams: { returnUrl: routerStateSnapshot.url } });
+            return false;
+          }
+
+          //if logged but goes to login page - redirect to home
+          if (state.isLogged && route.routeConfig.path === this.loginPath) {
+            this.router.navigate([this.homePath]);
+            return false;
+          }
+
+          // check if route is restricted by role
+          if (route.data.roles) {
+            let authorized = route.data.roles.reduce((sum, value) => {
+              return sum || state.identity.roles.indexOf(value) > -1
+            }, false)
+
+            if (!authorized) {
+              this.router.navigate([this.homePath]);
+            }
+
+            return false;
+          }
+
+          // authorized so return true
           return true;
-        }
-        this.router.navigateByUrl('login');
-        return false;
-      }),
-      take(1)
-    );
+        })
+      );
   }
 }
