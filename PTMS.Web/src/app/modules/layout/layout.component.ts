@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 import { AuthService } from '@app/core/auth/auth.service';
 import { Router } from '@angular/router';
+import { Role } from '@app/core/enums/role';
 
 declare function require(name: string);
 
@@ -12,10 +13,7 @@ declare function require(name: string);
 })
 export class LayoutComponent implements OnInit {
   logo = require('../../../assets/logo.png');
-  navigation = [
-    { link: 'home', label: 'Главная' },
-    { link: 'vehicles', label: 'Транспорт' }
-  ];
+  navigation = [];
   isAuthenticated$: Observable<boolean>;
   isStateLoading$: Observable<boolean>;
 
@@ -26,6 +24,22 @@ export class LayoutComponent implements OnInit {
   ngOnInit() {
     this.isAuthenticated$ = this.authService.isLoggedIn$;
     this.isStateLoading$ = this.authService.isLoading$;
+
+    this.authService.identity$.subscribe(identity => {
+      if (identity) {
+        let routes = [
+          { link: 'home', label: 'Главная', visible: true },
+          { link: 'vehicles', label: 'Транспорт', visible: true },
+          { link: 'routes', label: 'Маршруты', visible: true },
+          { link: 'users', label: 'Пользователи', visible: this.authService.isInRole(Role.Administrator) }
+        ];
+
+        this.navigation = routes.filter(x => x.visible);
+      }
+      else {
+        this.navigation = [];
+      }
+    });
   }
 
   onLogoutClick() {

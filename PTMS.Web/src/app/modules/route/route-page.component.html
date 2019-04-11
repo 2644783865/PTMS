@@ -1,0 +1,27 @@
+<app-page-header>Маршруты</app-page-header>
+
+<mat-progress-bar mode="indeterminate" [class.visibility-hidden]="!(dataLoading$ | async)"></mat-progress-bar>
+
+<div *ngIf="(list$ | async) as routes">
+  <div class="add-button" *ngIf="canAdd">
+    <button mat-raised-button color="primary">Добавить новый маршрут</button>
+  </div>
+
+  <div class="table-wrapper table-editable mat-elevation-z8">
+    <mat-table [dataSource]="routes">
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef> Название </mat-header-cell>
+        <mat-cell *matCellDef="let route"> {{route.name}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="controls">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let route" class="table-controls">
+          <app-edit-icon></app-edit-icon>
+          <app-delete-icon></app-delete-icon>
+        </mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+  </div>
+</div>

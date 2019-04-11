@@ -1,41 +1,49 @@
-<app-page-header header="Транспорт"></app-page-header>
+<app-page-header>Транспорт</app-page-header>
 
-<mat-spinner *ngIf="pageLoading"></mat-spinner>
+<mat-progress-bar mode="indeterminate" [class.visibility-hidden]="!(dataLoading$ | async)"></mat-progress-bar>
 
-<div class="table-wrapper mat-elevation-z8" *ngIf="(pagination$ | async) as pageData">
-
-  <div style="height: 4px;">
-    <mat-progress-bar mode="indeterminate" [class.d-none]="!(dataLoading$ | async)"></mat-progress-bar>
+<div *ngIf="(pagination$ | async) as pageData">
+  <div class="add-button">
+    <button mat-raised-button color="primary">Добавить новый транспорт</button>
   </div>
 
-  <table mat-table [dataSource]="pageData.data">
-    <ng-container matColumnDef="plateNumber">
-      <th mat-header-cell *matHeaderCellDef> Номер </th>
-      <td mat-cell *matCellDef="let vehicle"> {{vehicle.plateNumber}} </td>
-    </ng-container>
+  <div class="table-wrapper table-editable mat-elevation-z8">
+    <mat-table [dataSource]="pageData.data">
+      <ng-container matColumnDef="plateNumber">
+        <mat-header-cell *matHeaderCellDef> Номер </mat-header-cell>
+        <mat-cell *matCellDef="let vehicle"> {{vehicle.plateNumber}} </mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="transporter">
-      <th mat-header-cell *matHeaderCellDef> Перевозчик </th>
-      <td mat-cell *matCellDef="let vehicle"> {{vehicle.transporter.name}} </td>
-    </ng-container>
+      <ng-container matColumnDef="transporter">
+        <mat-header-cell *matHeaderCellDef> Перевозчик </mat-header-cell>
+        <mat-cell *matCellDef="let vehicle"> {{vehicle.transporter.name}} </mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="route">
-      <th mat-header-cell *matHeaderCellDef> Маршрут </th>
-      <td mat-cell *matCellDef="let vehicle"> {{vehicle.route.name}} </td>
-    </ng-container>
+      <ng-container matColumnDef="route">
+        <mat-header-cell *matHeaderCellDef> Маршрут </mat-header-cell>
+        <mat-cell *matCellDef="let vehicle"> {{vehicle.route.name}} </mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="vehicleType">
-      <th mat-header-cell *matHeaderCellDef> Тип </th>
-      <td mat-cell *matCellDef="let vehicle"> {{vehicle.vehicleType.name}} </td>
-    </ng-container>
+      <ng-container matColumnDef="vehicleType">
+        <mat-header-cell *matHeaderCellDef> Тип </mat-header-cell>
+        <mat-cell *matCellDef="let vehicle"> {{vehicle.vehicleType.name}} </mat-cell>
+      </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+      <ng-container matColumnDef="controls">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let vehicle" class="table-controls">
+          <app-edit-icon></app-edit-icon>
+          <app-delete-icon></app-delete-icon>
+        </mat-cell>
+      </ng-container>
 
-  <app-paginator [totalCount]="pageData.total"
-                 [pageSize]="pageData.perPage"
-                 (onChange)="onParamsChange($event)">
-  </app-paginator>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+    <app-paginator [totalCount]="pageData.total"
+                   [pageSize]="pageData.perPage"
+                   (onChange)="onParamsChange($event)">
+    </app-paginator>
+  </div>
 </div>
-

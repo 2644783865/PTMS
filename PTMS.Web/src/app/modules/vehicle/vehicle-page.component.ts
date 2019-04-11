@@ -4,6 +4,8 @@ import { PaginationResponse } from '@datorama/akita';
 import { VehicleDto } from '@app/core/dtos/VehicleDto';
 import { VehicleService } from './vehicle.service';
 import { PaginatorEvent } from '@app/shared/paginator/paginator.event';
+import { AuthService } from '@app/core/auth/auth.service';
+import { Role } from '@app/core/enums/role';
 
 @Component({
   selector: 'app-vehicle-page',
@@ -11,18 +13,26 @@ import { PaginatorEvent } from '@app/shared/paginator/paginator.event';
 })
 export class VehiclePageComponent implements OnInit {
   pagination$: Observable<PaginationResponse<VehicleDto>>;
-  pageLoading: boolean;
   dataLoading$: Observable<boolean>;
-  displayedColumns = ['plateNumber', 'route', 'transporter', 'vehicleType'];
+  private readonly allColumns = ['plateNumber', 'route', 'transporter', 'vehicleType', 'controls'];
+  displayedColumns: string[];
 
-  constructor(private vehicleService: VehicleService) { }
+  constructor(
+    private vehicleService: VehicleService,
+    private authService: AuthService) { }
 
   ngOnInit() {
     this.pagination$ = this.vehicleService.pagination$;
     this.dataLoading$ = this.vehicleService.isLoading$;
 
-    this.pageLoading = true;
-    this.dataLoading$.subscribe(x => this.pageLoading = this.pageLoading && x);
+    let isTransporter = this.authService.isInRole(Role.Transporter);
+
+    if (isTransporter) {
+      this.displayedColumns = this.allColumns.filter(x => x != 'transporter');
+    }
+    else {
+      this.displayedColumns = this.allColumns;
+    }
   }
 
   onParamsChange(event: PaginatorEvent) {

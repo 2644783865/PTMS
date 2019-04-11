@@ -6,6 +6,7 @@ import { AuthTokenDto } from '../dtos/AuthTokenDto';
 import { AccountIdentityDto } from '../dtos/AccountIdentityDto';
 import { AuthStore, AuthState, AuthQuery } from './auth.state';
 import { PtmsHttpClient } from '../data-services/ptms.http.client';
+import { Role } from '../enums/role';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,10 @@ export class AuthService {
 
   get isLoading$() {
     return this.isAuthInProcess$.asObservable();
+  }
+
+  get identity$() {
+    return this.authQuery.select(s => s.identity);
   }
 
   login(dto: LoginDto): Observable<AuthTokenDto> {
@@ -53,7 +58,7 @@ export class AuthService {
 
     return this.http.get<AccountIdentityDto>('account/identity')
       .pipe(
-      tap(_ => {
+        tap(_ => {
           clearTimeout(timeoutId);
           isAuthInProcess$.next(false);
         }),
@@ -75,9 +80,20 @@ export class AuthService {
   logout() {
     let state = {
       identity: null as AccountIdentityDto,
-      token: null
+      token: ''
     } as AuthState;
 
     this.authStore.update(state);
+  }
+
+  isInRole(role: Role) {
+    let identity = this.authQuery.getValue().identity;
+
+    if (identity) {
+      return identity.roles.includes(role);
+    }
+    else {
+      throw new Error('User identity is not loaded');
+    }
   }
 }

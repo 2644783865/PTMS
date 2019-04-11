@@ -1,6 +1,6 @@
-import { PaginatorPlugin, QueryEntity, PaginatorConfig, PaginationResponse } from '@datorama/akita';
+import { PaginatorPlugin, QueryEntity, PaginatorConfig, PaginationResponse, ID } from '@datorama/akita';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { switchMap, distinctUntilChanged } from 'rxjs/operators';
+import { switchMap, distinctUntilChanged, tap, map } from 'rxjs/operators';
 
 export class AppPaginatorPlugin<E> extends PaginatorPlugin<E> {
   private pageSize: BehaviorSubject<number>;
@@ -17,17 +17,29 @@ export class AppPaginatorPlugin<E> extends PaginatorPlugin<E> {
     return this.onChange
       .pipe(
         switchMap(([page, pageSize, searchParams]) => {
-          const req = () => dataServiceFunc(page, pageSize, searchParams);
+          const req = () => {
+            return dataServiceFunc(page, pageSize, searchParams);
+          }
+
           return this.getPage(req);
         })
       )
   }
 
   get onChange() {
-    return combineLatest(
+    let paramsChange = combineLatest(
       this.pageChanges.pipe(distinctUntilChanged()),
       this.pageSizeChanges.pipe(distinctUntilChanged()),
-      this.searchParamsChanges);
+      this.searchParamsChanges)
+      .pipe(tap(_ => this.clearCache())
+    );
+
+    let storeUpdateChange = this.query.selectUpdatedEntityIds();
+
+    return combineLatest(
+        paramsChange,
+        storeUpdateChange)
+      .pipe(map(([p, s]) => p));
   }
 
   get pageSizeChanges() {
@@ -38,20 +50,18 @@ export class AppPaginatorPlugin<E> extends PaginatorPlugin<E> {
     return this.searchParams.asObservable();
   }
 
+  setPageParams(page: number, pageSize: number) {
+    this.setPage(page);
+    this.setPageSize(pageSize);
+  }
+
   setPageSize(pageSize: number) {
-    this.clearCache();
     this.pageSize.next(pageSize);
   }
 
   setSearchParams(params: object) {
-    this.clearCache();
+    this.setPage(1);
     this.searchParams.next(params);
-  }
-
-  setAll(page: number, pageSize: number, searchParams: object = null) {
-    this.setPage(page);
-    this.setPageSize(pageSize);
-    this.setSearchParams(searchParams);
   }
 }
 export const AppPaginator = AppPaginatorPlugin;

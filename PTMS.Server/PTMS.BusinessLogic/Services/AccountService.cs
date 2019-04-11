@@ -19,12 +19,12 @@ namespace PTMS.BusinessLogic.Services
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        private readonly JwtConfig _jwtConfig;
+        private readonly AppSettings _jwtConfig;
 
         public AccountService(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
-            IOptions<JwtConfig> jwtConfig)
+            IOptions<AppSettings> jwtConfig)
         {
             _userManager = userManager;
             _signInManager = signInManager;

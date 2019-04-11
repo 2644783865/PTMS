@@ -25,9 +25,7 @@ namespace PTMS.Api.Config
             .AddDefaultTokenProviders();
 
             // ===== Add Jwt Authentication ========
-            services.Configure<JwtConfig>(Configuration.GetSection("JWT"));
-
-            var jwtConfig = Configuration.GetSection("JWT").Get<JwtConfig>();
+            var jwtConfig = Configuration.GetSection("AppSettings").Get<AppSettings>();
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // => remove default claims
 

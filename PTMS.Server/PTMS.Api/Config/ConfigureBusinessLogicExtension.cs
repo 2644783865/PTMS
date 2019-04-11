@@ -13,6 +13,7 @@ namespace PTMS.Api.Config
             services.AddScoped<IRouteService, RouteService>();
             services.AddScoped<ITransporterService, TransporterService>();
             services.AddScoped<IVehicleTypeService, VehicleTypeService>();
+            services.AddScoped<IUserService, UserService>();
         }
     }
 }

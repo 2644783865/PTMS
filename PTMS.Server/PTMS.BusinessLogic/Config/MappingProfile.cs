@@ -23,7 +23,9 @@ namespace PTMS.BusinessLogic.Config
 
             CreateMap<Transporter, TransporterModel>();
             CreateMap<TransporterModel, Transporter>()
-                .ForMember(m => m.Vehicles, options => options.Ignore()); ;
+                .ForMember(m => m.Vehicles, options => options.Ignore());
+
+            CreateMap<User, UserModel>();
         }
     }
 }

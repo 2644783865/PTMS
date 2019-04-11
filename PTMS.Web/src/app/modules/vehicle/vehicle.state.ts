@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { EntityState, EntityStore, StoreConfig, QueryEntity, Paginator } from '@datorama/akita';
+import { EntityState, EntityStore, StoreConfig, QueryEntity } from '@datorama/akita';
 import { VehicleDto } from '@app/core/dtos/VehicleDto';
 import { createPaginator } from '@app/core/paginator/app-paginator.token';
 

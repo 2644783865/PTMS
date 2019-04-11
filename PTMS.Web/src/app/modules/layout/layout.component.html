@@ -33,12 +33,23 @@
           </span>
 
           <span class="toolbar-nav-button"
-                *ngFor="let item of ((isAuthenticated$ | async) ? navigation: [])">
+                *ngFor="let item of navigation">
             <button mat-button
                     [routerLink]="[item.link]"
                     routerLinkActive="active">
               {{item.label}}
             </button>
+          </span>
+
+          <span class="toolbar-nav-button" *ngIf="(isAuthenticated$ | async)">
+            <button mat-button [matMenuTriggerFor]="menu">
+              <span>Отчёты</span>
+              <mat-icon style="margin: 0 0 0 4px">arrow_drop_down</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item>Отчёт 1</button>
+              <button mat-menu-item>Отчёт 2</button>
+            </mat-menu>
           </span>
 
           <span class="toolbar-right-button profile-button" *ngIf="(isAuthenticated$ | async)">

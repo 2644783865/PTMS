@@ -35,14 +35,13 @@ export class AuthGuard implements CanActivate {
           // check if route is restricted by role
           if (route.data.roles) {
             let authorized = route.data.roles.reduce((sum, value) => {
-              return sum || state.identity.roles.indexOf(value) > -1
+              return sum || state.identity.roles.includes(value);
             }, false)
 
             if (!authorized) {
               this.router.navigate([this.homePath]);
+              return false;
             }
-
-            return false;
           }
 
           // authorized so return true

@@ -54,6 +54,10 @@ export class PtmsHttpClient {
     return this.http.post<T>(this.getFullUrl(relativeUrl), dto);
   }
 
+  put<T>(relativeUrl: string, dto: any): Observable<T> {
+    return this.http.put<T>(this.getFullUrl(relativeUrl), dto);
+  }
+
   private convertToHttpParams(params: object): HttpParams {
     let result = new HttpParams();
 
@@ -61,7 +65,7 @@ export class PtmsHttpClient {
     {
       let value = params[key];
 
-      if (value !== null && value !== undefined) {
+      if (value !== null && value !== undefined && value !== '') {
         result = result.set(key, value);
       }
     }

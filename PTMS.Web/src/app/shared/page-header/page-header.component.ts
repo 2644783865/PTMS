@@ -1,9 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-page-header',
   templateUrl: './page-header.component.html'
 })
-export class PageHeaderComponent {
-  @Input() header: string;
-}
+export class PageHeaderComponent {}

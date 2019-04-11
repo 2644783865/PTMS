@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Security.Claims;
+using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using PTMS.BusinessLogic.Infrastructure;
 using PTMS.BusinessLogic.IServices;
 using PTMS.BusinessLogic.Models;
@@ -11,25 +13,37 @@ namespace PTMS.BusinessLogic.Services
 {
     public class VehicleService : BusinessServiceAsync<Vehicle, VehicleModel>, IVehicleService
     {
+        private readonly UserManager<User> _userManager;
         private readonly IVehicleRepository _vehicleRepository;
 
         public VehicleService(
+            UserManager<User> userManager,
             IVehicleRepository vehicleRepository,
             IMapper mapper)
             : base(mapper)
         {
+            _userManager = userManager;
             _vehicleRepository = vehicleRepository;
         }
 
         public async Task<PageResult<VehicleModel>> FindByParams(
-            int? routeId,
+            ClaimsPrincipal userPrincipal,
+            string plateNumber,
+            string routeName,
             int? vehicleTypeId,
             int? transporterId,
             int? page,
             int? pageSize)
         {
+            if (userPrincipal.IsInRole(RoleNames.Transporter))
+            {
+                var user = await _userManager.GetUserAsync(userPrincipal);
+                transporterId = user.TransporterId;
+            }            
+
             var result = await _vehicleRepository.FindByParamsForPageAsync(
-                routeId,
+                plateNumber,
+                routeName,
                 vehicleTypeId,
                 transporterId,
                 page,

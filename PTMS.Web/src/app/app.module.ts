@@ -1,16 +1,15 @@
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule } from '@angular/core';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-
 import { CoreModule } from '@app/core';
 import { SharedModule } from '@app/shared';
-
-import { LoginModule } from './modules/login/login.module';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
 import { HomeModule } from './modules/home/home.module';
 import { LayoutModule } from './modules/layout/layout.module';
+import { LoginModule } from './modules/login/login.module';
+import { RouteModule } from './modules/route/route.module';
+import { UserModule } from './modules/user/user.module';
 import { VehicleModule } from './modules/vehicle/vehicle.module';
 
 @NgModule({
@@ -31,6 +30,8 @@ import { VehicleModule } from './modules/vehicle/vehicle.module';
     LoginModule,
     HomeModule,
     VehicleModule,
+    RouteModule,
+    UserModule,
 
     //app
     AppRoutingModule

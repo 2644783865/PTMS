@@ -17,14 +17,17 @@ namespace PTMS.Api.Controllers
         
         [HttpGet("/vehicles")]
         public async Task<ActionResult<PageResult<VehicleModel>>> GetAll(
-            int? route = null,
+            string plateNumber = null,
+            string routeName = null,
             int? vehicleType = null,
             int? transporter = null,
             int? page = null,
             int? pageSize = null)
         {
             var result = await _vehicleService.FindByParams(
-                route, 
+                User,
+                plateNumber,
+                routeName, 
                 vehicleType, 
                 transporter, 
                 page, 

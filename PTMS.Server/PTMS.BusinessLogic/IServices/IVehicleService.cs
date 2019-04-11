@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Security.Claims;
+using System.Threading.Tasks;
 using PTMS.BusinessLogic.Models;
 using PTMS.Common;
 
@@ -7,7 +8,9 @@ namespace PTMS.BusinessLogic.IServices
     public interface IVehicleService
     {
         Task<PageResult<VehicleModel>> FindByParams(
-            int? routeId,
+            ClaimsPrincipal user,
+            string plateNumber,
+            string routeName,
             int? vehicleTypeId,
             int? transporterId,
             int? page,

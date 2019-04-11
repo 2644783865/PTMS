@@ -8,7 +8,8 @@ namespace PTMS.DataServices.IRepositories
     public interface IVehicleRepository : IDataServiceAsync<Vehicle>
     {
         Task<PageResult<Vehicle>> FindByParamsForPageAsync(
-            int? routeId,
+            string plateNumber,
+            string routeName,
             int? vehicleTypeId,
             int? transporterId,
             int? page,

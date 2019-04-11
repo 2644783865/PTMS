@@ -25,7 +25,8 @@ namespace PTMS.DataServices.Repositories
         }
 
         public Task<PageResult<Vehicle>> FindByParamsForPageAsync(
-            int? routeId,
+            string plateNumber,
+            string routeName,
             int? vehicleTypeId,
             int? transporterId,
             int? page,
@@ -33,7 +34,8 @@ namespace PTMS.DataServices.Repositories
         {
             Expression<Func<Vehicle, bool>> filter = x => true;
 
-            filter = filter.AndIf(routeId.HasValue, x => x.RouteId == routeId);
+            filter = filter.AndIf(!string.IsNullOrEmpty(plateNumber), x => x.PlateNumber.Contains(plateNumber));
+            filter = filter.AndIf(!string.IsNullOrEmpty(routeName), x => x.Route.Name.Contains(routeName));
             filter = filter.AndIf(vehicleTypeId.HasValue, x => x.VehicleTypeId == vehicleTypeId);
             filter = filter.AndIf(transporterId.HasValue, x => x.TransporterId == transporterId);
 

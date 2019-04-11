@@ -24,8 +24,10 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatSliderModule, MatTableModule } from '@angular/material/';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material';
+
 import { PaginatorModule } from './paginator/paginator.module';
 import { PageHeaderModule } from './page-header/page-header.module';
+import { IconModule } from './icons/icon.module';
 
 let modules = [
   //angular
@@ -57,7 +59,8 @@ let modules = [
 
   //app
   PaginatorModule,
-  PageHeaderModule
+  PageHeaderModule,
+  IconModule
 ];
 
 @NgModule({

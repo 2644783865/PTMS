@@ -73,7 +73,7 @@ namespace PTMS.Persistance
                     LastName = "Петров",
                     FirstName = "Пётр",
                     MiddleName = "Петрович",
-                    Email = "transporter@test.com",
+                    Email = "avtolain@test.com",
                     Description = "Директор транспортной компании",
                     PhoneNumber = "+79522222222",
                     TransporterId = 1
@@ -150,7 +150,7 @@ namespace PTMS.Persistance
                             "5А",
                             new Vehicle
                             {
-                                PlateNumber = "test1",
+                                PlateNumber = "номер1",
                                 VehicleTypeId = (int)VehicleType.Bus
                             }
                         },
@@ -158,7 +158,7 @@ namespace PTMS.Persistance
                             "11",
                             new Vehicle
                             {
-                                PlateNumber = "test2",
+                                PlateNumber = "номер2",
                                 VehicleTypeId = (int)VehicleType.Bus
                             }
                         },
@@ -166,7 +166,23 @@ namespace PTMS.Persistance
                             "49М",
                             new Vehicle
                             {
-                                PlateNumber = "test3",
+                                PlateNumber = "номер3",
+                                VehicleTypeId = (int)VehicleType.ShuttleBus
+                            }
+                        },
+                        {
+                            "125",
+                            new Vehicle
+                            {
+                                PlateNumber = "номер4",
+                                VehicleTypeId = (int)VehicleType.ShuttleBus
+                            }
+                        },
+                        {
+                            "49Б",
+                            new Vehicle
+                            {
+                                PlateNumber = "номер5",
                                 VehicleTypeId = (int)VehicleType.ShuttleBus
                             }
                         }
@@ -180,7 +196,7 @@ namespace PTMS.Persistance
                             "120В",
                             new Vehicle
                             {
-                                PlateNumber = "test4",
+                                PlateNumber = "номер6",
                                 VehicleTypeId = (int)VehicleType.Bus
                             }
                         },
@@ -188,7 +204,15 @@ namespace PTMS.Persistance
                             "66",
                             new Vehicle
                             {
-                                PlateNumber = "test5",
+                                PlateNumber = "номер7",
+                                VehicleTypeId = (int)VehicleType.Bus
+                            }
+                        },
+                        {
+                            "115",
+                            new Vehicle
+                            {
+                                PlateNumber = "номер8",
                                 VehicleTypeId = (int)VehicleType.Bus
                             }
                         }

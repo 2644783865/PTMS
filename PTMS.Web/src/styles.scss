@@ -3,6 +3,8 @@
 
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
+$form-blue: #3f51b5;
+
 html, body {
   height: 100%;
   width: 100%;
@@ -14,32 +16,106 @@ html, body {
   }
 }
 
-.info-notification-overlay{
-  background-color: $info;
+.info-notification-overlay {
+  background-color: $cyan;
   color: $white;
 }
 
 .success-notification-overlay {
-  background-color: $success;
+  background-color: $green;
   color: $white;
 }
 
 .warning-notification-overlay {
-  background-color: $warning;
+  background-color: $orange;
   color: $white;
 }
 
 .error-notification-overlay {
-  background-color: $danger;
+  background-color: $red;
   color: $white;
 }
 
-.mat-button-wrapper mat-icon {
-  margin-right: 5px;
+.table-wrapper {
+  &.table-editable {
+    .mat-header-row .mat-header-cell:last-child {
+      max-width: 100px;
+    }
+
+    .mat-row .mat-cell:last-child {
+      max-width: 100px;
+      justify-content: flex-end;
+    }
+  }
+
+  &.table-inline-form {
+    input {
+      width: 100%;
+    }
+
+    .mat-row .mat-cell:last-child {
+      justify-content: flex-end;
+    }
+  }
+
+  &.table-scrollable {
+    min-height: 200px;
+
+    .mat-table {
+      max-height: 400px;
+      overflow: auto;
+    }
+  }
 }
 
-.table-wrapper {
-  table {
-    width: 100%;
+.visibility-hidden {
+  visibility: hidden;
+}
+
+.add-button {
+  margin-bottom: 15px;
+}
+
+.icon-button {
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.7
+  }
+
+  &.icon-button-primary {
+    color: $indigo;
+  }
+
+  &.icon-button-danger {
+    color: $red
+  }
+}
+
+.nolabel-form-control {
+  display: block;
+  width: 100%;
+  padding: .25rem .5rem;
+  font-size: .875rem;
+  line-height: 1.5;
+  border-radius: .2rem;
+  color: currentColor;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid $form-blue;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  margin: 0px 0.1rem;
+
+  &:focus {
+    color: currentColor;
+    background-color: #fff;
+    border-color: $form-blue;
+    outline: 0;
+    box-shadow: 0 0 0 0.1rem $form-blue;
+  }
+
+  &.ng-invalid {
+    border-color: $red !important;
+    box-shadow: unset;
   }
 }
