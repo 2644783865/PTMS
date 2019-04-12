@@ -5,7 +5,10 @@ import { RouteDto } from '@app/core/dtos/RouteDto';
 export interface RouteState extends EntityState<RouteDto> { }
 
 @Injectable()
-@StoreConfig({ name: 'route-page' })
+@StoreConfig({
+  name: 'route-page',
+  resettable: true
+})
 export class RouteStore extends EntityStore<RouteState, RouteDto> {
   constructor() {
     super();

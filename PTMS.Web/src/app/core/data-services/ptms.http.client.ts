@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { PaginationResponse } from '@datorama/akita';
 import { PageResult } from '../dtos/page.result';
 import { map } from 'rxjs/operators';
+import { environment } from '@env';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class PtmsHttpClient {
   }
 
   private getFullUrl(relativeUrl: string) {
-    return 'https://localhost:44355/' + relativeUrl;
+    return environment.apiUrl + relativeUrl;
   }
 
   getPage<T>(

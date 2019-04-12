@@ -6,7 +6,10 @@ import { createPaginator } from '@app/core/paginator/app-paginator.token';
 export interface VehicleState extends EntityState<VehicleDto> { }
 
 @Injectable()
-@StoreConfig({ name: 'vehicles' })
+@StoreConfig({
+  name: 'vehicles',
+  resettable: true
+})
 export class VehicleStore extends EntityStore<VehicleState, VehicleDto> {
   constructor() {
     super();
