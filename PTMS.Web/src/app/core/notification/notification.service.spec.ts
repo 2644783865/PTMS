@@ -17,13 +17,7 @@ describe('NotificationsService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
-
-  it('default method should be executable', () => {
-    spyOn(service, 'default');
-    service.default('default message');
-    expect(service.default).toHaveBeenCalled();
-  });
-
+  
   it('info method should be executable', () => {
     spyOn(service, 'info');
     service.info('info message');

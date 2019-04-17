@@ -1,13 +1,6 @@
-import { LayoutModule } from '@angular/cdk/layout';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import {
-  MatButtonModule,
-  MatIconModule,
-  MatListModule,
-  MatSidenavModule,
-  MatToolbarModule,
-} from '@angular/material';
+import { componentsBaseImports } from '@app/test/test-imports';
+import { authStubProvider } from '@app/test/auth-service.stub';
 
 import { LayoutComponent } from './layout.component';
 
@@ -17,16 +10,9 @@ describe('LayoutComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [LayoutComponent],
-      imports: [
-        NoopAnimationsModule,
-        LayoutModule,
-        MatButtonModule,
-        MatIconModule,
-        MatListModule,
-        MatSidenavModule,
-        MatToolbarModule,
-      ]
+      imports: [...componentsBaseImports],
+      providers: [authStubProvider],
+      declarations: [LayoutComponent]
     }).compileComponents();
   }));
 
@@ -36,7 +22,7 @@ describe('LayoutComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should compile', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

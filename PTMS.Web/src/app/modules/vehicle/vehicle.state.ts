@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject, InjectionToken } from '@angular/core';
 import { EntityState, EntityStore, StoreConfig, QueryEntity } from '@datorama/akita';
 import { VehicleDto } from '@app/core/dtos/VehicleDto';
-import { createPaginator } from '@app/core/paginator/app-paginator.token';
+import { AppPaginator } from '@app/core/paginator/app-paginator.plugin';
 
 export interface VehicleState extends EntityState<VehicleDto> { }
 
@@ -23,4 +23,8 @@ export class VehicleQuery extends QueryEntity<VehicleState, VehicleDto> {
   }
 }
 
-export const VEHICLE_PAGINATOR = createPaginator<VehicleDto>('VEHICLE_PAGINATOR', VehicleQuery);
+export const VEHICLE_PAGINATOR = new InjectionToken('VEHICLE_PAGINATOR', {
+  factory: () => {
+    return new AppPaginator<VehicleDto>(inject(VehicleQuery));
+  }
+});
