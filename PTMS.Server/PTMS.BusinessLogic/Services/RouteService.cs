@@ -9,7 +9,7 @@ using PTMS.Domain.Entities;
 
 namespace PTMS.BusinessLogic.Services
 {
-    public class RouteService : BusinessServiceAsync<Route, RouteModel>, IRouteService
+    public class RouteService : BusinessServiceAsync<Routs, RouteModel>, IRouteService
     {
         private readonly IRouteRepository _routeRepository;
 
@@ -21,9 +21,9 @@ namespace PTMS.BusinessLogic.Services
             _routeRepository = routeRepository;
         }
 
-        public async Task<List<RouteModel>> GetAllAsync()
+        public async Task<List<RouteModel>> GetAllAsync(bool? active)
         {
-            var result = await _routeRepository.GetAllAsync();
+            var result = await _routeRepository.GetAllAsync(active);
             return MapToModel(result);
         }
 

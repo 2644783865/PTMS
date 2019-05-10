@@ -8,5 +8,6 @@ namespace PTMS.BusinessLogic.IServices
     {
         Task<string> Login(string email, string password);
         Task<AccountIdentityModel> GetIdentityAsync(ClaimsPrincipal user);
+        Task Register(RegisterModel model);
     }
 }

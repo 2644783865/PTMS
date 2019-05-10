@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace PTMS.DataServices.IRepositories
 {
-    public interface IUserRepository : IDataServiceAsync<User>
+    public interface IUserRepository : IDataServiceAsync<AppUser>
     {
-        Task<List<User>> GetAllAsync();
+        Task<List<AppUser>> GetAllWithRolesAsync();
     }
 }

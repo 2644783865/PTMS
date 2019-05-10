@@ -21,7 +21,14 @@
     <ProjectReference Include="..\PTMS.BusinessLogic\PTMS.BusinessLogic.csproj" />
     <ProjectReference Include="..\PTMS.Common\PTMS.Common.csproj" />
     <ProjectReference Include="..\PTMS.DataServices\PTMS.DataServices.csproj" />
+    <ProjectReference Include="..\PTMS.Infrastructure\PTMS.Infrastructure.csproj" />
     <ProjectReference Include="..\PTMS.Persistance\PTMS.Persistance.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="EntityFrameworkCore.FirebirdSql">
+      <HintPath>..\EntityFramework.Firebird\EntityFrameworkCore.FirebirdSql.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using PTMS.BusinessLogic.Config;
+using PTMS.BusinessLogic.Helpers;
 using PTMS.Domain.Entities;
 using PTMS.Persistance;
 
@@ -16,12 +17,21 @@ namespace PTMS.Api.Config
     {
         public static void ConfigureAuthorization(this IServiceCollection services, IConfiguration Configuration)
         {
-            services.AddIdentity<User, Role>(options =>
+            services.AddIdentity<AppUser, AppRole>(options =>
             {
+                options.Password.RequireDigit = false;
+                options.Password.RequiredUniqueChars = 0;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
                 options.Password.RequiredLength = 6;
+                options.SignIn.RequireConfirmedEmail = true;
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
             })
             .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddErrorDescriber<AppIdentityErrorDescriber>()
+            .AddSignInManager<AppSignInManager>()
+            .AddUserManager<AppUserManager>()
             .AddDefaultTokenProviders();
 
             // ===== Add Jwt Authentication ========

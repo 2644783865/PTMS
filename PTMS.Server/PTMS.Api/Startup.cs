@@ -29,7 +29,7 @@ namespace PTMS.Api
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                options.UseFirebird(Configuration.GetConnectionString("DefaultConnection"));
             });
 
             services.ConfigureAuthorization(Configuration);

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PTMS.BusinessLogic.IServices;
 using PTMS.BusinessLogic.Services;
+using PTMS.Infrastructure;
 
 namespace PTMS.Api.Config
 {
@@ -9,11 +10,11 @@ namespace PTMS.Api.Config
         public static void ConfigureBusinessLogic(this IServiceCollection services)
         {
             services.AddScoped<IAccountService, AccountService>();
-            services.AddScoped<IVehicleService, VehicleService>();
+            services.AddScoped<IObjectService, ObjectService>();
             services.AddScoped<IRouteService, RouteService>();
-            services.AddScoped<ITransporterService, TransporterService>();
-            services.AddScoped<IVehicleTypeService, VehicleTypeService>();
+            services.AddScoped<IProjectService, ProjectService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IEmailService, EmailService>();
         }
     }
 }

@@ -5,8 +5,8 @@ using PTMS.Domain.Entities;
 
 namespace PTMS.DataServices.IRepositories
 {
-    public interface IRouteRepository : IDataServiceAsync<Route>
+    public interface IRouteRepository : IDataServiceAsync<Routs>
     {
-        Task<List<Route>> GetAllAsync();
+        Task<List<Routs>> GetAllAsync(bool? active);
     }
 }

@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Identity;
 using PTMS.BusinessLogic.Infrastructure;
 using PTMS.BusinessLogic.IServices;
 using PTMS.BusinessLogic.Models;
@@ -11,31 +10,27 @@ using System.Threading.Tasks;
 
 namespace PTMS.BusinessLogic.Services
 {
-    public class UserService : BusinessServiceAsync<User, UserModel>, IUserService
+    public class UserService : BusinessServiceAsync<AppUser, UserModel>, IUserService
     {
         private readonly IUserRepository _userRepository;
-        private readonly UserManager<User> _userManager;
 
         public UserService(
             IUserRepository userRepository,
-            UserManager<User> userManager,
             IMapper mapper)
             : base(mapper)
         {
             _userRepository = userRepository;
-            _userManager = userManager;
         }
 
         public async Task<List<UserModel>> GetAllWithRolesAsync()
         {
-            var users = await _userRepository.GetAllAsync();
-            var result = MapToModel(users);
+            var users = await _userRepository.GetAllWithRolesAsync();
+            var result = new List<UserModel>();
 
             foreach (var user in users)
             {
-                var roles = await _userManager.GetRolesAsync(user);
-                var userModel = result.First(x => x.Id == user.Id);
-                userModel.Role = roles.First();
+                var userModel = MapToModel(user);
+                userModel.Role = user.UserRoles.First().Role.DisplayName;
             }
 
             return result;
