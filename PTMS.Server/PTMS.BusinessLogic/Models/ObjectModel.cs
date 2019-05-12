@@ -29,7 +29,9 @@ namespace PTMS.BusinessLogic.Models
         public short? LastAddInfo { get; set; }
         public short? Lowfloor { get; set; }
 
-        public virtual CarBrandModel CarBrand { get; set; }
-        public virtual ProviderModel Provider { get; set; }
+        public CarBrandModel CarBrand { get; set; }
+        public ProviderModel Provider { get; set; }
+        public RouteModel Route { get; set; }
+        public ProjectModel Project { get; set; }
     }
 }

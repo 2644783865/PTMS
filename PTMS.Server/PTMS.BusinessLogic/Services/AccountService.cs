@@ -78,16 +78,16 @@ namespace PTMS.BusinessLogic.Services
             if (result.Succeeded)
             {
                 //Send Email to admin
-                //await _emailService.SendEmailAsync(
-                //    _appSettings.AdminRecipient,
-                //    "Новый пользователь зарегистрировался в системе",
-                //    GetAdminRegisterEmail(user));
+                await _emailService.SendEmailAsync(
+                    _appSettings.AdminRecipient,
+                    "Новый пользователь зарегистрировался в системе",
+                    GetAdminRegisterEmail(user));
 
-                ////Send email to the new user
-                //await _emailService.SendEmailAsync(
-                //    user.Email,
-                //    "Регистрация в системе ЦОДД",
-                //    GetUserRegisterEmail(user, model.Password));
+                //Send email to the new user
+                await _emailService.SendEmailAsync(
+                    user.Email,
+                    "Регистрация в системе ЦОДД",
+                    GetUserRegisterEmail(user, model.Password));
             }
             else
             {
@@ -138,7 +138,7 @@ namespace PTMS.BusinessLogic.Services
 
 <u>После активации</u> для входа в систему используйте: <br/> <br/>
 
-<b>Email (Логин):</b> {user.Email} <br/>
+<b>Email:</b> {user.Email} <br/>
 <b>Пароль:</b> {password} <br/> <br/>
 
 <span style=""color: red"">Уведомляем Вас, что передача своего логина и пароля 

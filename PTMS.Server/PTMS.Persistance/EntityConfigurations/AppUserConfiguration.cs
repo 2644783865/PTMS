@@ -12,7 +12,6 @@ namespace PTMS.Persistance.EntityConfigurations
             builder.Entity<IdentityRoleClaim<int>>().ToTable("AppRoleClaim");
             builder.Entity<IdentityUserClaim<int>>().ToTable("AppUserClaim");
             builder.Entity<IdentityUserLogin<int>>().ToTable("AppUserLogin");
-            builder.Entity<AppUserRole>().ToTable("AppUserRole");
             builder.Entity<IdentityUserToken<int>>().ToTable("AppUserToken");
 
             builder.Entity<AppUser>(entity =>
@@ -38,17 +37,29 @@ namespace PTMS.Persistance.EntityConfigurations
                 entity
                     .Property(nameof(AppUser.PasswordHash))
                     .HasMaxLength(500);
+
+                entity
+                    .HasMany(e => e.UserRoles)
+                    .WithOne(u => u.User)
+                    .HasForeignKey(u => u.UserId);
             });
 
-            builder.Entity<AppUserRole>()
-                .HasOne(e => e.Role)
-                .WithMany()
-                .HasForeignKey(e => e.RoleId);
+            builder.Entity<AppUserRole>(entity =>
+            {
+                entity.ToTable("AppUserRole");
 
-            builder.Entity<AppUserRole>()
-               .HasOne(e => e.User)
-               .WithMany()
-               .HasForeignKey(e => e.UserId);
+                entity.HasKey(ur => new { ur.UserId, ur.RoleId });
+
+                entity.HasOne(ur => ur.Role)
+                    .WithMany()
+                    .HasForeignKey(ur => ur.RoleId)
+                    .IsRequired();
+
+                entity.HasOne(ur => ur.User)
+                    .WithMany(r => r.UserRoles)
+                    .HasForeignKey(ur => ur.UserId)
+                    .IsRequired();
+            });
         }
     }
 }

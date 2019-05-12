@@ -21,7 +21,7 @@ namespace PTMS.Infrastructure
 <br/>
 <br/>
 С уважением, <br/>
-ЦОДД Администратор
+Команда ЦОДД Администратор
 </body>
 </html>
 ";
@@ -29,7 +29,7 @@ namespace PTMS.Infrastructure
     {0}
 \n \n
 С уважением, \n
-ЦОДД Администратор
+Команда ЦОДД Администратор
 ";
 
         private readonly AppSettings _appSettings;

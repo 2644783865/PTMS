@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PTMS.Domain.Entities;
+using PTMS.Persistance.Converters;
 
 namespace PTMS.Persistance.EntityConfigurations
 {
@@ -14,7 +15,7 @@ namespace PTMS.Persistance.EntityConfigurations
 
                 entity.ToTable("OBJECTS                        ");
 
-                entity.HasIndex(e => e.CarBrand)
+                entity.HasIndex(e => e.CarBrandId)
                     .HasName("FK_OBJECTS_1")
                     .IsUnique();
 
@@ -35,7 +36,7 @@ namespace PTMS.Persistance.EntityConfigurations
                 entity.HasIndex(e => e.Phone)
                     .HasName("UNQ_OBJECTS_PHONE");
 
-                entity.HasIndex(e => e.Provider)
+                entity.HasIndex(e => e.ProviderId)
                     .HasName("FK_OBJECTS_3")
                     .IsUnique();
 
@@ -75,7 +76,8 @@ namespace PTMS.Persistance.EntityConfigurations
                     .HasColumnName("IDS_")
                     .HasColumnType("NUMERIC(9, 0)");
 
-                entity.Property(e => e.LastAddInfo).HasColumnName("LAST_ADD_INFO_");
+                entity.Property(e => e.LastAddInfo)
+                    .HasColumnName("LAST_ADD_INFO_");
 
                 entity.Property(e => e.LastLat)
                     .HasColumnName("LAST_LAT_")
@@ -109,7 +111,8 @@ namespace PTMS.Persistance.EntityConfigurations
                     .HasDefaultValueSql("default CURRENT_TIMESTAMP")
                     .HasAnnotation("Description", "Время последнего отклика");
 
-                entity.Property(e => e.Lowfloor).HasColumnName("LOWFLOOR");
+                entity.Property(e => e.Lowfloor)
+                    .HasColumnName("LOWFLOOR");
 
                 entity.Property(e => e.Name)
                     .HasColumnName("NAME_")
@@ -119,7 +122,8 @@ namespace PTMS.Persistance.EntityConfigurations
                 entity.Property(e => e.ObjOutput)
                     .HasColumnName("OBJ_OUTPUT_")
                     .HasDefaultValueSql("DEFAULT 1")
-                    .HasAnnotation("Description", "Статус вывода");
+                    .HasAnnotation("Description", "Статус вывода")
+                    .HasConversion(new IntToBooleanConverter());
 
                 entity.Property(e => e.ObjOutputDate)
                     .HasColumnName("OBJ_OUTPUT_DATE_")
@@ -147,16 +151,21 @@ namespace PTMS.Persistance.EntityConfigurations
                     .HasColumnName("YEAR_RELEASE_")
                     .HasAnnotation("Description", "Год выпуска");
 
-                entity.Ignore(e => e.CarBrand);
-                entity.Ignore(e => e.Provider);
+                entity.HasOne(e => e.Provider)
+                    .WithMany(e => e.Objects)
+                    .HasForeignKey(e => e.ProviderId);
 
-                //entity.HasOne(e => e.Provider)
-                //    .WithMany(e => e.Objects)
-                //    .HasForeignKey(e => e.ProviderId);
+                entity.HasOne(e => e.CarBrand)
+                    .WithMany(e => e.Objects)
+                    .HasForeignKey(e => e.CarBrandId);
 
-                //entity.HasOne(e => e.CarBrand)
-                //    .WithMany(e => e.Objects)
-                //    .HasForeignKey(e => e.CarBrandId);
+                entity.HasOne(e => e.Project)
+                    .WithMany()
+                    .HasForeignKey(e => e.ProjId);
+
+                entity.HasOne(e => e.Route)
+                    .WithMany()
+                    .HasForeignKey(e => e.LastRout);
             });
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using PTMS.Api.Attributes;
 using PTMS.BusinessLogic.IServices;
 using PTMS.BusinessLogic.Models;
 using PTMS.Common;
@@ -8,59 +9,73 @@ namespace PTMS.Api.Controllers
 {
     public class ObjectController : ApiControllerBase
     {
-        private readonly IObjectService _vehicleService;
+        private readonly IObjectService _objectService;
 
-        public ObjectController(IObjectService vehicleService)
+        public ObjectController(IObjectService objectService)
         {
-            _vehicleService = vehicleService;
+            _objectService = objectService;
         }
         
-        [HttpGet("/vehicles")]
+        [HttpGet("/objects")]
         public async Task<ActionResult<PageResult<ObjectModel>>> GetAll(
             string plateNumber = null,
             string routeName = null,
-            int? vehicleType = null,
-            int? transporter = null,
+            int? carType = null,
+            int? project = null,
             int? page = null,
-            int? pageSize = null)
+            int? pageSize = null,
+            ModelFormatsEnum format = ModelFormatsEnum.Full)
         {
-            var result = await _vehicleService.FindByParams(
+            var result = await _objectService.FindByParams(
                 User,
                 plateNumber,
-                routeName, 
-                vehicleType, 
-                transporter, 
+                routeName,
+                carType, 
+                project,
+                format,
                 page, 
                 pageSize);
 
             return result;
         }
         
-        [HttpGet("/vehicle/{id}")]
-        public async Task<ActionResult<ObjectModel>> GetById(int id)
+        [HttpGet("/object/{id}")]
+        public async Task<ActionResult<ObjectModel>> GetById(decimal id)
         {
-            var result = await _vehicleService.GetByIdAsync(id);
+            var result = await _objectService.GetByIdAsync(id);
             return result;
         }
-        
-        [HttpPost("/vehicle")]
+
+        [PtmsAuthorize(RoleNames.Transporter)]
+        [HttpPost("/object/{ids}/changeRoute/{newRouteId}")]
+        public async Task<ObjectModel> ChangeRoute(decimal ids, int newRouteId)
+        {
+            var result = await _objectService.ChangeRouteAsync(
+                ids,
+                newRouteId,
+                User);
+
+            return result;
+        }
+
+        [HttpPost("/object")]
         public async Task<ObjectModel> Post([FromBody]ObjectModel model)
         {
-            var result = await _vehicleService.AddAsync(model);
+            var result = await _objectService.AddAsync(model);
             return result;
         }
         
-        [HttpPut("/vehicle/{id}")]
+        [HttpPut("/object/{id}")]
         public async Task<ObjectModel> Put(int id, [FromBody]ObjectModel model)
         {
-            var result = await _vehicleService.UpdateAsync(model);
+            var result = await _objectService.UpdateAsync(model);
             return result;
         }
         
-        [HttpDelete("/vehicle/{id}")]
+        [HttpDelete("/object/{id}")]
         public async Task Delete(int id)
         {
-            await _vehicleService.DeleteByIdAsync(id);
+            await _objectService.DeleteByIdAsync(id);
         }
     }
 }

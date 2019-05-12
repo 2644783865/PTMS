@@ -20,7 +20,7 @@ namespace PTMS.DataServices.Repositories
 
         public Task<List<Routs>> GetAllAsync(bool? active)
         {
-            Expression<Func<Routs, bool>> filter = x => true;
+            Expression<Func<Routs, bool>> filter = null;
 
             filter = filter.AndIf(active.HasValue, x => x.RouteActive == active.Value);
 

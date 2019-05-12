@@ -12,15 +12,21 @@ namespace PTMS.BusinessLogic.IServices
             string plateNumber,
             string routeName,
             int? vehicleTypeId,
-            int? transporterId,
+            int? projectId,
+            ModelFormatsEnum format,
             int? page,
             int? pageSize);
 
-        Task<ObjectModel> GetByIdAsync(int id);
+        Task<ObjectModel> GetByIdAsync(decimal ids);
 
         Task<ObjectModel> AddAsync(ObjectModel model);
 
         Task<ObjectModel> UpdateAsync(ObjectModel model);
+
+        Task<ObjectModel> ChangeRouteAsync(
+            decimal ids,
+            int newRouteId,
+            ClaimsPrincipal principal);
 
         Task DeleteByIdAsync(int id);
     }

@@ -9,49 +9,49 @@ namespace PTMS.Api.Controllers
 {
     public class ProjectController : ApiControllerBase
     {
-        private readonly IProjectService _transporterService;
+        private readonly IProjectService _projectService;
 
-        public ProjectController(IProjectService transporterService)
+        public ProjectController(IProjectService projectService)
         {
-            _transporterService = transporterService;
+            _projectService = projectService;
         }
         
-        [HttpGet("/transporters")]
+        [HttpGet("/projects")]
         public async Task<ActionResult<List<ProjectModel>>> GetAll()
         {
-            var result = await _transporterService.GetAllAsync();
+            var result = await _projectService.GetAllAsync();
             return result;
         }
 
         [PtmsAuthorizeAdmin]
-        [HttpGet("/transporter/{id}")]
+        [HttpGet("/project/{id}")]
         public async Task<ActionResult<ProjectModel>> GetById(int id)
         {
-            var result = await _transporterService.GetByIdAsync(id);
+            var result = await _projectService.GetByIdAsync(id);
             return result;
         }
 
         [PtmsAuthorizeAdmin]
-        [HttpPost("/transporter")]
+        [HttpPost("/project")]
         public async Task<ProjectModel> Post([FromBody]ProjectModel model)
         {
-            var result = await _transporterService.AddAsync(model);
+            var result = await _projectService.AddAsync(model);
             return result;
         }
 
         [PtmsAuthorizeAdmin]
-        [HttpPut("/transporter/{id}")]
+        [HttpPut("/project/{id}")]
         public async Task<ProjectModel> Put(int id, [FromBody]ProjectModel model)
         {
-            var result = await _transporterService.UpdateAsync(model);
+            var result = await _projectService.UpdateAsync(model);
             return result;
         }
 
         [PtmsAuthorizeAdmin]
-        [HttpDelete("/transporter/{id}")]
+        [HttpDelete("/project/{id}")]
         public async Task Delete(int id)
         {
-            await _transporterService.DeleteByIdAsync(id);
+            await _projectService.DeleteByIdAsync(id);
         }
     }
 }

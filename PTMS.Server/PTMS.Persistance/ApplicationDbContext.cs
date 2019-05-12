@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using PTMS.Domain.Entities;
-using PTMS.Persistance.Converters;
 using PTMS.Persistance.EntityConfigurations;
 
 namespace PTMS.Persistance

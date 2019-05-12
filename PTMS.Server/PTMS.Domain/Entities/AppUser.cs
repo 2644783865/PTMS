@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using PTMS.Domain.Enums;
+using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace PTMS.Domain.Entities
 {
@@ -15,8 +18,31 @@ namespace PTMS.Domain.Entities
 
         public bool Enabled { get; set; }
 
+        public UserStatusEnum Status
+        {
+            get
+            {
+                if (!EmailConfirmed)
+                {
+                    return UserStatusEnum.WaitForConfirmation;
+                }
+                else if (!Enabled)
+                {
+                    return UserStatusEnum.Disabled;
+                }
+                else if (LockoutEnabled && LockoutEnd > DateTime.UtcNow)
+                {
+                    return UserStatusEnum.Locked;
+                }
+                else
+                {
+                    return UserStatusEnum.Active;
+                }
+            }
+        }
+
         public virtual Project Project { get; set; }
 
-        public virtual List<AppUserRole> UserRoles { get; set; }
+        public virtual List<AppUserRole> UserRoles { get; private set; }
     }
 }

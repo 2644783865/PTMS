@@ -128,8 +128,7 @@ namespace PTMS.Persistance.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<int>(nullable: false),
-                    RoleId = table.Column<int>(nullable: false),
-                    AppUserId = table.Column<int>(nullable: true)
+                    RoleId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -206,9 +205,9 @@ namespace PTMS.Persistance.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AppUserRole_AppUserId",
+                name: "IX_AppUserRole_UserId",
                 table: "AppUserRole",
-                column: "AppUserId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AppUserRole_RoleId",

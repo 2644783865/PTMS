@@ -22,7 +22,12 @@ namespace PTMS.DataServices.Repositories
 
         public Task<List<AppUser>> GetAllWithRolesAsync()
         {
-            return base.GetAllAsync(_includes);
+            return GetAllAsync(_includes);
+        }
+
+        public Task<AppUser> GetByIdWithRolesAsync(int id)
+        {
+            return GetByIdAsync(id, _includes);
         }
     }
 }

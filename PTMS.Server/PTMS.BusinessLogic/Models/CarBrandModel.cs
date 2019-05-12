@@ -8,5 +8,6 @@
         public string L { get; set; }
         public string W { get; set; }
         public string H { get; set; }
+        public CarTypeModel CarType { get; set; }
     }
 }

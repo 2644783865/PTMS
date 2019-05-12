@@ -15,6 +15,7 @@ namespace PTMS.Api.Config
             services.AddScoped<IObjectRepository, ObjectRepository>();
             services.AddScoped<IRouteRepository, RouteRepository>();
             services.AddScoped<IProjectRepository, ProjectRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
         }
     }
 }

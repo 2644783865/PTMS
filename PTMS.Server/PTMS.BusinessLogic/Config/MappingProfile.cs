@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using PTMS.BusinessLogic.Models;
+using PTMS.BusinessLogic.Models.User;
 using PTMS.Domain.Entities;
 
 namespace PTMS.BusinessLogic.Config
@@ -19,7 +20,10 @@ namespace PTMS.BusinessLogic.Config
             CreateMap<Project, ProjectModel>();
             CreateMap<ProjectModel, Project>();
 
-            CreateMap<AppUser, UserModel>();
+            CreateMap<AppUser, UserModel>()
+                .ForMember(m => m.Status, options => options.MapFrom(x => new UserStatusModel(x.Status)));
+
+            CreateMap<AppRole, RoleModel>();
         }
     }
 }

@@ -7,14 +7,17 @@ namespace PTMS.DataServices.IRepositories
 {
     public interface IObjectRepository : IDataServiceAsync<Objects>
     {
-        Task<PageResult<Objects>> FindByParamsForPageAsync(
+        Task<PageResult<Objects>> FindFullByParamsAsync(
             string plateNumber,
             string routeName,
-            int? vehicleTypeId,
+            int? carTypeId,
             int? projectId,
+            ModelFormatsEnum format,
             int? page,
             int? pageSize);
 
-        Task<Objects> GetByIdForPageAsync(int id);
+        Task<Objects> GetByIdAsync(decimal id);
+
+        Task<Objects> GetFullByIdAsync(decimal id);
     }
 }
