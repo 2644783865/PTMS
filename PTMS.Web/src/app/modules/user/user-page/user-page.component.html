@@ -1,0 +1,62 @@
+<app-page-header>Пользователи</app-page-header>
+
+<app-loading-overlay [isLoading]="dataLoading$ | async">
+  <div *ngIf="(list$ | async) as users">
+
+    <div class="table-wrapper table-editable mat-elevation-z8">
+      <mat-table [dataSource]="users">
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef> ФИО </mat-header-cell>
+          <mat-cell *matCellDef="let user"> {{user.longName}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="role">
+          <mat-header-cell *matHeaderCellDef> Роль </mat-header-cell>
+          <mat-cell *matCellDef="let user"> {{user.role ? user.role.displayName : '-'}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+          <mat-header-cell *matHeaderCellDef> Описание </mat-header-cell>
+          <mat-cell *matCellDef="let user"> {{user.description || '-'}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+          <mat-cell *matCellDef="let user"> {{user.email}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="phone">
+          <mat-header-cell *matHeaderCellDef> Телефон </mat-header-cell>
+          <mat-cell *matCellDef="let user"> {{user.phoneNumber || '-'}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <mat-header-cell *matHeaderCellDef> Статус </mat-header-cell>
+          <mat-cell *matCellDef="let user">
+            <span class="label-pill label-pill-full-width" [ngClass]="user.statusStyle">{{user.status.name}}</span>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="controls">
+          <mat-header-cell *matHeaderCellDef></mat-header-cell>
+          <mat-cell *matCellDef="let user" class="table-controls">
+            <app-menu-icon-dropdown>
+              <button mat-menu-item (click)="changePassword(user)" *ngIf="user.canChangePassword">
+                Сменить пароль
+              </button>
+              <button mat-menu-item (click)="confirmAccount(user)" *ngIf="user.canConfirmUser">
+                Подтвердить аккаунт
+              </button>
+              <button mat-menu-item (click)="toggleAccount(user)" *ngIf="user.canToggleUser">
+                {{user.isActive ? 'Заблокировать пользователя' : 'Активировать пользователя'}}
+              </button>
+            </app-menu-icon-dropdown>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    </div>
+  </div>
+</app-loading-overlay>

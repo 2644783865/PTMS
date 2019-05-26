@@ -30,7 +30,7 @@ namespace PTMS.Domain.Entities
                 {
                     return UserStatusEnum.Disabled;
                 }
-                else if (LockoutEnabled && LockoutEnd > DateTime.UtcNow)
+                else if (LockoutEnabled && LockoutEnd.HasValue && LockoutEnd > DateTime.UtcNow)
                 {
                     return UserStatusEnum.Locked;
                 }

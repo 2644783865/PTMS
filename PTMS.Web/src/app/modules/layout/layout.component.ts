@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable, combineLatest } from 'rxjs';
 import { AuthService } from '@app/core/auth/auth.service';
 import { Router } from '@angular/router';
-import { Role } from '@app/core/enums/role';
+import { RoleEnum } from '@app/core/enums/role.enum';
 
 declare function require(name: string);
 
@@ -28,10 +28,11 @@ export class LayoutComponent implements OnInit {
     this.authService.identity$.subscribe(identity => {
       if (identity) {
         let routes = [
-          { link: 'home', label: 'Главная', visible: true },
-          { link: 'vehicles', label: 'Транспорт', visible: true },
-          { link: 'routes', label: 'Маршруты', visible: true },
-          { link: 'users', label: 'Пользователи', visible: this.authService.isInRole(Role.Administrator) }
+          //{ link: 'home', label: 'Главная', visible: true },
+          { link: 'objects', label: 'Объекты', visible: false },
+          { link: 'routes', label: 'Маршруты', visible: false },
+          { link: 'change-route', label: 'Сменить Маршрут ТС', visible: this.authService.isInRole(RoleEnum.Transporter) },
+          { link: 'users', label: 'Пользователи', visible: this.authService.isInRole(RoleEnum.Administrator) }
         ];
 
         this.navigation = routes.filter(x => x.visible);

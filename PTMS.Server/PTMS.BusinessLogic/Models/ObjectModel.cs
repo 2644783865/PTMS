@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PTMS.Common;
+using System;
 
 namespace PTMS.BusinessLogic.Models
 {
@@ -21,13 +22,34 @@ namespace PTMS.BusinessLogic.Models
         public int? CarBrandId { get; set; }
         public string UserComment { get; set; }
         public DateTime? DateInserted { get; set; }
-        public int? ObjOutput { get; set; }
+        public bool ObjOutput { get; set; }
         public DateTime? ObjOutputDate { get; set; }
         public long Phone { get; set; }
         public int? YearRelease { get; set; }
         public int? DispRoute { get; set; }
         public short? LastAddInfo { get; set; }
         public short? Lowfloor { get; set; }
+        public string StatusName
+        {
+            get
+            {
+                if (ObjOutput)
+                {
+                    if (ObjOutputDate.HasValue)
+                    {
+                        return $"Выведено {ObjOutputDate.Value.ToDateString()}";
+                    }
+                    else
+                    {
+                        return "Выведено из эксплуатации";
+                    }
+                }
+                else
+                {
+                    return "Активно";
+                }
+            }
+        }
 
         public CarBrandModel CarBrand { get; set; }
         public ProviderModel Provider { get; set; }

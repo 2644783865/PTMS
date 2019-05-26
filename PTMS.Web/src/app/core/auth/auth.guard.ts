@@ -3,6 +3,8 @@ import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from './auth.service';
+import { AuthState } from './auth.state';
+import { RoleEnum } from '../enums/role.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +15,17 @@ export class AuthGuard implements CanActivate {
     private authService: AuthService) { }
 
   loginPath = 'login';
-  homePath = '/';
+
+  getHomePathByRole(state: AuthState): string {
+    switch (state.identity.role) {
+      case RoleEnum.Transporter:
+        return '/change-route';
+      case RoleEnum.Administrator:
+        return '/users';
+      default:
+        return '/home';
+    }
+  }
 
   canActivate(route: ActivatedRouteSnapshot, routerStateSnapshot: RouterStateSnapshot): Observable<boolean> {
     return this.authService.getState()
@@ -27,18 +39,24 @@ export class AuthGuard implements CanActivate {
 
           //if logged but goes to login page - redirect to home
           if (state.isLogged && route.routeConfig.path === this.loginPath) {
-            this.router.navigate([this.homePath]);
+            this.router.navigate([this.getHomePathByRole(state)]);
+            return false;
+          }
+
+          //check home page
+          if (state.isLogged && route.routeConfig.path == 'home' && this.getHomePathByRole(state) != '/') {
+            this.router.navigate([this.getHomePathByRole(state)]);
             return false;
           }
 
           // check if route is restricted by role
           if (route.data.roles) {
             let authorized = route.data.roles.reduce((sum, value) => {
-              return sum || state.identity.roles.includes(value);
-            }, false)
+              return sum || state.identity.role == value;
+            }, false);
 
             if (!authorized) {
-              this.router.navigate([this.homePath]);
+              this.router.navigate([this.getHomePathByRole(state)]);
               return false;
             }
           }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using PTMS.Common;
@@ -18,11 +19,11 @@ namespace PTMS.DataServices.Repositories
 
         }
 
-        public Task<List<Routs>> GetAllAsync(bool? active)
+        public Task<List<Routs>> GetAllAsync(int? projectId, bool? active)
         {
-            Expression<Func<Routs, bool>> filter = null;
-
-            filter = filter.AndIf(active.HasValue, x => x.RouteActive == active.Value);
+            Expression<Func<Routs, bool>> filter = x =>
+            (!active.HasValue || x.RouteActive == active.Value)
+            && (!projectId.HasValue || x.ProjectRoutes.Any(p => p.ProjId == projectId.Value));
 
             return FindAsync(filter);
         }

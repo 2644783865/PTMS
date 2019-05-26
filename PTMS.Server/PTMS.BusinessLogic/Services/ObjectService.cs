@@ -42,7 +42,7 @@ namespace PTMS.BusinessLogic.Services
                 projectId = await _userManager.GetProjectId(userPrincipal);
             }
 
-            var result = await _objectRepository.FindFullByParamsAsync(
+            var result = await _objectRepository.FindByParamsAsync(
                 plateNumber,
                 routeName,
                 carTypeId,
@@ -80,10 +80,10 @@ namespace PTMS.BusinessLogic.Services
                 throw new InvalidOperationException("Invalid user with invalid project id");
             }
 
-            if (entity.ObjOutput)
-            {
-                throw new InvalidOperationException("Object should be active");
-            }
+            //if (entity.ObjOutput)
+            //{
+            //    throw new InvalidOperationException("Object should be active");
+            //}
 
             entity.LastRout = newRouteId;
             await _objectRepository.UpdateAsync(entity, true);

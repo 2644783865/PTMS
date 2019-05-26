@@ -1,4 +1,6 @@
+﻿
+
 export interface LoginDto {
-  email: string
-  password: string
+    email: string
+    password: string
 }

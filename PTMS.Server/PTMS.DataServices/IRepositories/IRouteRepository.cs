@@ -7,6 +7,6 @@ namespace PTMS.DataServices.IRepositories
 {
     public interface IRouteRepository : IDataServiceAsync<Routs>
     {
-        Task<List<Routs>> GetAllAsync(bool? active);
+        Task<List<Routs>> GetAllAsync(int? projectId, bool? active);
     }
 }

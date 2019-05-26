@@ -32,7 +32,7 @@ namespace PTMS.DataServices.Repositories
 
         }
 
-        public Task<PageResult<Objects>> FindFullByParamsAsync(
+        public Task<PageResult<Objects>> FindByParamsAsync(
             string plateNumber,
             string routeName,
             int? carTypeId,
@@ -41,13 +41,10 @@ namespace PTMS.DataServices.Repositories
             int? page,
             int? pageSize)
         {
-            Expression<Func<Objects, bool>> filter = null;
-
-            filter = filter
-                .AndIf(!string.IsNullOrEmpty(plateNumber), x => x.Name.Contains(plateNumber))
-                .AndIf(!string.IsNullOrEmpty(routeName), x => x.Route.Name.Contains(routeName))
-                .AndIf(carTypeId.HasValue, x => x.CarBrand.CarTypeId == carTypeId)
-                .AndIf(transporterId.HasValue, x => x.ProjId == transporterId);
+            Expression<Func<Objects, bool>> filter = x => (string.IsNullOrEmpty(plateNumber) || x.Name.Contains(plateNumber, StringComparison.InvariantCultureIgnoreCase))
+                && (!transporterId.HasValue || x.ProjId == transporterId)
+                && (string.IsNullOrEmpty(routeName) || x.Route.Name.Contains(routeName, StringComparison.InvariantCultureIgnoreCase))
+                && (!carTypeId.HasValue || x.CarBrand.CarTypeId == carTypeId);
 
             var includes = _includesFull;
 

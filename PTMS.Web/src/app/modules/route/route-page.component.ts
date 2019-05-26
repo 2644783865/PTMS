@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { RouteDto } from '@app/core/dtos/RouteDto';
 import { RouteService } from './route.service';
 import { AuthService } from '@app/core/auth/auth.service';
-import { Role } from '@app/core/enums/role';
+import { RoleEnum } from '@app/core/enums/role.enum';
 
 @Component({
   selector: 'app-route-page',
@@ -24,7 +24,7 @@ export class RoutePageComponent implements OnInit {
     this.list$ = this.routeService.list$;
     this.dataLoading$ = this.routeService.isLoading$;
 
-    let isAdmin = this.authService.isInRole(Role.Administrator);
+    let isAdmin = this.authService.isInRole(RoleEnum.Administrator);
 
     if (isAdmin) {
       this.displayedColumns = this.allColumns;

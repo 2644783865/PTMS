@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { LoginDto } from '../dtos/LoginDto';
-import { Observable, of, BehaviorSubject } from 'rxjs';
-import { tap, map, catchError } from 'rxjs/operators';
-import { AuthTokenDto } from '../dtos/AuthTokenDto';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
+import { AccountDataService } from '../data-services/account.data.service';
 import { AccountIdentityDto } from '../dtos/AccountIdentityDto';
-import { AuthStore, AuthState, AuthQuery } from './auth.state';
-import { PtmsHttpClient } from '../data-services/ptms.http.client';
-import { Role } from '../enums/role';
+import { AuthTokenDto } from '../dtos/AuthTokenDto';
+import { LoginDto } from '../dtos/LoginDto';
+import { RoleEnum } from '../enums/role.enum';
+import { AuthQuery, AuthState, AuthStore } from './auth.state';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class AuthService {
   isLoggedIn$ = this.authQuery.select(state => state.isLogged);
 
   constructor(
-    private http: PtmsHttpClient,
+    private accountDataService: AccountDataService,
     private authStore: AuthStore,
     private authQuery: AuthQuery) {
 
@@ -36,7 +36,7 @@ export class AuthService {
   }
 
   login(dto: LoginDto): Observable<AuthTokenDto> {
-    return this.http.post<AuthTokenDto>('account/login', dto)
+    return this.accountDataService.login(dto)
       .pipe(
         tap(tokenResult => {
           this.authStore.update({ token: tokenResult.token });
@@ -56,7 +56,7 @@ export class AuthService {
       isAuthInProcess$.next(true);
     }, 300)
 
-    return this.http.get<AccountIdentityDto>('account/identity')
+    return this.accountDataService.getIdentity()
       .pipe(
         tap(_ => {
           clearTimeout(timeoutId);
@@ -86,11 +86,11 @@ export class AuthService {
     this.authStore.update(state);
   }
 
-  isInRole(role: Role) {
+  isInRole(role: RoleEnum) {
     let identity = this.authQuery.getValue().identity;
 
     if (identity) {
-      return identity.roles.includes(role);
+      return identity.role == role;
     }
     else {
       throw new Error('User identity is not loaded');

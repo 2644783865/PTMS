@@ -8,5 +8,7 @@ namespace PTMS.Domain.Entities
         public int Ids { get; set; }
         public int ProjId { get; set; }
         public int RoutId { get; set; }
+
+        public Routs Route { get; set; }
     }
 }

@@ -103,7 +103,7 @@ namespace PTMS.BusinessLogic.Services
 
             var result = new AccountIdentityModel
             {
-                Roles = roles,
+                Role = roles.First(),
                 FirstName = user.FirstName,
                 LastName = user.LastName
             };

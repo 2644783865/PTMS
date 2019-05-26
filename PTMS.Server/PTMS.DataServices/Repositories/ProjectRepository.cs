@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using PTMS.DataServices.Infrastructure;
 using PTMS.DataServices.IRepositories;
@@ -15,9 +16,10 @@ namespace PTMS.DataServices.Repositories
 
         }
 
-        public Task<List<Project>> GetAllAsync()
+        public async Task<List<Project>> GetAllAsync()
         {
-            return base.GetAllAsync();
+            var list = await base.GetAllAsync();
+            return list.OrderBy(x => x.Name).ToList();
         }
     }
 }

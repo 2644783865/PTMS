@@ -151,8 +151,10 @@ namespace PTMS.BusinessLogic.Services
                     "Ваш пароль был изменён",
                     GetChangePasswordEmailBody(user, newPassword));
             }
-
-            ThrowIdentityError(passwordResult.Errors);
+            else
+            {
+                ThrowIdentityError(passwordResult.Errors);
+            }
         }
 
         public async Task<UserModel> ToggleUserStatusAsync(int id)
@@ -164,14 +166,16 @@ namespace PTMS.BusinessLogic.Services
                 //Disable if active
                 user.Enabled = false;
             }
-            else if (user.Status == UserStatusEnum.Disabled)
+            else if (user.Status == UserStatusEnum.Disabled || user.Status == UserStatusEnum.Locked)
             {
                 //Enable if disabled
                 user.Enabled = true;
+                user.LockoutEnd = null;
+                user.AccessFailedCount = 0;
             }
             else
             {
-                throw new InvalidOperationException("Incorrect user status. Should be Active or Disabled");
+                throw new InvalidOperationException("Incorrect user status. Should be Active, Disabled or Locked");
             }
 
             await _userRepository.UpdateAsync(user, true);

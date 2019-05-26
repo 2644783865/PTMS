@@ -36,9 +36,11 @@ public static class ExceptionMiddlewareExtension
 
     private static Error GetError(Exception exception)
     {
+        var message = exception?.Message;
+
         var error = new Error()
         {
-            Message = exception?.Message ?? "Что-то пошло не так. Обратитесь к администратору.",
+            Message =  !string.IsNullOrEmpty(message) ? message : "Произошла неизвестная ошибка. Пожалуйста, обратитесь к администратору.",
             StackTrace = exception?.StackTrace,
             InnerException = exception?.InnerException
         };

@@ -1,0 +1,55 @@
+<app-page-header>Сменить маршрут ТС</app-page-header>
+
+<div class="row">
+  <div class="col-12 col-md-7 col-lg-5">
+    <form class="form-full-container"
+          (ngSubmit)="onSave()"
+          [formGroup]="routeForm">
+
+      <mat-card>
+        <mat-card-content>
+          <mat-form-field>
+            <app-autocomplete [options]="vehicles$"
+                              formControlName="vehicle"
+                              placeholder="Введите номер ТС для поиска"
+                              (search)="search($event)"
+                              [displayWith]="displayFn">
+            </app-autocomplete>
+          </mat-form-field>
+          <div *ngIf="routeForm.get('vehicle').value as selectedVehicle">
+            <div>
+              <b>Номер:</b> {{selectedVehicle.name}}
+            </div>
+            <div>
+              <b>Марка:</b> {{selectedVehicle.carBrand.cbName}}
+            </div>
+            <div>
+              <b>Год выпуска:</b> {{selectedVehicle.yearRelease}}
+            </div>
+            <div>
+              <b>Статус:</b> {{selectedVehicle.statusName}}
+            </div>
+            <div class="form-field-static">
+              <b>Текущий маршрут:</b> {{selectedVehicle.route.name}}
+            </div>
+            <div>
+              <mat-form-field>
+                <input matInput placeholder="Новый маршрут"
+                       formControlName="newRouteName"
+                       autofocus>
+                <app-input-error controlName="newRouteName"></app-input-error>
+              </mat-form-field>
+              <div class="text-right" style="margin-top: 10px;">
+                <app-loading-button color="primary"
+                                    type="submit"
+                                    [isLoading]="loading$ | async">
+                  Сменить маршрут
+                </app-loading-button>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </form>
+  </div>
+</div>

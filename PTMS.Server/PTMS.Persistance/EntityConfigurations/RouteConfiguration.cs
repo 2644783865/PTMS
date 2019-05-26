@@ -28,6 +28,10 @@ namespace PTMS.Persistance.EntityConfigurations
                     .HasDefaultValueSql("DEFAULT 1")
                     .HasAnnotation("Description", "Статус активности маршрута")
                     .HasConversion(new IntToBooleanConverter());
+
+                entity.HasMany(e => e.ProjectRoutes)
+                    .WithOne(e => e.Route)
+                    .HasForeignKey(e => e.RoutId);
             });
         }
     }

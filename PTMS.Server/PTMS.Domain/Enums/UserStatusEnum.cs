@@ -10,10 +10,10 @@ namespace PTMS.Domain.Enums
         [Description("Ожидает подтверждения")]
         WaitForConfirmation = 2,
 
-        [Description("Не активный")]
+        [Description("Заблокирован")]
         Disabled = 3,
 
-        [Description("Заблокирован")]
+        [Description("Временно заблокирован")]
         Locked = 4
     }
 }
