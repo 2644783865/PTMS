@@ -51,7 +51,7 @@ export class PtmsHttpClient {
     return this.http.get<T>(this.getFullUrl(relativeUrl), options);
   }
 
-  post<T>(relativeUrl: string, dto: any): Observable<T> {
+  post<T>(relativeUrl: string, dto: any = null): Observable<T> {
     return this.http.post<T>(this.getFullUrl(relativeUrl), dto);
   }
 

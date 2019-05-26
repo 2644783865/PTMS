@@ -12,11 +12,11 @@ namespace PTMS.Api.Controllers
     public class AccountController : ApiControllerBase
     {
         private readonly IAccountService _accountService;
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<AppUser> _userManager;
 
         public AccountController(
             IAccountService accountService,
-            UserManager<User> userManager)
+            UserManager<AppUser> userManager)
         {
             _accountService = accountService;
             _userManager = userManager;
@@ -32,10 +32,10 @@ namespace PTMS.Api.Controllers
 
         [AllowAnonymous]
         [HttpPost("/account/register")]
-        public async Task<ActionResult<object>> Register([FromBody]RegisterModel model)
+        public async Task<ActionResult> Register([FromBody]RegisterModel model)
         {
-            var result = await _accountService.Login(model.Email, model.Password);
-            return new { Token = result };
+            await _accountService.Register(model);
+            return Ok();
         }
 
         [HttpGet("/account/identity")]

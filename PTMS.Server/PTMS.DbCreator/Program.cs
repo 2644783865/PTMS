@@ -23,7 +23,7 @@ namespace PTMS.DbCreator
                 var connectionString = configuration.GetConnectionString("DefaultConnection");
 
                 var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-                optionsBuilder.UseSqlServer(connectionString);
+                optionsBuilder.UseFirebird(connectionString);
 
                 var context = new ApplicationDbContext(optionsBuilder.Options);
 
@@ -31,12 +31,6 @@ namespace PTMS.DbCreator
 
                 //Create db
                 context.Database.Migrate();
-
-                //IF db didn't exist - add test data
-                if (!ifDbExist)
-                {
-                    PtmsDbInitializer.Initialize(context);
-                }
             }
             catch (Exception exc)
             {

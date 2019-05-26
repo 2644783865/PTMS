@@ -1,29 +1,44 @@
 ﻿using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
+using PTMS.BusinessLogic.Helpers;
 using PTMS.BusinessLogic.Infrastructure;
 using PTMS.BusinessLogic.IServices;
 using PTMS.BusinessLogic.Models;
+using PTMS.Common;
 using PTMS.DataServices.IRepositories;
 using PTMS.Domain.Entities;
 
 namespace PTMS.BusinessLogic.Services
 {
-    public class RouteService : BusinessServiceAsync<Route, RouteModel>, IRouteService
+    public class RouteService : BusinessServiceAsync<Routs, RouteModel>, IRouteService
     {
+        private readonly AppUserManager _userManager;
         private readonly IRouteRepository _routeRepository;
 
         public RouteService(
+            AppUserManager userManager,
             IRouteRepository routeRepository,
             IMapper mapper)
             : base(mapper)
         {
             _routeRepository = routeRepository;
+            _userManager = userManager;
         }
 
-        public async Task<List<RouteModel>> GetAllAsync()
+        public async Task<List<RouteModel>> GetAllAsync(
+            ClaimsPrincipal userPrincipal, 
+            bool? active)
         {
-            var result = await _routeRepository.GetAllAsync();
+            int? projectId = null;
+
+            if (userPrincipal.IsInRole(RoleNames.Transporter))
+            {
+                projectId = await _userManager.GetProjectId(userPrincipal);
+            }
+
+            var result = await _routeRepository.GetAllAsync(projectId, active);
             return MapToModel(result);
         }
 

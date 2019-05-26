@@ -1,7 +1,7 @@
-import { Role } from '../enums/role';
+import { RoleEnum } from '../enums/role.enum';
 
 export interface AccountIdentityDto {
-  roles: Role[]
+  role: RoleEnum
   firstName: string
   lastName: string
   fullName: string

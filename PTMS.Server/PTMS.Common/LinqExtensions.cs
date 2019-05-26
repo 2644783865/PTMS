@@ -67,7 +67,14 @@ namespace PTMS.Common
         {
             if (apply)
             {
-                return first.AddExpression(second, Expression.And);
+                if (first != null)
+                {
+                    return first.AddExpression(second, Expression.And);
+                }
+                else
+                {
+                    return second;
+                }
             }
             return first;
         }

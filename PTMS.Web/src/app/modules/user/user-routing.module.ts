@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from '@app/core/auth/auth.guard';
-import { UserPageComponent } from './user-page.component';
-import { Role } from '@app/core/enums/role';
+import { UserPageComponent } from './user-page/user-page.component';
+import { RoleEnum } from '@app/core/enums/role.enum';
 
 const routes: Routes = [
   {
@@ -10,7 +10,7 @@ const routes: Routes = [
     component: UserPageComponent,
     canActivate: [AuthGuard],
     data: {
-      roles: [Role.Administrator]
+      roles: [RoleEnum.Administrator]
     }
   }
 ];

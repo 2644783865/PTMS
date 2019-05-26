@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using PTMS.BusinessLogic.Models;
+using PTMS.BusinessLogic.Models.User;
 using PTMS.Domain.Entities;
 
 namespace PTMS.BusinessLogic.Config
@@ -8,24 +9,21 @@ namespace PTMS.BusinessLogic.Config
     {
         public MappingProfile()
         {
-            CreateMap<Route, RouteModel>();
-            CreateMap<RouteModel, Route>()
-                .ForMember(m => m.Vehicles, options => options.Ignore());
+            CreateMap<Routs, RouteModel>();
+            CreateMap<RouteModel, Routs>();
 
-            CreateMap<Vehicle, VehicleModel>();
-            CreateMap<VehicleModel, Vehicle>()
-                .ForMember(m => m.Route, options => options.Ignore())
-                .ForMember(m => m.VehicleType, options => options.Ignore())
-                .ForMember(m => m.Transporter, options => options.Ignore());
+            CreateMap<Objects, ObjectModel>();
+            CreateMap<ObjectModel, Objects>()
+                .ForMember(m => m.CarBrand, options => options.Ignore())
+                .ForMember(m => m.Provider, options => options.Ignore());
 
-            CreateMap<VehicleType, VehicleTypeModel>();
-            CreateMap<VehicleTypeModel, VehicleType>();
+            CreateMap<Project, ProjectModel>();
+            CreateMap<ProjectModel, Project>();
 
-            CreateMap<Transporter, TransporterModel>();
-            CreateMap<TransporterModel, Transporter>()
-                .ForMember(m => m.Vehicles, options => options.Ignore());
+            CreateMap<AppUser, UserModel>()
+                .ForMember(m => m.Status, options => options.MapFrom(x => new UserStatusModel(x.Status)));
 
-            CreateMap<User, UserModel>();
+            CreateMap<AppRole, RoleModel>();
         }
     }
 }

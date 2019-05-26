@@ -1,7 +1,5 @@
-﻿using PTMS.BusinessLogic.Models;
-using System;
+﻿using PTMS.BusinessLogic.Models.User;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace PTMS.BusinessLogic.IServices
@@ -9,5 +7,12 @@ namespace PTMS.BusinessLogic.IServices
     public interface IUserService
     {
         Task<List<UserModel>> GetAllWithRolesAsync();
+        Task<UserModel> GetByIdAsync(int id);
+        Task<UserModel> CreateUserAsync(NewUserModel model);
+        Task<UserModel> ConfirmUserAsync(int userId, ConfirmUserModel model);
+        Task ChangePasswordAsync(int userId, string newPassword);
+        Task<UserModel> ToggleUserStatusAsync(int id);
+        Task<List<RoleModel>> GetAllRoles();
+        Task<List<UserStatusModel>> GetAllStatuses();
     }
 }

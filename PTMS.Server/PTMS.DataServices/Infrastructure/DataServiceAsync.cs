@@ -43,14 +43,21 @@ namespace PTMS.DataServices.Infrastructure
 
         protected Task<List<TEntity>> GetAllAsync(params string[] includes)
         {
-            return Prepare(includes).ToListAsync();
+            return Prepare(null, includes).ToListAsync();
         }
 
         protected Task<List<TEntity>> FindAsync(
             Expression<Func<TEntity, bool>> filter, 
             params string[] includes)
         {
-            return Prepare(includes).Where(filter).ToListAsync();
+            return Prepare(filter, includes).ToListAsync();
+        }
+
+        protected Task<TEntity> GetAsync(
+            Expression<Func<TEntity, bool>> filter,
+            params string[] includes)
+        {
+            return Prepare(filter, includes).FirstOrDefaultAsync();
         }
 
         protected async Task<PageResult<TEntity>> FindPagedAsync(
@@ -61,11 +68,7 @@ namespace PTMS.DataServices.Infrastructure
             int? pageSize,
             params string[] includes)
         {
-            var query = Prepare(includes);
-            if (filter != null)
-            {
-                query = query.Where(filter);
-            }
+            var query = Prepare(filter, includes);
 
             query = orderByAsc
                 ? query.OrderBy(orderBySelector)
@@ -84,7 +87,9 @@ namespace PTMS.DataServices.Infrastructure
                 .Take(actualPageSize)
                 .ToListAsync();
 
-            var totalCount = await Set.Where(filter).CountAsync();
+            var totalCount = filter != null
+                ? await Set.Where(filter).CountAsync()
+                : await Set.CountAsync();
 
             var result = new PageResult<TEntity>(list, totalCount);
             return result;
@@ -133,13 +138,16 @@ namespace PTMS.DataServices.Infrastructure
 
         private Task<TEntity> GetByIdHelperAsync(TPKey id, params string[] includes)
         {
-            return Prepare(includes).FirstOrDefaultAsync(GetFindExpression(id));
+            return Prepare(null, includes).FirstOrDefaultAsync(GetFindExpression(id));
         }
 
-        private IQueryable<TEntity> Prepare(params string[] includes)
+        private IQueryable<TEntity> Prepare(
+            Expression<Func<TEntity, bool>> filter,
+            params string[] includes)
         {
-            var query = Set
-                .AsQueryable();
+            var query = filter != null 
+                ? Set.Where(filter)
+                : Set.AsQueryable();
 
             query = includes.Aggregate(query, (s, i) => s.Include(i));
 

@@ -1,0 +1,17 @@
+<input type="text"
+       [placeholder]="placeholder"
+       matInput
+       [formControl]="autocompleteControl"
+       [matAutocomplete]="autoElement"
+       (blur)="onTouch()">
+
+<mat-spinner diameter="19"
+             style="position: absolute; top: 0px; right: 0;"
+             *ngIf="showSpinner">
+</mat-spinner>
+
+<mat-autocomplete #autoElement="matAutocomplete" [displayWith]="displayFn">
+  <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+    {{displayFn(option)}}
+  </mat-option>
+</mat-autocomplete>

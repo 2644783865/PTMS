@@ -10,7 +10,8 @@ import { LayoutModule } from './modules/layout/layout.module';
 import { LoginModule } from './modules/login/login.module';
 import { RouteModule } from './modules/route/route.module';
 import { UserModule } from './modules/user/user.module';
-import { VehicleModule } from './modules/vehicle/vehicle.module';
+import { ObjectModule } from './modules/object/object.module';
+import { ChangeRouteModule } from './modules/change-route/change-route.module';
 
 @NgModule({
   declarations: [
@@ -29,9 +30,10 @@ import { VehicleModule } from './modules/vehicle/vehicle.module';
     LayoutModule,
     LoginModule,
     HomeModule,
-    VehicleModule,
+    ObjectModule,
     RouteModule,
     UserModule,
+    ChangeRouteModule,
 
     //app
     AppRoutingModule

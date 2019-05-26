@@ -21,5 +21,8 @@ namespace PTMS.BusinessLogic.Models.Account
 
         [Required]
         public string Password { get; set; }
+
+        [Required]
+        public string Description { get; set; }
     }
 }
