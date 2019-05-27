@@ -24,7 +24,8 @@ namespace PTMS.Api.Controllers
             int? project = null,
             int? page = null,
             int? pageSize = null,
-            ModelFormatsEnum format = ModelFormatsEnum.Full)
+            ModelFormatsEnum format = ModelFormatsEnum.Full,
+            bool? active = null)
         {
             var result = await _objectService.FindByParams(
                 User,
@@ -33,6 +34,7 @@ namespace PTMS.Api.Controllers
                 carType, 
                 project,
                 format,
+                active,
                 page, 
                 pageSize);
 

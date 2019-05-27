@@ -34,6 +34,7 @@ namespace PTMS.BusinessLogic.Services
             int? carTypeId,
             int? projectId,
             ModelFormatsEnum format,
+            bool? active,
             int? page,
             int? pageSize)
         {
@@ -48,6 +49,7 @@ namespace PTMS.BusinessLogic.Services
                 carTypeId,
                 projectId,
                 format,
+                active,
                 page,
                 pageSize);
 
@@ -80,10 +82,10 @@ namespace PTMS.BusinessLogic.Services
                 throw new InvalidOperationException("Invalid user with invalid project id");
             }
 
-            //if (entity.ObjOutput)
-            //{
-            //    throw new InvalidOperationException("Object should be active");
-            //}
+            if (entity.ObjOutput)
+            {
+                throw new InvalidOperationException("Object should be active");
+            }
 
             entity.LastRout = newRouteId;
             await _objectRepository.UpdateAsync(entity, true);

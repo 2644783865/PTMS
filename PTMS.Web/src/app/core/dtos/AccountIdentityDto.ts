@@ -5,4 +5,5 @@ export interface AccountIdentityDto {
   firstName: string
   lastName: string
   fullName: string
+  id: number
 }

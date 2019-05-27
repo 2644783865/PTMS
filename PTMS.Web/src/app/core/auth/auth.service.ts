@@ -27,6 +27,11 @@ export class AuthService {
     return this.authQuery.getValue().token;
   }
 
+  get userId(): number {
+    let identity = this.authQuery.getValue().identity;
+    return identity ? identity.id : null;
+  }
+
   get isLoading$() {
     return this.isAuthInProcess$.asObservable();
   }

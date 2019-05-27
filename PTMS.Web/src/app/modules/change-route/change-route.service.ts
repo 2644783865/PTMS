@@ -15,7 +15,7 @@ export class ChangeRouteService {
   }
 
   search(plateNumber: string) {
-    this.objectDataService.getAll(1, 10, { plateNumber, format: 'light' })
+    this.objectDataService.getAll(1, 10, { plateNumber, format: 'light', active: true })
       .subscribe((vehicles) => {
         this.changeRouteStore.set(vehicles.data);
       });

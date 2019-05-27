@@ -13,6 +13,7 @@ namespace PTMS.DataServices.IRepositories
             int? carTypeId,
             int? projectId,
             ModelFormatsEnum format,
+            bool? active,
             int? page,
             int? pageSize);
 

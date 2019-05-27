@@ -14,6 +14,7 @@ namespace PTMS.BusinessLogic.IServices
             int? vehicleTypeId,
             int? projectId,
             ModelFormatsEnum format,
+            bool? active,
             int? page,
             int? pageSize);
 

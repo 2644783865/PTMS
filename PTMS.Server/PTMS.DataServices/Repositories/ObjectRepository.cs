@@ -38,13 +38,17 @@ namespace PTMS.DataServices.Repositories
             int? carTypeId,
             int? transporterId,
             ModelFormatsEnum format,
+            bool? active,
             int? page,
             int? pageSize)
         {
+            var locked = !active;
+
             Expression<Func<Objects, bool>> filter = x => (string.IsNullOrEmpty(plateNumber) || x.Name.Contains(plateNumber, StringComparison.InvariantCultureIgnoreCase))
                 && (!transporterId.HasValue || x.ProjId == transporterId)
                 && (string.IsNullOrEmpty(routeName) || x.Route.Name.Contains(routeName, StringComparison.InvariantCultureIgnoreCase))
-                && (!carTypeId.HasValue || x.CarBrand.CarTypeId == carTypeId);
+                && (!carTypeId.HasValue || x.CarBrand.CarTypeId == carTypeId)
+                && (!locked.HasValue || x.ObjOutput == locked.Value);
 
             var includes = _includesFull;
 

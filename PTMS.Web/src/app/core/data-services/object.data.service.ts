@@ -21,7 +21,7 @@ export class ObjectDataService {
   }
 
   update(item: ObjectDto) {
-    return this.http.put<ObjectDto>(`object/${item.id}`, item);
+    return this.http.put<ObjectDto>(`object/${item.ids}`, item);
   }
 
   changeRoute(id: number, newRouteId: number) {

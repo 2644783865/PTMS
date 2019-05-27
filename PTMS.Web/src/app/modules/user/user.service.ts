@@ -7,6 +7,7 @@ import { UserDto } from '@app/core/dtos/UserDto';
 import { UserStatusEnum } from '@app/core/enums/user-status.enum';
 import { NotificationService } from '@app/core/notification/notification.service';
 import { UserStore, UserUI } from './user.state';
+import { AuthService } from '@app/core/auth/auth.service';
 
 @Injectable()
 export class UserService {
@@ -15,7 +16,8 @@ export class UserService {
     private userStore: UserStore,
     private userDataService: UserDataService,
     private projectDataService: ProjectDataService,
-    private notificationService: NotificationService)
+    private notificationService: NotificationService,
+    private authService: AuthService)
   {
   }  
 
@@ -25,7 +27,8 @@ export class UserService {
       this.userDataService.getAll().toPromise()
     ]);
 
-    let result = data.map(this.mapToModel);
+    let loggedUserId = this.authService.userId;
+    let result = data.map(user => this.mapToModel(user, loggedUserId));
 
     this.userStore.set(result);
     this.userStore.setRoles(roles);
@@ -42,7 +45,7 @@ export class UserService {
       } as ConfirmUserDto;
 
       let userDto = await this.userDataService.confirmUser(userId, dto).toPromise();
-      let userUi = this.mapToModel(userDto);
+      let userUi = this.mapToModel(userDto, this.authService.userId);
 
       this.userStore.update(userUi.id, userUi);
       this.userStore.setModalLoading(false);
@@ -60,7 +63,7 @@ export class UserService {
     try {
       this.userStore.setLoading(true);
       let userDto = await this.userDataService.toggleUser(user.id).toPromise();
-      let userUi = this.mapToModel(userDto);
+      let userUi = this.mapToModel(userDto, this.authService.userId);
 
       this.userStore.update(userUi.id, userUi);
 
@@ -100,14 +103,14 @@ export class UserService {
     }
   }
 
-  private mapToModel(dto: UserDto) {
+  private mapToModel(dto: UserDto, loggedUserId: number) {
     let item = dto as UserUI;
 
     switch (item.status.id) {
       case UserStatusEnum.Active:
         item.statusStyle = 'label-pill-success';
         item.canChangePassword = true;
-        item.canToggleUser = true;
+        item.canToggleUser = item.id != loggedUserId;
         item.isActive = true;
         item.canConfirmUser = false;
         break;

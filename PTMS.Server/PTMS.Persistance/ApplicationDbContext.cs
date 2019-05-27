@@ -14,7 +14,6 @@ namespace PTMS.Persistance
         public virtual DbSet<BlockTypes> BlockTypes { get; set; }
         public virtual DbSet<Bs> Bs { get; set; }
         public virtual DbSet<BsRoute> BsRoute { get; set; }
-        public virtual DbSet<BusStations> BusStations { get; set; }
         public virtual DbSet<CarBrand> CarBrand { get; set; }
         public virtual DbSet<CarType> CarType { get; set; }
         public virtual DbSet<Changed> Changed { get; set; }
@@ -143,46 +142,6 @@ namespace PTMS.Persistance
                 entity.Property(e => e.Num).HasColumnName("NUM");
 
                 entity.Property(e => e.RouteId).HasColumnName("ROUTE_ID");
-            });
-
-            builder.Entity<BusStations>(entity =>
-            {
-                entity.ToTable("BUS_STATIONS                   ");
-
-                entity.HasIndex(e => e.Id)
-                    .HasName("PK_BUS_STATIONS_1");
-
-                entity.HasIndex(e => new { e.Number, e.Rout })
-                    .HasName("BUS_STATIONS_IDX1")
-                    .IsUnique();
-
-                entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.Property(e => e.Control)
-                    .HasColumnName("CONTROL_")
-                    .HasDefaultValueSql("DEFAULT 0")
-                    .HasAnnotation("Description", "Признак конечки");
-
-                entity.Property(e => e.Lat)
-                    .HasColumnName("LAT_")
-                    .HasAnnotation("Description", "Долгота");
-
-                entity.Property(e => e.Lon)
-                    .HasColumnName("LON_")
-                    .HasAnnotation("Description", "Широта");
-
-                entity.Property(e => e.Name)
-                    .HasColumnName("NAME_")
-                    .HasMaxLength(100)
-                    .HasAnnotation("Description", "Остановка");
-
-                entity.Property(e => e.Number)
-                    .HasColumnName("NUMBER_")
-                    .HasAnnotation("Description", "Номер установки внутри маршрута");
-
-                entity.Property(e => e.Rout)
-                    .HasColumnName("ROUT_")
-                    .HasAnnotation("Description", "Маршрут");
             });
 
             builder.ConfigureCarBrands();
