@@ -1,0 +1,81 @@
+<h1 mat-dialog-title>Новый пользователь</h1>
+<form class="form-full-container"
+      [formGroup]="modalForm"
+      (ngSubmit)="onConfirm()">
+  <div mat-dialog-content>
+    <div class="row">
+      <div class="col">
+        <mat-form-field>
+          <input matInput placeholder="Фамилия" type="text"
+                 formControlName="lastName">
+          <app-input-error controlName="lastName" maxlength="20"></app-input-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Имя" type="text"
+                 formControlName="firstName">
+          <app-input-error controlName="firstName" maxlength="15"></app-input-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Отчество" type="text"
+                 formControlName="middleName">
+          <app-input-error controlName="middleName" maxlength="20"></app-input-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Кратко о себе (должность)" type="text"
+                 formControlName="description">
+          <app-input-error controlName="description" maxlength="256"></app-input-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Телефон" type="text"
+                 formControlName="phoneNumber">
+          <app-input-error controlName="phoneNumber" maxlength="15"></app-input-error>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <input matInput placeholder="Email" type="email"
+                 formControlName="email">
+          <app-input-error controlName="email"></app-input-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Пароль" type="password"
+                 formControlName="password" />
+          <app-input-error controlName="password" minlength="6"></app-input-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Повторите Пароль" type="password"
+                 formControlName="comparePassword" />
+          <app-input-error controlName="comparePassword" [customErrors]="{'matchOther': 'Пароли должны совпадать'}"></app-input-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Роль</mat-label>
+          <mat-select formControlName="roleId">
+            <mat-option *ngFor="let role of roles$ | async" [value]="role.id">
+              {{role.displayName}}
+            </mat-option>
+          </mat-select>
+          <app-input-error controlName="roleId"></app-input-error>
+        </mat-form-field>
+        <mat-form-field *ngIf="showProjectsSelect">
+          <mat-label>{{(projects$ | async) ? 'Перевозчик' : 'Загрузка ...'}}</mat-label>
+          <app-autocomplete [options]="projects$"
+                            formControlName="project">
+          </app-autocomplete>
+          <app-input-error controlName="project"></app-input-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-raised-button
+            type="button"
+            (click)="onClose()">
+      Отмена
+    </button>
+    <app-loading-button color="primary"
+                        type="submit"
+                        [isLoading]="modalLoading$ | async">
+      Подтвердить
+    </app-loading-button>
+  </div>
+</form>

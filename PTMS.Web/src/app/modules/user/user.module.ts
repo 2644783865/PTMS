@@ -6,6 +6,7 @@ import { UserService } from './user.service';
 import { UserRoutingModule } from './user-routing.module';
 import { UserConfirmDialogComponent } from './user-confirm-dialog/user-confirm-dialog.component';
 import { UserChangePasswordDialogComponent } from './user-change-password-dialog/user-change-password-dialog.component';
+import { UserCreateDialogComponent } from './user-create-dialog/user-create-dialog.component';
 
 @NgModule({
   imports: [
@@ -19,12 +20,14 @@ import { UserChangePasswordDialogComponent } from './user-change-password-dialog
   ],
   entryComponents: [
     UserConfirmDialogComponent,
-    UserChangePasswordDialogComponent
+    UserChangePasswordDialogComponent,
+    UserCreateDialogComponent
   ],
   declarations: [
     UserPageComponent,
     UserConfirmDialogComponent,
-    UserChangePasswordDialogComponent
+    UserChangePasswordDialogComponent,
+    UserCreateDialogComponent
   ],
   exports: [
     UserPageComponent

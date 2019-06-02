@@ -44,16 +44,16 @@ namespace PTMS.BusinessLogic.Services
             _appSettings = appSettings.Value;
         }
 
-        public async Task<List<UserModel>> GetAllWithRolesAsync()
+        public async Task<List<UserModel>> GetAllFullAsync()
         {
-            var users = await _userRepository.GetAllWithRolesAsync();
+            var users = await _userRepository.GetAllFullAsync();
             var result = users.Select(MapToUserModel).ToList();
             return result;
         }
 
-        public async Task<UserModel> GetByIdAsync(int id)
+        public async Task<UserModel> GetByIdFullAsync(int id)
         {
-            var user = await _userRepository.GetByIdWithRolesAsync(id);
+            var user = await _userRepository.GetByIdFullAsync(id);
             var result = MapToUserModel(user);
             return result;
         }
@@ -99,7 +99,7 @@ namespace PTMS.BusinessLogic.Services
                 ThrowIdentityError(userResult.Errors);
             }
 
-            var result = await GetByIdAsync(user.Id);
+            var result = await GetByIdFullAsync(user.Id);
             return result;
         }
 
@@ -134,7 +134,7 @@ namespace PTMS.BusinessLogic.Services
                 "Ваша учётная запись успешно подтверждёна",
                 GetConfirmEmailBody());
 
-            var result = await GetByIdAsync(userId);
+            var result = await GetByIdFullAsync(userId);
             return result;
         }
 
@@ -180,7 +180,7 @@ namespace PTMS.BusinessLogic.Services
 
             await _userRepository.UpdateAsync(user, true);
 
-            var result = await GetByIdAsync(user.Id);
+            var result = await GetByIdFullAsync(user.Id);
             return result;
         }
 

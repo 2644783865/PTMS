@@ -8,6 +8,7 @@ import { UserStatusEnum } from '@app/core/enums/user-status.enum';
 import { NotificationService } from '@app/core/notification/notification.service';
 import { UserStore, UserUI } from './user.state';
 import { AuthService } from '@app/core/auth/auth.service';
+import { NewUserDto } from '@app/core/dtos/NewUserDto';
 
 @Injectable()
 export class UserService {
@@ -35,20 +36,43 @@ export class UserService {
     this.userStore.setLoading(false);
   }
 
+  async createUser(formData: any) {
+    try {
+      this.userStore.setModalLoading(true);
+
+      let dto = {
+        ...formData,
+        roleId: formData.roleId,
+        projectId: formData.project ? formData.project.id : null
+      } as NewUserDto;
+
+      let userDto = await this.userDataService.create(dto).toPromise();
+      let userUi = this.mapToModel(userDto, this.authService.userId);
+
+      this.userStore.add(userUi);
+      this.notificationService.success(`Пользователь '${userUi.fullName}' успешно создан.`);
+    }
+    catch (exc) {
+      this.notificationService.error(exc.error.message);
+    }
+    finally {
+      this.userStore.setModalLoading(false);
+    }
+  }
+
   async confirmUser(userId: number, formData: any) {
     try {
       this.userStore.setModalLoading(true);
 
       let dto = {
         roleId: formData.roleId,
-        projectId: formData.project!.id
+        projectId: formData.project ? formData.project.id : null
       } as ConfirmUserDto;
 
       let userDto = await this.userDataService.confirmUser(userId, dto).toPromise();
       let userUi = this.mapToModel(userDto, this.authService.userId);
 
       this.userStore.update(userUi.id, userUi);
-      this.userStore.setModalLoading(false);
       this.notificationService.success(`Пользователь '${userUi.fullName}' успешно подтверждён.`);
     }
     catch (exc) {
@@ -91,8 +115,6 @@ export class UserService {
       } as ChangePasswordDto;
 
       await this.userDataService.changePassword(userUi.id, dto).toPromise();
-
-      this.userStore.setModalLoading(false);
       this.notificationService.success(`Пароль для пользователя ${userUi.fullName} успешно изменён. Письмо с новым паролем было отправлено.`);
     }
     catch (exc) {
@@ -105,6 +127,14 @@ export class UserService {
 
   private mapToModel(dto: UserDto, loggedUserId: number) {
     let item = dto as UserUI;
+
+    if (dto.role) {
+      item.roleDisplayName = dto.role.displayName;
+
+      if (dto.project) {
+        item.roleDisplayName += ' (' + dto.project.name + ')';
+      }
+    }
 
     switch (item.status.id) {
       case UserStatusEnum.Active:

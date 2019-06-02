@@ -20,5 +20,7 @@
         public string PhoneNumber { get; set; }
 
         public UserStatusModel Status { get; set; }
+
+        public ProjectModel Project { get; set; }
     }
 }

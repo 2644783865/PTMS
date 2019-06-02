@@ -6,6 +6,7 @@ import { UserUI, UserQuery } from '../user.state';
 import { UserConfirmDialogComponent } from '../user-confirm-dialog/user-confirm-dialog.component';
 import { UserChangePasswordDialogComponent } from '../user-change-password-dialog/user-change-password-dialog.component';
 import { ActivatedRoute } from '@angular/router';
+import { UserCreateDialogComponent } from '../user-create-dialog/user-create-dialog.component';
 
 @Component({
   selector: 'app-user-page',
@@ -25,7 +26,7 @@ export class UserPageComponent implements OnInit {
     this.list$ = this.userQuery.selectAll();
     this.dataLoading$ = this.userQuery.selectLoading();
     this.displayedColumns = ['name', 'role', 'email', 'phone', 'description', 'status', 'controls'];
-
+    
     this.userService.loadData()
       .then(() => {
         let userId = this.route.snapshot.queryParams.id;
@@ -37,6 +38,12 @@ export class UserPageComponent implements OnInit {
           }
         }
       });
+  }
+
+  openCreateUserDialog() {
+    this.dialog.open(UserCreateDialogComponent, {
+      width: '600px'
+    });
   }
 
   changePassword(user: UserUI) {

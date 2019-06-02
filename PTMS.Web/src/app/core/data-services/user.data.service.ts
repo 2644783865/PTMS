@@ -5,6 +5,7 @@ import { UserDto } from '../dtos/UserDto';
 import { ConfirmUserDto } from '../dtos/ConfirmUserDto';
 import { RoleDto } from '../dtos/RoleDto';
 import { ChangePasswordDto } from '../dtos/ChangePasswordDto';
+import { NewUserDto } from '../dtos/NewUserDto';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,10 @@ export class UserDataService {
 
   getRoles(): Observable<RoleDto[]> {
     return this.http.get<RoleDto[]>(`roles`);
+  }
+
+  create(dto: NewUserDto): Observable<UserDto> {
+    return this.http.post<UserDto>(`user`, dto);
   }
 
   confirmUser(userId: number, dto: ConfirmUserDto): Observable<UserDto> {

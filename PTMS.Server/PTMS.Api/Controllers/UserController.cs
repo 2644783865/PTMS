@@ -20,14 +20,14 @@ namespace PTMS.Api.Controllers
         [HttpGet("/users")]
         public async Task<ActionResult<List<UserModel>>> GetAll()
         {
-            var result = await _userService.GetAllWithRolesAsync();
+            var result = await _userService.GetAllFullAsync();
             return result;
         }
 
         [HttpGet("/user/{id}")]
         public async Task<ActionResult<UserModel>> GetById(int id)
         {
-            var result = await _userService.GetByIdAsync(id);
+            var result = await _userService.GetByIdFullAsync(id);
             return result;
         }
 

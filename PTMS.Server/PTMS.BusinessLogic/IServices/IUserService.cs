@@ -6,8 +6,8 @@ namespace PTMS.BusinessLogic.IServices
 {
     public interface IUserService
     {
-        Task<List<UserModel>> GetAllWithRolesAsync();
-        Task<UserModel> GetByIdAsync(int id);
+        Task<List<UserModel>> GetAllFullAsync();
+        Task<UserModel> GetByIdFullAsync(int id);
         Task<UserModel> CreateUserAsync(NewUserModel model);
         Task<UserModel> ConfirmUserAsync(int userId, ConfirmUserModel model);
         Task ChangePasswordAsync(int userId, string newPassword);

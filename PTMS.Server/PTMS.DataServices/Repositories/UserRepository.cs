@@ -9,10 +9,11 @@ namespace PTMS.DataServices.Repositories
 {
     public class UserRepository : DataServiceAsync<AppUser>, IUserRepository
     {
-        private readonly string[] _includes = new[]
+        private readonly string[] _includesFull = new[]
         {
             nameof(AppUser.UserRoles),
-            nameof(AppUser.UserRoles) + "." + nameof(AppUserRole.Role)
+            nameof(AppUser.UserRoles) + "." + nameof(AppUserRole.Role),
+            nameof(AppUser.Project)
         };
 
         public UserRepository(ApplicationDbContext dbContext)
@@ -20,14 +21,14 @@ namespace PTMS.DataServices.Repositories
         {
         }
 
-        public Task<List<AppUser>> GetAllWithRolesAsync()
+        public Task<List<AppUser>> GetAllFullAsync()
         {
-            return GetAllAsync(_includes);
+            return GetAllAsync(_includesFull);
         }
 
-        public Task<AppUser> GetByIdWithRolesAsync(int id)
+        public Task<AppUser> GetByIdFullAsync(int id)
         {
-            return GetByIdAsync(id, _includes);
+            return GetByIdAsync(id, _includesFull);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace PTMS.DataServices.IRepositories
 {
     public interface IUserRepository : IDataServiceAsync<AppUser>
     {
-        Task<List<AppUser>> GetAllWithRolesAsync();
-        Task<AppUser> GetByIdWithRolesAsync(int id);
+        Task<List<AppUser>> GetAllFullAsync();
+        Task<AppUser> GetByIdFullAsync(int id);
     }
 }

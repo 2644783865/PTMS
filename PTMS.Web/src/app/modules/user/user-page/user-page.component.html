@@ -1,8 +1,13 @@
 <app-page-header>Пользователи</app-page-header>
 
+<div class="add-button">
+  <button mat-raised-button color="primary" (click)="openCreateUserDialog()">
+    Добавить нового пользователя
+  </button>
+</div>
+
 <app-loading-overlay [isLoading]="dataLoading$ | async">
   <div *ngIf="(list$ | async) as users">
-
     <div class="table-wrapper table-editable mat-elevation-z8">
       <mat-table [dataSource]="users">
         <ng-container matColumnDef="name">
@@ -12,7 +17,7 @@
 
         <ng-container matColumnDef="role">
           <mat-header-cell *matHeaderCellDef> Роль </mat-header-cell>
-          <mat-cell *matCellDef="let user"> {{user.role ? user.role.displayName : '-'}} </mat-cell>
+          <mat-cell *matCellDef="let user"> {{user.roleDisplayName || '-'}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="description">

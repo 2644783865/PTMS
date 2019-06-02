@@ -5,6 +5,7 @@ import { ProjectDto } from '@app/core/dtos/ProjectDto';
 import { RoleDto } from '@app/core/dtos/RoleDto';
 
 export interface UserUI extends UserDto {
+  roleDisplayName: string,
   canChangePassword: boolean;
   canConfirmUser: boolean;
   canToggleUser: boolean;
