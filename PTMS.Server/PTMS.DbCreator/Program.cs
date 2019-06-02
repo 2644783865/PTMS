@@ -15,10 +15,10 @@ namespace PTMS.DbCreator
             try
             {
                 var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
-
+                
                 var builder = new ConfigurationBuilder()
-                  .SetBasePath(Directory.GetCurrentDirectory())
-                  .AddJsonFile($"appsettings.{env}.json", optional: true, reloadOnChange: true);
+                  .AddJsonFile($"appsettings.{env}.json", optional: true, reloadOnChange: true)
+                  .AddEnvironmentVariables();
 
                 IConfigurationRoot configuration = builder.Build();
 
