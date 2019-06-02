@@ -10,13 +10,15 @@ namespace PTMS.DbCreator
 {
     class Program
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
             try
             {
+                var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
+
                 var builder = new ConfigurationBuilder()
                   .SetBasePath(Directory.GetCurrentDirectory())
-                  .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                  .AddJsonFile($"appsettings.{env}.json", optional: true, reloadOnChange: true);
 
                 IConfigurationRoot configuration = builder.Build();
 
@@ -31,11 +33,20 @@ namespace PTMS.DbCreator
 
                 //Create db
                 context.Database.Migrate();
+
+                Console.WriteLine("Migrations have been successfully applied");
+
+                return 0;
             }
             catch (Exception exc)
             {
                 Console.WriteLine(exc);
+
+#if DEBUG
                 Console.ReadLine();
+#endif
+
+                return -1;
             }
         }
     }
