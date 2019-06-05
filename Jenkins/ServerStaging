@@ -16,7 +16,7 @@ pipeline {
    steps {
 	bat "if exist ${dbCreatorFolder} rmdir /s/q ${dbCreatorFolder}"
     bat "cd PTMS.Server & dotnet publish PTMS.DbCreator -r win-x64 --self-contained -c Release -o ${dbCreatorFolder}"
-	bat "xcopy /s/y ${configFolder}/appsettings.json ${dbCreatorFolder}"
+	bat "xcopy /s/y ${configFolder}\\appsettings.json ${dbCreatorFolder}"
    }
   }
   stage("Build Server into TempFolder") {
@@ -27,7 +27,7 @@ pipeline {
   }
   stage("Run DbCreator") {
    steps {
-    bat "${dbCreatorFolder}/PTMS.DbCreator.exe"
+    bat "${dbCreatorFolder}\\PTMS.DbCreator.exe"
 	bat "if exist ${dbCreatorFolder} rmdir /s/q ${dbCreatorFolder}"
    }
   }
@@ -35,7 +35,7 @@ pipeline {
    steps {
 	bat "if exist ${serverFolder} rmdir /s/q ${serverFolder}"
     bat "move ${tempServerFolder} ${serverFolder}"
-	bat "xcopy /s/y ${configFolder}/appsettings.json ${serverFolder}"
+	bat "xcopy /s/y ${configFolder}\\appsettings.json ${serverFolder}"
    }
   }
   stage("Restart IIS Site") {
