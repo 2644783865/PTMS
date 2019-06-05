@@ -5,11 +5,11 @@ pipeline {
   appcmd = 'C:/Windows/System32/inetsrv/appcmd.exe'
   
   destFolder = 'C:/projects/PTMS'
-  dbCreatorFolder = destFolder + '/PTMS-DbCreator'
+  dbCreatorFolder = "${destFolder}/PTMS-DbCreator"
   serverFolderName = 'PTMS-Server'
-  serverFolder = '${destFolder}/${serverFolderName}'
-  tempServerFolder = '${destFolder}/PTMS-Server-Temp'
-  configFolder = '${destFolder}/Configs'
+  serverFolder = "${destFolder}/${serverFolderName}"
+  tempServerFolder = "${destFolder}/PTMS-Server-Temp"
+  configFolder = "${destFolder}/Configs"
  }
  stages {
   stage('Build DbCreator') {
@@ -21,19 +21,19 @@ pipeline {
   }
   stage('Build Server into TempFolder') {
    steps {
-	bat 'rmdir /s ${tempServerFolder}'
+	bat 'rmdir /s ${tempServerFolder} & Y'
     bat 'cd PTMS.Server & dotnet publish PTMS.Api -c Release -o ${tempServerFolder}'
    }
   }
   stage('Run DbCreator') {
    steps {
     bat '${dbCreatorFolder}/PTMS.DbCreator.exe'
-	bat 'rmdir /s ${dbCreatorFolder}'
+	bat 'rmdir /s ${dbCreatorFolder} & Y'
    }
   }
   stage('Apply Server Build') {
    steps {
-	bat 'rmdir /s ${serverFolder}'
+	bat 'rmdir /s ${serverFolder} & Y'
     bat 'move ${tempServerFolder} ${serverFolder}'
 	bat 'xcopy /s/y ${configFolder}/appsettings.json ${serverFolder}'
    }
