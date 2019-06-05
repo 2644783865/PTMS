@@ -2,12 +2,13 @@ pipeline {
  agent any
  environment {
   dotnet = 'C:/Program Files/dotnet/dotnet.exe'
-  destFolder = 'C:/projects/PTMS/'
+  dbCreatorFolder = 'C:/projects/PTMS/PTMS-DbCreator'
+  serverFolder = 'C:/projects/PTMS/PTMS-Server'
  }
  stages {
   stage('Build DbCreator') {
    steps {
-    bat "cd PTMS.Server & dotnet publish PTMS.DbCreator —self-contained -r win-x64 -c Release -o ${destFolder}/PTMS-DbCreator"
+    bat "cd PTMS.Server & dotnet publish PTMS.DbCreator —self-contained -r win-x64 -c Release -o ${dbCreatorFolder}"
    }
   }
  }
