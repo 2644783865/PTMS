@@ -3,6 +3,7 @@ import { EntityState, EntityStore, StoreConfig, QueryEntity } from '@datorama/ak
 import { UserDto } from '@app/core/dtos/UserDto';
 import { ProjectDto } from '@app/core/dtos/ProjectDto';
 import { RoleDto } from '@app/core/dtos/RoleDto';
+import { RouteDto } from '@app/core/dtos/RouteDto';
 
 export interface UserUI extends UserDto {
   roleDisplayName: string,
@@ -17,6 +18,7 @@ export interface UserState extends EntityState<UserUI> {
   modalLoading: boolean;
   projects: ProjectDto[];
   roles: RoleDto[];
+  routes: RouteDto[];
 }
 
 @Injectable()
@@ -44,6 +46,12 @@ export class UserStore extends EntityStore<UserState, UserUI> {
       roles
     });
   }
+
+  setRoutes(routes: RouteDto[]) {
+    this.update({
+      routes
+    });
+  }
 }
 
 @Injectable()
@@ -51,6 +59,7 @@ export class UserQuery extends QueryEntity<UserState, UserUI> {
   modalLoading$ = this.select(state => state.modalLoading);
   projects$ = this.select(s => s.projects);
   roles$ = this.select(s => s.roles);
+  routes$ = this.select(s => s.routes);
 
   constructor(protected store: UserStore) {
     super(store);

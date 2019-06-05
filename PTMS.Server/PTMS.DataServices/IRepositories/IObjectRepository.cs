@@ -1,7 +1,8 @@
-﻿using System.Threading.Tasks;
-using PTMS.Common;
+﻿using PTMS.Common;
 using PTMS.DataServices.Infrastructure;
+using PTMS.DataServices.Models;
 using PTMS.Domain.Entities;
+using System.Threading.Tasks;
 
 namespace PTMS.DataServices.IRepositories
 {
@@ -14,6 +15,7 @@ namespace PTMS.DataServices.IRepositories
             int? projectId,
             ModelFormatsEnum format,
             bool? active,
+            UserAvailableRoutes userRoutesModel,
             int? page,
             int? pageSize);
 

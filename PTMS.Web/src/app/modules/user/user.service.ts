@@ -9,6 +9,7 @@ import { NotificationService } from '@app/core/notification/notification.service
 import { UserStore, UserUI } from './user.state';
 import { AuthService } from '@app/core/auth/auth.service';
 import { NewUserDto } from '@app/core/dtos/NewUserDto';
+import { RouteDataService } from '@app/core/data-services/route.data.service';
 
 @Injectable()
 export class UserService {
@@ -18,7 +19,8 @@ export class UserService {
     private userDataService: UserDataService,
     private projectDataService: ProjectDataService,
     private notificationService: NotificationService,
-    private authService: AuthService)
+    private authService: AuthService,
+    private routeDataService: RouteDataService)
   {
   }  
 
@@ -104,6 +106,16 @@ export class UserService {
   async loadProjects() {
     let projects = await this.projectDataService.getAll().toPromise();
     this.userStore.setProjects(projects);
+  }
+
+  async loadRoutes(projectId: number) {
+    let dto = {
+      project: projectId,
+      active: true
+    };
+
+    let routes = await this.routeDataService.getAll(dto).toPromise();
+    this.userStore.setRoutes(routes);
   }
 
   async changePassword(userUi: UserUI, password: string) {

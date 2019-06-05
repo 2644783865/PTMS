@@ -16,6 +16,8 @@ namespace PTMS.Domain.Entities
 
         public int? ProjectId { get; set; }
 
+        public List<int> RouteIds { get; set; }
+
         public bool Enabled { get; set; }
 
         public UserStatusEnum Status

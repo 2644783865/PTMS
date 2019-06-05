@@ -7,7 +7,7 @@ namespace PTMS.BusinessLogic.IServices
 {
     public interface IRouteService
     {
-        Task<List<RouteModel>> GetAllAsync(ClaimsPrincipal userPrincipal, bool? active);
+        Task<List<RouteModel>> GetAllAsync(ClaimsPrincipal userPrincipal, int? project, bool? active);
 
         Task<RouteModel> GetByIdAsync(int id);
 

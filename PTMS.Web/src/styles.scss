@@ -15,6 +15,12 @@ html, body {
   width: 100%;
 }
 
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1350px;
+  }
+}
+
 .form-full-container {
   mat-form-field {
     width: 100%;
@@ -194,7 +200,8 @@ html, body {
   color: #fff;
 
   &.label-pill-full-width {
-    width: 100%
+    width: 100%;
+    max-width: 150px;
   }
 
   &.label-pill-success {

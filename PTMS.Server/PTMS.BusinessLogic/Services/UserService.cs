@@ -72,7 +72,8 @@ namespace PTMS.BusinessLogic.Services
                 PhoneNumber = model.PhoneNumber,
                 PhoneNumberConfirmed = true,
                 Enabled = true,
-                ProjectId = model.ProjectId
+                ProjectId = model.ProjectId,
+                RouteIds = model.RouteIds
             };
 
             var role = await _roleRepository.GetByIdAsync(model.RoleId);
@@ -113,6 +114,7 @@ namespace PTMS.BusinessLogic.Services
             }
 
             user.ProjectId = model.ProjectId;
+            user.RouteIds = model.RouteIds;
             user.EmailConfirmed = true;
             user.Enabled = true;
 
@@ -262,6 +264,12 @@ namespace PTMS.BusinessLogic.Services
             if (role.Name == RoleNames.Transporter && !user.ProjectId.HasValue)
             {
                 throw new InvalidOperationException("TransporterId is required");
+            }
+
+            if (role.Name == RoleNames.Mechanic && 
+                (!user.ProjectId.HasValue || user.RouteIds == null || !user.RouteIds.Any()))
+            {
+                throw new InvalidOperationException("RouteIds is required");
             }
         }
 

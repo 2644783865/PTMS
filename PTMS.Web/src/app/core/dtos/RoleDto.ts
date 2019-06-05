@@ -1,7 +1,7 @@
-﻿
+import { RoleEnum } from '../enums/role.enum';
 
 export interface RoleDto {
     id: number
-    name: string
+    name: RoleEnum
     displayName: string
 }

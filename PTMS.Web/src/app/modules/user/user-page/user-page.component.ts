@@ -42,7 +42,7 @@ export class UserPageComponent implements OnInit {
 
   openCreateUserDialog() {
     this.dialog.open(UserCreateDialogComponent, {
-      width: '600px'
+      width: '700px'
     });
   }
 

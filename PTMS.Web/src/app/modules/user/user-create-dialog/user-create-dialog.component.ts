@@ -14,13 +14,8 @@ import { UserQuery, UserUI } from '../user.state';
   templateUrl: 'user-create-dialog.component.html',
 })
 export class UserCreateDialogComponent {
-  isLoading$: Observable<boolean>;
-  list$: Observable<UserUI[]>;
   modalLoading$: Observable<boolean>;
-  projects$: Observable<ProjectDto[]>;
-  roles$: Observable<RoleDto[]>;
   modalForm: FormGroup;
-  showProjectsSelect: boolean;
 
   constructor(
     private userQuery: UserQuery,
@@ -30,8 +25,6 @@ export class UserCreateDialogComponent {
 
   ngOnInit() {
     this.modalLoading$ = this.userQuery.modalLoading$;
-    this.roles$ = this.userQuery.roles$;
-    this.projects$ = this.userQuery.projects$;
 
     this.modalForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -42,11 +35,10 @@ export class UserCreateDialogComponent {
       description: ['', [Validators.required, Validators.maxLength(256)]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       comparePassword: ['', [Validators.required, CustomValidators.matchOther('password')]],
-      roleId: ['', Validators.required],
-      project: ['', CustomValidators.requiredIf('roleId', this.isProjectRequired.bind(this))]
+      roleId: [''],
+      project: [''],
+      routeIds: ['']
     });
-
-    this.modalForm.get('roleId').valueChanges.subscribe(this.onRoleSelect.bind(this));
   }
 
   async onConfirm() {
@@ -56,20 +48,12 @@ export class UserCreateDialogComponent {
     }    
   }
 
-  isProjectRequired(): boolean {
-    var roleId = this.modalForm.get('roleId').value;
-    let role = this.userQuery.getValue().roles.find(r => r.id == roleId);
-    return role && role.name == RoleEnum.Transporter;
+  loadProjects() {
+    this.userService.loadProjects();
   }
 
-  onRoleSelect() {
-    this.showProjectsSelect = this.isProjectRequired();
-
-    this.modalForm.get('project').setValue(null);
-
-    if (this.showProjectsSelect) {
-      this.userService.loadProjects();
-    }
+  loadRoutes(projectId: number) {
+    this.userService.loadRoutes(projectId);
   }
 
   onClose(): void {

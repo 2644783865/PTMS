@@ -29,16 +29,11 @@ namespace PTMS.BusinessLogic.Services
 
         public async Task<List<RouteModel>> GetAllAsync(
             ClaimsPrincipal userPrincipal, 
+            int? projectId,
             bool? active)
         {
-            int? projectId = null;
-
-            if (userPrincipal.IsInRole(RoleNames.Transporter))
-            {
-                projectId = await _userManager.GetProjectId(userPrincipal);
-            }
-
-            var result = await _routeRepository.GetAllAsync(projectId, active);
+            var userRoutesModel = await _userManager.GetAvailableRoutesModel(userPrincipal);
+            var result = await _routeRepository.GetAllAsync(userRoutesModel, projectId, active);
             return MapToModel(result);
         }
 

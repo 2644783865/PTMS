@@ -1,13 +1,13 @@
-﻿using System;
+﻿using PTMS.DataServices.Infrastructure;
+using PTMS.DataServices.IRepositories;
+using PTMS.DataServices.Models;
+using PTMS.Domain.Entities;
+using PTMS.Persistance;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using PTMS.Common;
-using PTMS.DataServices.Infrastructure;
-using PTMS.DataServices.IRepositories;
-using PTMS.Domain.Entities;
-using PTMS.Persistance;
 
 namespace PTMS.DataServices.Repositories
 {
@@ -19,13 +19,24 @@ namespace PTMS.DataServices.Repositories
 
         }
 
-        public Task<List<Routs>> GetAllAsync(int? projectId, bool? active)
+        public async Task<List<Routs>> GetAllAsync(
+            UserAvailableRoutes userRoutesModel,
+            int? projectId,
+            bool? active)
         {
-            Expression<Func<Routs, bool>> filter = x =>
-            (!active.HasValue || x.RouteActive == active.Value)
-            && (!projectId.HasValue || x.ProjectRoutes.Any(p => p.ProjId == projectId.Value));
+            if (userRoutesModel.ProjectId.HasValue)
+            {
+                projectId = userRoutesModel.ProjectId;
+            }
 
-            return FindAsync(filter);
+            Expression<Func<Routs, bool>> filter = x =>
+                (!active.HasValue || x.RouteActive == active.Value)
+                && (!projectId.HasValue || x.ProjectRoutes.Any(p => p.ProjId == projectId.Value))
+                && (userRoutesModel.RouteIds == null || userRoutesModel.RouteIds.Contains(x.Id));
+
+            var result = await FindAsync(filter);
+
+            return result.OrderBy(x => x.Name).ToList();
         }
     }
 }

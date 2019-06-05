@@ -1,6 +1,7 @@
 ﻿using PTMS.Common;
 using PTMS.DataServices.Infrastructure;
 using PTMS.DataServices.IRepositories;
+using PTMS.DataServices.Models;
 using PTMS.Domain.Entities;
 using PTMS.Persistance;
 using System;
@@ -36,19 +37,26 @@ namespace PTMS.DataServices.Repositories
             string plateNumber,
             string routeName,
             int? carTypeId,
-            int? transporterId,
+            int? projectId,
             ModelFormatsEnum format,
             bool? active,
+            UserAvailableRoutes userRoutesModel,
             int? page,
             int? pageSize)
         {
             var locked = !active;
+            
+            if (userRoutesModel.ProjectId.HasValue)
+            {
+                projectId = userRoutesModel.ProjectId;
+            }
 
             Expression<Func<Objects, bool>> filter = x => (string.IsNullOrEmpty(plateNumber) || x.Name.Contains(plateNumber, StringComparison.InvariantCultureIgnoreCase))
-                && (!transporterId.HasValue || x.ProjId == transporterId)
+                && (!projectId.HasValue || x.ProjId == projectId)
                 && (string.IsNullOrEmpty(routeName) || x.Route.Name.Contains(routeName, StringComparison.InvariantCultureIgnoreCase))
                 && (!carTypeId.HasValue || x.CarBrand.CarTypeId == carTypeId)
-                && (!locked.HasValue || x.ObjOutput == locked.Value);
+                && (!locked.HasValue || x.ObjOutput == locked.Value)
+                && (userRoutesModel.RouteIds == null || (x.LastRout.HasValue && userRoutesModel.RouteIds.Contains(x.LastRout.Value)));
 
             var includes = _includesFull;
 

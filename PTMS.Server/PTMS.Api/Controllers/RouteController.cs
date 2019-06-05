@@ -17,9 +17,11 @@ namespace PTMS.Api.Controllers
         }
         
         [HttpGet("/routes")]
-        public async Task<ActionResult<List<RouteModel>>> GetAll(bool? active = null)
+        public async Task<ActionResult<List<RouteModel>>> GetAll(
+            int? project = null,
+            bool? active = null)
         {
-            var result = await _routeService.GetAllAsync(User, active);
+            var result = await _routeService.GetAllAsync(User, project, active);
             return result;
         }
 

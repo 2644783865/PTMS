@@ -7,6 +7,7 @@ import { UserRoutingModule } from './user-routing.module';
 import { UserConfirmDialogComponent } from './user-confirm-dialog/user-confirm-dialog.component';
 import { UserChangePasswordDialogComponent } from './user-change-password-dialog/user-change-password-dialog.component';
 import { UserCreateDialogComponent } from './user-create-dialog/user-create-dialog.component';
+import { UserRoleSelectorComponent } from './user-role-selector/user-role-selector.component';
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import { UserCreateDialogComponent } from './user-create-dialog/user-create-dial
     UserPageComponent,
     UserConfirmDialogComponent,
     UserChangePasswordDialogComponent,
-    UserCreateDialogComponent
+    UserCreateDialogComponent,
+    UserRoleSelectorComponent
   ],
   exports: [
     UserPageComponent

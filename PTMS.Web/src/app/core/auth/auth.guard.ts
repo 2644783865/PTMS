@@ -19,6 +19,7 @@ export class AuthGuard implements CanActivate {
   getHomePathByRole(state: AuthState): string {
     switch (state.identity.role) {
       case RoleEnum.Transporter:
+      case RoleEnum.Mechanic:
         return '/change-route';
       case RoleEnum.Administrator:
         return '/users';

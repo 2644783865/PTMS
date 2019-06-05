@@ -106,7 +106,10 @@ namespace PTMS.BusinessLogic.Services
                 Id = user.Id,
                 Role = roles.First(),
                 FirstName = user.FirstName,
-                LastName = user.LastName
+                LastName = user.LastName,
+                Email = user.Email,
+                ProjectId = user.ProjectId,
+                RouteIds = user.RouteIds
             };
 
             return result;

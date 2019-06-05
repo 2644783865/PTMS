@@ -7,6 +7,7 @@ using PTMS.Common;
 using PTMS.DataServices.IRepositories;
 using PTMS.Domain.Entities;
 using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -38,10 +39,7 @@ namespace PTMS.BusinessLogic.Services
             int? page,
             int? pageSize)
         {
-            if (userPrincipal.IsInRole(RoleNames.Transporter))
-            {
-                projectId = await _userManager.GetProjectId(userPrincipal);
-            }
+            var userRoutesModel = await _userManager.GetAvailableRoutesModel(userPrincipal);
 
             var result = await _objectRepository.FindByParamsAsync(
                 plateNumber,
@@ -50,6 +48,7 @@ namespace PTMS.BusinessLogic.Services
                 projectId,
                 format,
                 active,
+                userRoutesModel,
                 page,
                 pageSize);
 
@@ -74,12 +73,17 @@ namespace PTMS.BusinessLogic.Services
             int newRouteId,
             ClaimsPrincipal principal)
         {
-            var projectId = await _userManager.GetProjectId(principal);
+            var userRoutesModel = await _userManager.GetAvailableRoutesModel(principal);
             var entity = await _objectRepository.GetByIdAsync(ids);
 
-            if (projectId != entity.ProjId)
+            if (userRoutesModel.ProjectId.HasValue && userRoutesModel.ProjectId != entity.ProjId)
             {
                 throw new InvalidOperationException("Invalid user with invalid project id");
+            }
+
+            if (userRoutesModel.RouteIds != null && !(entity.LastRout.HasValue && userRoutesModel.RouteIds.Contains(entity.LastRout.Value)))
+            {
+                throw new InvalidOperationException("Invalid user with invalid route ids");
             }
 
             if (entity.ObjOutput)

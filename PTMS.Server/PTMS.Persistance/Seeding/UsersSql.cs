@@ -66,5 +66,10 @@ namespace PTMS.Persistance.Seeding
     VALUES (1, 1);
 "
         };
+
+        public static string MechanicRoleSql = $@"
+        INSERT INTO ""AppRole"" (""Name"", ""NormalizedName"", ""DisplayName"")
+        VALUES ('{RoleNames.Mechanic}', '{RoleNames.Mechanic.ToUpper()}', _UTF8'Механик');
+";
     }
 }

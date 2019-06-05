@@ -1,15 +1,15 @@
-import { FormControl, ValidationErrors } from '@angular/forms';
+import { FormControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 function isNotNullOrEmpty(value: any) {
   return value !== null && value !== '' && value !== undefined;
 }
 
-export function requiredIf(otherControlName: string, conditionalFunc: Function = null): ValidationErrors {
+export function requiredIf(otherControlName: string, conditionalFunc: Function = null): ValidatorFn {
 
   let thisControl: FormControl;
   let otherControl: FormControl;
 
-  return function requiredIfValidate(control: FormControl) {
+  return function requiredIfValidate(control: FormControl): ValidationErrors {
 
     if (!control.parent) {
       return null;

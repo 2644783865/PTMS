@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using PTMS.Common;
+using PTMS.DataServices.Models;
 using PTMS.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -31,11 +33,23 @@ namespace PTMS.BusinessLogic.Helpers
             var passwordResult = await ResetPasswordAsync(user, passwordResetToken, newPassword);
             return passwordResult;
         }
-
-        public async Task<int?> GetProjectId(ClaimsPrincipal userPrincipal)
+        
+        public async Task<UserAvailableRoutes> GetAvailableRoutesModel(ClaimsPrincipal userPrincipal)
         {
+            if (userPrincipal.IsInRole(RoleNames.Administrator))
+            {
+                return new UserAvailableRoutes();
+            }
+
             var user = await GetUserAsync(userPrincipal);
-            return user.ProjectId;
+
+            var result = new UserAvailableRoutes
+            {
+                ProjectId = user.ProjectId,
+                RouteIds = user.RouteIds
+            };
+
+            return result;
         }
     }
 }

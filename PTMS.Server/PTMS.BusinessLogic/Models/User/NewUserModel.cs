@@ -2,7 +2,7 @@
 
 namespace PTMS.BusinessLogic.Models.User
 {
-    public class NewUserModel
+    public class NewUserModel : ConfirmUserModel
     {
         [Required]
         public string LastName { get; set; }
@@ -24,10 +24,5 @@ namespace PTMS.BusinessLogic.Models.User
 
         [Required]
         public string Description { get; set; }
-
-        [Required]
-        public int RoleId { get; set; }
-
-        public int? ProjectId { get; set; }
     }
 }

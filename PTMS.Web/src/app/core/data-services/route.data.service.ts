@@ -11,7 +11,7 @@ export class RouteDataService {
   constructor(private http: PtmsHttpClient) {
   }
 
-  getAll(): Observable<RouteDto[]> {
-    return this.http.get<RouteDto[]>(`routes`);
+  getAll(params: object = null): Observable<RouteDto[]> {
+    return this.http.get<RouteDto[]>(`routes`, params);
   }
 }

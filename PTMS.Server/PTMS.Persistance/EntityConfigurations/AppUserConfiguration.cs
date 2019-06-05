@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PTMS.Domain.Entities;
+using PTMS.Persistance.Converters;
 
 namespace PTMS.Persistance.EntityConfigurations
 {
@@ -42,6 +43,11 @@ namespace PTMS.Persistance.EntityConfigurations
                     .HasMany(e => e.UserRoles)
                     .WithOne(u => u.User)
                     .HasForeignKey(u => u.UserId);
+
+                entity
+                    .Property(nameof(AppUser.RouteIds))
+                    .HasMaxLength(100)
+                    .HasConversion(new ListIdsToStringConverter());
             });
 
             builder.Entity<AppUserRole>(entity =>

@@ -217,17 +217,15 @@ export class AutocompleteComponent implements ControlValueAccessor, OnInit, OnDe
   }
 
   private _filter(inputValue: string, options: Object[]): Object[] {
-    if (!inputValue) {
+    if (!inputValue || typeof inputValue !== 'string') {
       return options;
     }
 
     if (!options) {
       return [];
     }
-
-    let filterString = typeof inputValue === 'string' ? inputValue : this.displayFn(inputValue);
-
-    const filterValue = filterString.toLowerCase();
+    
+    const filterValue = inputValue.toLowerCase();
     return options.filter(option => this.displayFn(option).toLowerCase().includes(filterValue));
   }
 }

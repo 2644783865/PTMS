@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace PTMS.BusinessLogic.Models.User
 {
@@ -8,5 +9,7 @@ namespace PTMS.BusinessLogic.Models.User
         public int RoleId { get; set; }
 
         public int? ProjectId { get; set; }
+
+        public List<int> RouteIds { get; set; }
     }
 }
