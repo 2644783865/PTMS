@@ -1,49 +1,47 @@
-
-
 pipeline {
  agent any
  environment {
-  dotnet = 'C:/Program Files/dotnet/dotnet.exe'
-  appcmd = 'C:/Windows/System32/inetsrv/appcmd.exe'
+  dotnet = "C:/Program Files/dotnet/dotnet.exe"
+  appcmd = "C:/Windows/System32/inetsrv/appcmd.exe"
   
-  destFolder = 'C:/projects/PTMS'
-  dbCreatorFolder = "C:/projects/PTMS/PTMS-DbCreator"  
-  serverFolderName = 'PTMS-Server'
+  destFolder = "C:/projects/PTMS"
+  dbCreatorFolder = "${destFolder}/PTMS-DbCreator"  
+  serverFolderName = "PTMS-Server"
   serverFolder = "${destFolder}/${serverFolderName}"
   tempServerFolder = "${destFolder}/PTMS-Server-Temp"
   configFolder = "${destFolder}/Configs"
  }
  stages {
-  stage('Build DbCreator') {
+  stage("Build DbCreator") {
    steps {
 	bat "rmdir /s ${dbCreatorFolder} & Y"
-    bat 'cd PTMS.Server & dotnet publish PTMS.DbCreator -r win-x64 --self-contained -c Release -o ${dbCreatorFolder}'
-	bat 'xcopy /s/y ${configFolder}/appsettings.json ${dbCreatorFolder}'
+    bat "cd PTMS.Server & dotnet publish PTMS.DbCreator -r win-x64 --self-contained -c Release -o ${dbCreatorFolder}"
+	bat "xcopy /s/y ${configFolder}/appsettings.json ${dbCreatorFolder}"
    }
   }
-  stage('Build Server into TempFolder') {
+  stage("Build Server into TempFolder") {
    steps {
-	bat 'rmdir /s ${tempServerFolder} & Y'
-    bat 'cd PTMS.Server & dotnet publish PTMS.Api -c Release -o ${tempServerFolder}'
+	bat "rmdir /s ${tempServerFolder} & Y"
+    bat "cd PTMS.Server & dotnet publish PTMS.Api -c Release -o ${tempServerFolder}"
    }
   }
-  stage('Run DbCreator') {
+  stage("Run DbCreator") {
    steps {
-    bat '${dbCreatorFolder}/PTMS.DbCreator.exe'
-	bat 'rmdir /s ${dbCreatorFolder} & Y'
+    bat "${dbCreatorFolder}/PTMS.DbCreator.exe"
+	bat "rmdir /s ${dbCreatorFolder} & Y"
    }
   }
-  stage('Apply Server Build') {
+  stage("Apply Server Build") {
    steps {
-	bat 'rmdir /s ${serverFolder} & Y'
-    bat 'move ${tempServerFolder} ${serverFolder}'
-	bat 'xcopy /s/y ${configFolder}/appsettings.json ${serverFolder}'
+	bat "rmdir /s ${serverFolder} & Y"
+    bat "move ${tempServerFolder} ${serverFolder}"
+	bat "xcopy /s/y ${configFolder}/appsettings.json ${serverFolder}"
    }
   }
-  stage('Restart IIS Site') {
+  stage("Restart IIS Site") {
    steps {
-	bat 'appcmd stop site PtmsServer'
-    bat 'appcmd start site PtmsServer'
+	bat "appcmd stop site PtmsServer"
+    bat "appcmd start site PtmsServer"
    }
   }
  }
