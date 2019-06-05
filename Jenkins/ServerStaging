@@ -14,26 +14,26 @@ pipeline {
  stages {
   stage("Build DbCreator") {
    steps {
-	bat "rmdir /s ${dbCreatorFolder} & Y"
+	bat "rmdir /s/q "${dbCreatorFolder}""
     bat "cd PTMS.Server & dotnet publish PTMS.DbCreator -r win-x64 --self-contained -c Release -o ${dbCreatorFolder}"
 	bat "xcopy /s/y ${configFolder}/appsettings.json ${dbCreatorFolder}"
    }
   }
   stage("Build Server into TempFolder") {
    steps {
-	bat "rmdir /s ${tempServerFolder} & Y"
+	bat "rmdir /s/q ${tempServerFolder}"
     bat "cd PTMS.Server & dotnet publish PTMS.Api -c Release -o ${tempServerFolder}"
    }
   }
   stage("Run DbCreator") {
    steps {
     bat "${dbCreatorFolder}/PTMS.DbCreator.exe"
-	bat "rmdir /s ${dbCreatorFolder} & Y"
+	bat "rmdir /s/q ${dbCreatorFolder}"
    }
   }
   stage("Apply Server Build") {
    steps {
-	bat "rmdir /s ${serverFolder} & Y"
+	bat "rmdir /s/q ${serverFolder}"
     bat "move ${tempServerFolder} ${serverFolder}"
 	bat "xcopy /s/y ${configFolder}/appsettings.json ${serverFolder}"
    }
