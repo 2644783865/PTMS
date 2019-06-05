@@ -5,11 +5,11 @@ pipeline {
   appcmd = 'C:/Windows/System32/inetsrv/appcmd.exe'
   
   destFolder = 'C:/projects/PTMS'
-  dbCreatorFolder = '${destFolder}/PTMS-DbCreator'
+  dbCreatorFolder = '${destFolder + "/PTMS-DbCreator"}'
   serverFolderName = 'PTMS-Server'
-  serverFolder = '${destFolder}/${serverFolderName}'
-  tempServerFolder = '${destFolder}/PTMS-Server-Temp'
-  configFolder = '${destFolder}/Configs'
+  serverFolder = '${destFolder + "/" + serverFolderName}'
+  tempServerFolder = '${destFolder + "/" + PTMS-Server-Temp}'
+  configFolder = '${destFolder + "/" + Configs}'
  }
  stages {
   stage('Build DbCreator') {
