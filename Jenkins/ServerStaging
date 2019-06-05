@@ -1,5 +1,4 @@
-def destFolder = 'C:/projects/PTMS'
-def dbCreatorFolder = "C:/projects/PTMS/PTMS-DbCreator"
+
 
 pipeline {
  agent any
@@ -7,6 +6,8 @@ pipeline {
   dotnet = 'C:/Program Files/dotnet/dotnet.exe'
   appcmd = 'C:/Windows/System32/inetsrv/appcmd.exe'
   
+  destFolder = 'C:/projects/PTMS'
+  dbCreatorFolder = "C:/projects/PTMS/PTMS-DbCreator"  
   serverFolderName = 'PTMS-Server'
   serverFolder = "${destFolder}/${serverFolderName}"
   tempServerFolder = "${destFolder}/PTMS-Server-Temp"
