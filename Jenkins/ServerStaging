@@ -1,7 +1,6 @@
 pipeline {
  agent any
  environment {
-  dotnet = "C:\\Program Files\\dotnet\\dotnet.exe"
   appcmd = "C:\\Windows\\System32\\inetsrv\\appcmd.exe"
   
   destFolder = "C:\\projects\\PTMS"
@@ -19,7 +18,7 @@ pipeline {
 	bat "xcopy /s/y ${configFolder}\\appsettings.json ${dbCreatorFolder}"
    }
   }
-  stage("Build Server into TempFolder") {
+  stage("Build Server") {
    steps {
 	bat "if exist ${tempServerFolder} rmdir /s/q ${tempServerFolder}"
     bat "cd PTMS.Server & dotnet publish PTMS.Api -c Release -o ${tempServerFolder}"
@@ -40,8 +39,8 @@ pipeline {
   }
   stage("Restart IIS Site") {
    steps {
-	bat "appcmd stop site PtmsServer"
-    bat "appcmd start site PtmsServer"
+	bat "${appcmd} stop site PtmsServer"
+    bat "${appcmd} start site PtmsServer"
    }
   }
  }
