@@ -2,13 +2,46 @@ pipeline {
  agent any
  environment {
   dotnet = 'C:/Program Files/dotnet/dotnet.exe'
-  dbCreatorFolder = 'C:/projects/PTMS/PTMS-DbCreator'
-  serverFolder = 'C:/projects/PTMS/PTMS-Server'
+  appcmd = 'C:/Windows/System32/inetsrv/appcmd.exe'
+  
+  destFolder = 'C:/projects/PTMS'
+  dbCreatorFolder = '${destFolder}/PTMS-DbCreator'
+  serverFolderName = 'PTMS-Server'
+  serverFolder = '${destFolder}/${serverFolderName}'
+  tempServerFolder = '${destFolder}/PTMS-Server-Temp'
+  configFolder = '${destFolder}/Configs'
  }
  stages {
   stage('Build DbCreator') {
    steps {
-    bat "cd PTMS.Server & dotnet publish PTMS.DbCreator —self-contained -r win-x64 -c Release -o ${dbCreatorFolder}"
+	bat 'rmdir /s ${dbCreatorFolder}'
+    bat 'cd PTMS.Server & dotnet publish PTMS.DbCreator -r win-x64 --self-contained -c Release -o ${dbCreatorFolder}'
+	xcopy /s/y ${configFolder}/appsettings.json ${dbCreatorFolder}
+   }
+  }
+  stage('Build Server into TempFolder') {
+   steps {
+	bat 'rmdir /s ${tempServerFolder}'
+    bat 'cd PTMS.Server & dotnet publish PTMS.Api -c Release -o ${tempServerFolder}'
+   }
+  }
+  stage('Run DbCreator') {
+   steps {
+    bat '${dbCreatorFolder}/PTMS.DbCreator.exe'
+	bat 'rmdir /s ${dbCreatorFolder}'
+   }
+  }
+  stage('Apply Server Build') {
+   steps {
+	bat 'rmdir /s ${serverFolder}'
+    bat 'move ${tempServerFolder} ${serverFolder}'
+	xcopy /s/y ${configFolder}/appsettings.json ${serverFolder}
+   }
+  }
+  stage('Restart IIS Site') {
+   steps {
+	bat 'appcmd stop site PtmsServer'
+    bat 'appcmd start site PtmsServer'
    }
   }
  }
