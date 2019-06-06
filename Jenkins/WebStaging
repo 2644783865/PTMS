@@ -3,7 +3,7 @@ pipeline {
  environment {
   appcmd = "C:\\Windows\\System32\\inetsrv\\appcmd.exe"
   
-  srcFolder = "${workspace}\\${env.JOB_NAME}\\PTMS.Web"
+  srcFolder = "${workspace}\\PTMS.Web"
   destFolder = "C:\\projects\\PTMS"
   uiFolder = "${destFolder}\\PTMS-UI"
   configFolder = "${destFolder}\\Configs"
