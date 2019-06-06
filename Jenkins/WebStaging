@@ -3,16 +3,15 @@ pipeline {
  environment {
   appcmd = "C:\\Windows\\System32\\inetsrv\\appcmd.exe"
   
+  srcFolder = "${workspace}\\${env.JOB_NAME}\\PTMS.Web\\environments\\"
   destFolder = "C:\\projects\\PTMS"
   uiFolder = "${destFolder}\\PTMS-UI"
-  tempFolder = "${destFolder}\\PTMS-UI-Temp"
   configFolder = "${destFolder}\\Configs"
  }
  stages {
   stage("Build UI") {
    steps {
-	bat "if exist ${tempFolder} rmdir /s/q ${tempFolder}"
-	bat "xcopy /s /q /y /f \"${configFolder}\\environment.ts\" \"${workspace}\\${env.JOB_NAME}\\PTMS.Web\\environments\\\""
+	bat "xcopy /s /q /y /f \"${configFolder}\\environment.ts\" \"${srcFolder}\""
     bat "cd PTMS.Web & npm install"
 	bat "cd PTMS.Web & npm run build:prod"
    }
@@ -20,7 +19,7 @@ pipeline {
   stage("Apply UI Build") {
    steps {
 	bat "if exist ${uiFolder} rmdir /s/q ${uiFolder}"
-    bat "move ${tempFolder} ${uiFolder}"
+    bat "move \"${srcFolder}\\dist\" ${uiFolder}"
    }
   }
   stage("Restart IIS Site") {
