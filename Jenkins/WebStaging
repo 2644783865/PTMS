@@ -11,7 +11,7 @@ pipeline {
  stages {
   stage("Build UI") {
    steps {
-	bat "xcopy /s /q /y /f \"${configFolder}\\environment.ts\" \"${srcFolder}\\environments\\\""
+	bat "xcopy /s /q /y /f \"${configFolder}\\environment.ts\" \"${srcFolder}\\src\\environments\\\""
     bat "cd PTMS.Web & npm install"
 	bat "cd PTMS.Web & npm run build:prod"
    }
