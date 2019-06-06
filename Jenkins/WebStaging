@@ -3,7 +3,7 @@ pipeline {
  environment {
   appcmd = "C:\\Windows\\System32\\inetsrv\\appcmd.exe"
   
-  srcFolder = "${workspace}\\${env.JOB_NAME}\\PTMS.Web\\environments\\"
+  srcFolder = "${workspace}\\${env.JOB_NAME}\\PTMS.Web"
   destFolder = "C:\\projects\\PTMS"
   uiFolder = "${destFolder}\\PTMS-UI"
   configFolder = "${destFolder}\\Configs"
@@ -11,7 +11,7 @@ pipeline {
  stages {
   stage("Build UI") {
    steps {
-	bat "xcopy /s /q /y /f \"${configFolder}\\environment.ts\" \"${srcFolder}\""
+	bat "xcopy /s /q /y /f \"${configFolder}\\environment.ts\" \"${srcFolder}\\environments\\\""
     bat "cd PTMS.Web & npm install"
 	bat "cd PTMS.Web & npm run build:prod"
    }
