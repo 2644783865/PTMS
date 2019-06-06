@@ -13,7 +13,8 @@ pipeline {
    steps {
 	bat "if exist ${tempFolder} rmdir /s/q ${tempFolder}"
 	bat "xcopy /s /q /y /f \"${configFolder}\\environment.ts\" \"${workspace}\\${env.JOB_NAME}\\PTMS.Web\\environments\\\""
-    bat "cd PTMS.Web & npm run build:prod"
+    bat "cd PTMS.Web & npm install"
+	bat "cd PTMS.Web & npm run build:prod"
    }
   }
   stage("Apply UI Build") {
