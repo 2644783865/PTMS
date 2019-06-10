@@ -24,7 +24,7 @@ export class UserPageComponent implements OnInit {
 
   ngOnInit() {
     this.list$ = this.userQuery.selectAll();
-    this.dataLoading$ = this.userQuery.selectLoading();
+    this.dataLoading$ = this.userQuery.dataLoading$;
     this.displayedColumns = ['name', 'role', 'email', 'phone', 'description', 'status', 'controls'];
     
     this.userService.loadData()

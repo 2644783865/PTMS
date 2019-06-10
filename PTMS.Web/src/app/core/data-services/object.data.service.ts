@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { AppPaginationResponse } from '../akita-extensions/app-paged-entity-state';
 import { PtmsHttpClient } from '../data-services/ptms.http.client';
 import { ObjectDto } from '../dtos/ObjectDto';
-import { PaginationResponse } from '@datorama/akita';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class ObjectDataService {
   constructor(private http: PtmsHttpClient) {
   }
 
-  getAll(page: number, pageSize: number, params: object = null): Observable<PaginationResponse<ObjectDto>> {
+  getAll(page: number, pageSize: number, params: object = null): Observable<AppPaginationResponse<ObjectDto>> {
     return this.http.getPage<ObjectDto>('objects', page, pageSize, params);
   }
 

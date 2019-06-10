@@ -1,0 +1,116 @@
+<app-page-header>Транспорт</app-page-header>
+
+<!--<div class="add-button">
+  <button mat-raised-button color="primary">Добавить новое ТС</button>
+</div>-->
+
+<div *ngIf="(pagination$ | async) as pageData">
+  <div class="table-wrapper table-editable mat-elevation-z8">
+
+    <mat-card [formGroup]="filters" class="table-filters form-full-container">
+      <div class="row">
+        <div class="col">
+          <mat-form-field>
+            <input matInput placeholder="Маршрут" type="text"
+                   formControlName="routeName" />
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field>
+            <input matInput placeholder="Номер ТС" type="text"
+                   formControlName="plateNumber" />
+          </mat-form-field>
+        </div>
+        <div class="col" *ngIf="showProjectsSelect">
+          <mat-form-field>
+            <mat-label>{{(projects$ | async) ? 'Перевозчик' : 'Загрузка ...'}}</mat-label>
+            <app-autocomplete [options]="projects$"
+                              formControlName="project">
+            </app-autocomplete>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field>
+            <mat-label>Статус ТС</mat-label>
+            <mat-select formControlName="active">
+              <mat-option *ngFor="let status of statuses | keyvalue"
+                          [value]="status.value">
+                {{status.key}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-card>
+
+    <app-loading-overlay [isLoading]="dataLoading$ | async">
+      <mat-table [dataSource]="pageData.data">
+        <ng-container matColumnDef="plateNumber">
+          <mat-header-cell *matHeaderCellDef> Номер </mat-header-cell>
+          <mat-cell *matCellDef="let vehicle" mobile-label="Номер"> {{vehicle.name}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="transporter">
+          <mat-header-cell *matHeaderCellDef> Перевозчик </mat-header-cell>
+          <mat-cell *matCellDef="let vehicle" mobile-label="Перевозчик"> {{vehicle.project ? vehicle.project.name : '-'}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="route">
+          <mat-header-cell *matHeaderCellDef> Маршрут </mat-header-cell>
+          <mat-cell *matCellDef="let vehicle" mobile-label="Маршрут"> {{vehicle.route.name}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="carBrand">
+          <mat-header-cell *matHeaderCellDef> Марка ТС </mat-header-cell>
+          <mat-cell *matCellDef="let vehicle" mobile-label="Марка ТС"> {{vehicle.carBrand.cbName}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="carType">
+          <mat-header-cell *matHeaderCellDef> Тип ТС </mat-header-cell>
+          <mat-cell *matCellDef="let vehicle" mobile-label="Тип ТС"> {{vehicle.carBrand.carType.name}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="yearRelease">
+          <mat-header-cell *matHeaderCellDef> Год выпуска </mat-header-cell>
+          <mat-cell *matCellDef="let vehicle" mobile-label="Год выпуска"> {{vehicle.yearRelease || '-'}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <mat-header-cell *matHeaderCellDef> Статус </mat-header-cell>
+          <mat-cell *matCellDef="let vehicle" mobile-label="Статус">
+            <span class="label-pill label-pill-full-width"
+                  [ngClass]="vehicle.objOutput ? 'label-pill-error' : 'label-pill-success'">
+              {{vehicle.statusName}}
+            </span>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="lastTime">
+          <mat-header-cell *matHeaderCellDef> Последнее время </mat-header-cell>
+          <mat-cell *matCellDef="let vehicle" mobile-label="Последнее время"> {{vehicle.lastTime | RusDateTime}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="controls">
+          <mat-header-cell *matHeaderCellDef></mat-header-cell>
+          <mat-cell *matCellDef="let vehicle" class="table-controls">
+            <app-menu-icon-dropdown *ngIf="!vehicle.objOutput">
+              <button mat-menu-item (click)="openChangeRouteDialog(vehicle)">
+                Сменить маршрут ТС
+              </button>
+            </app-menu-icon-dropdown>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"
+                 [appUpdatedRow]="row.ids">
+        </mat-row>
+      </mat-table>
+      <app-paginator [totalCount]="pageData.total"
+                     [currentPage]="pageData.currentPage"
+                     [pageSize]="pageData.perPage"
+                     (onChange)="search($event)">
+      </app-paginator>
+    </app-loading-overlay>
+  </div>
+</div>

@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { PaginationResponse } from '@datorama/akita';
-import { PageResult } from '../dtos/page.result';
-import { map } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
 import { environment } from '@env';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { AppPaginationResponse } from '../akita-extensions/app-paged-entity-state';
+import { PageResult } from '../dtos/page.result';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +22,10 @@ export class PtmsHttpClient {
     relativeUrl: string,
     page: number = 1,
     pageSize: number = 10,
-    params: object = null): Observable<PaginationResponse<T>> {
+    params: object = null): Observable<AppPaginationResponse<T>> {
+
+    page = page || 1;
+    pageSize = pageSize || 10;
 
     let httpParams = this.convertToHttpParams(params)
       .set('page', page.toString())
@@ -36,10 +39,9 @@ export class PtmsHttpClient {
           let result = {
             currentPage: page,
             perPage: pageSize,
-            lastPage: Math.ceil(response.totalCount / pageSize),
             data: response.page,
             total: response.totalCount
-          } as PaginationResponse<T>;
+          } as AppPaginationResponse<T>;
 
           return result;
         })

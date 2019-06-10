@@ -12,33 +12,35 @@
       <mat-table [dataSource]="users">
         <ng-container matColumnDef="name">
           <mat-header-cell *matHeaderCellDef> ФИО </mat-header-cell>
-          <mat-cell *matCellDef="let user"> {{user.longName}} </mat-cell>
+          <mat-cell *matCellDef="let user" mobile-label="ФИО"> {{user.longName}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="role">
           <mat-header-cell *matHeaderCellDef> Роль </mat-header-cell>
-          <mat-cell *matCellDef="let user"> {{user.roleDisplayName || '-'}} </mat-cell>
+          <mat-cell *matCellDef="let user" mobile-label="Роль"> {{user.roleDisplayName || '-'}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="description">
           <mat-header-cell *matHeaderCellDef> Описание </mat-header-cell>
-          <mat-cell *matCellDef="let user"> {{user.description || '-'}} </mat-cell>
+          <mat-cell *matCellDef="let user" mobile-label="Описание"> {{user.description || '-'}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="email">
           <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
-          <mat-cell *matCellDef="let user"> {{user.email}} </mat-cell>
+          <mat-cell *matCellDef="let user" mobile-label="Email"> {{user.email}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="phone">
           <mat-header-cell *matHeaderCellDef> Телефон </mat-header-cell>
-          <mat-cell *matCellDef="let user"> {{user.phoneNumber || '-'}} </mat-cell>
+          <mat-cell *matCellDef="let user" mobile-label="Телефон"> {{user.phoneNumber || '-'}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="status">
           <mat-header-cell *matHeaderCellDef> Статус </mat-header-cell>
-          <mat-cell *matCellDef="let user">
-            <span class="label-pill label-pill-full-width" [ngClass]="user.statusStyle">{{user.status.name}}</span>
+          <mat-cell *matCellDef="let user" mobile-label="Статус">
+            <span class="label-pill label-pill-full-width" [ngClass]="user.statusStyle">
+              {{user.status.name}}
+            </span>
           </mat-cell>
         </ng-container>
 
@@ -60,7 +62,9 @@
         </ng-container>
 
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"
+                 [appUpdatedRow]="row.id">
+        </mat-row>
       </mat-table>
     </div>
   </div>

@@ -29,7 +29,7 @@ export class LayoutComponent implements OnInit {
       if (identity) {
         let routes = [
           //{ link: 'home', label: 'Главная', visible: true },
-          { link: 'objects', label: 'Объекты', visible: false },
+          { link: 'objects', label: 'Транспорт', visible: true },
           { link: 'routes', label: 'Маршруты', visible: false },
           { link: 'change-route', label: 'Сменить Маршрут ТС', visible: this.authService.isInRole(RoleEnum.Transporter) },
           { link: 'users', label: 'Пользователи', visible: this.authService.isInRole(RoleEnum.Administrator) }

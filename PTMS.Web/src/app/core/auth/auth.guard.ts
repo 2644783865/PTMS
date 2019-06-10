@@ -22,7 +22,7 @@ export class AuthGuard implements CanActivate {
       case RoleEnum.Mechanic:
         return '/change-route';
       case RoleEnum.Administrator:
-        return '/users';
+        return '/objects';
       default:
         return '/home';
     }

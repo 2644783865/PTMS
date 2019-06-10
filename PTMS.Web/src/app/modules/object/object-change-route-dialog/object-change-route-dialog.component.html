@@ -1,0 +1,28 @@
+<h1 mat-dialog-title>
+  Сменить маршрут для {{vehicle.name}} <br/>
+  Текущий маршрут - {{vehicle.route.name}}
+</h1>
+<form class="form-full-container"
+      [formGroup]="modalForm"
+      (ngSubmit)="onSubmit()">
+  <div mat-dialog-content>
+    <mat-form-field>
+      <input matInput placeholder="Новый маршрут"
+             formControlName="newRouteName"
+             autofocus>
+      <app-input-error controlName="newRouteName"></app-input-error>
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-raised-button
+            type="button"
+            (click)="onClose()">
+      Отмена
+    </button>
+    <app-loading-button color="primary"
+                        type="submit"
+                        [isLoading]="modalLoading$ | async">
+      Сменить маршрут
+    </app-loading-button>
+  </div>
+</form>

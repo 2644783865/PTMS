@@ -1,13 +1,10 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
-import { ProjectDto } from '@app/core/dtos/ProjectDto';
-import { RoleDto } from '@app/core/dtos/RoleDto';
-import { RoleEnum } from '@app/core/enums/role.enum';
 import { CustomValidators } from '@app/core/validation';
 import { Observable } from 'rxjs';
 import { UserService } from '../user.service';
-import { UserQuery, UserUI } from '../user.state';
+import { UserQuery } from '../user.state';
 
 @Component({
   selector: 'app-user-create-dialog',

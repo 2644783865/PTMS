@@ -9,9 +9,13 @@ import { PaginatorEvent } from './paginator.event';
 export class PaginatorComponent {
   @Input() totalCount: number;
   @Input() pageSize: number;
+  @Input() set currentPage(value: number) {
+    this.pageIndex = value - 1;
+  };
   @Output() onChange = new EventEmitter<PaginatorEvent>();
 
   pageSizeOptions: number[] = [2, 5, 10, 25, 50];
+  pageIndex = 0;
 
   onPageChange(pageEvent: PageEvent) {
     let event = {
@@ -20,5 +24,8 @@ export class PaginatorComponent {
     } as PaginatorEvent;
 
     this.onChange.emit(event);
+
+    let element = document.querySelector('mat-sidenav-content');
+    element.scrollTo(0, 0);
   }
 }

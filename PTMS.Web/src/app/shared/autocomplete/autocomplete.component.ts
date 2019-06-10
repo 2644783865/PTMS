@@ -39,7 +39,7 @@ export class AutocompleteComponent implements ControlValueAccessor, OnInit, OnDe
     private elRef: ElementRef<HTMLElement>
   ) {
     this.displayFn = this.displayFn || this._defaultDisplayFn;
-    this.autocompleteControl = new FormControl('');
+    this.autocompleteControl = new FormControl(null);
 
     if (this.ngControl != null) {
       this.ngControl.valueAccessor = this;
@@ -186,6 +186,7 @@ export class AutocompleteComponent implements ControlValueAccessor, OnInit, OnDe
   registerOnChange(fn: (v: any) => void): void {
     this.autocompleteControl.valueChanges
       .pipe(
+        startWith(null),
         switchMap(() => {
           return of(this.value)
         }),

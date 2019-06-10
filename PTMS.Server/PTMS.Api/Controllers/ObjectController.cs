@@ -48,7 +48,6 @@ namespace PTMS.Api.Controllers
             return result;
         }
 
-        [PtmsAuthorize(RoleNames.Transporter)]
         [HttpPost("/object/{ids}/changeRoute/{newRouteId}")]
         public async Task<ObjectModel> ChangeRoute(decimal ids, int newRouteId)
         {

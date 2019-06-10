@@ -52,10 +52,10 @@ export class UserService {
       let userUi = this.mapToModel(userDto, this.authService.userId);
 
       this.userStore.add(userUi);
-      this.notificationService.success(`Пользователь '${userUi.fullName}' успешно создан.`);
+      this.notificationService.success(`Пользователь '${userUi.fullName}' успешно создан.`, userUi.id);
     }
     catch (exc) {
-      this.notificationService.error(exc.error.message);
+      this.notificationService.exception(exc);
     }
     finally {
       this.userStore.setModalLoading(false);
@@ -75,10 +75,10 @@ export class UserService {
       let userUi = this.mapToModel(userDto, this.authService.userId);
 
       this.userStore.update(userUi.id, userUi);
-      this.notificationService.success(`Пользователь '${userUi.fullName}' успешно подтверждён.`);
+      this.notificationService.success(`Пользователь '${userUi.fullName}' успешно подтверждён.`, userUi.id);
     }
     catch (exc) {
-      this.notificationService.error(exc.error.message);
+      this.notificationService.exception(exc);
     }
     finally {
       this.userStore.setModalLoading(false);
@@ -93,10 +93,10 @@ export class UserService {
 
       this.userStore.update(userUi.id, userUi);
 
-      this.notificationService.success(`Пользователь '${userUi.fullName}' успешно ${user.isActive ? 'заблокирован' : 'разблокирован'}.`);
+      this.notificationService.success(`Пользователь '${userUi.fullName}' успешно ${user.isActive ? 'заблокирован' : 'разблокирован'}.`, userUi.id);
     }
     catch (exc) {
-      this.notificationService.error(exc.error.message);
+      this.notificationService.exception(exc);
     }
     finally {
       this.userStore.setLoading(false);
@@ -127,10 +127,10 @@ export class UserService {
       } as ChangePasswordDto;
 
       await this.userDataService.changePassword(userUi.id, dto).toPromise();
-      this.notificationService.success(`Пароль для пользователя ${userUi.fullName} успешно изменён. Письмо с новым паролем было отправлено.`);
+      this.notificationService.success(`Пароль для пользователя ${userUi.fullName} успешно изменён. Письмо с новым паролем было отправлено.`, userUi.id);
     }
     catch (exc) {
-      this.notificationService.error(exc.error.message);
+      this.notificationService.exception(exc);
     }
     finally {
       this.userStore.setModalLoading(false);

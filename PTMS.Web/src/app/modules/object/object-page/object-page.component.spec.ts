@@ -4,7 +4,7 @@ import { authStubProvider } from '@app/test/auth-service.stub';
 import { componentsBaseImports } from '@app/test/test-imports';
 import { BehaviorSubject, of } from 'rxjs';
 import { ObjectPageComponent } from './object-page.component';
-import { ObjectService } from './object.service';
+import { ObjectService } from '../object.service';
 import { PaginationResponse } from '@datorama/akita';
 import { ObjectDto } from '@app/core/dtos/ObjectDto';
 import { isElementVisible, getProgressBar, getTableRows } from '@app/test/test-utilities';

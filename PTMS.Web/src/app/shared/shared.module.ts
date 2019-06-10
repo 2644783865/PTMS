@@ -25,6 +25,8 @@ import { LoadingButtonModule } from './loading-button/loading-button.module';
 import { LoadingBarModule } from './loading-bar/loading-bar.module';
 import { LoadingOverlayModule } from './loading-overlay/loading-overlay.module';
 import { AutocompleteModule } from './autocomplete/autocomplete.module';
+import { DirectivesModule } from './directives';
+import { PipesModule } from './pipes';
 
 let modules = [
   //angular
@@ -57,7 +59,9 @@ let modules = [
   LoadingButtonModule,
   LoadingBarModule,
   LoadingOverlayModule,
-  AutocompleteModule
+  AutocompleteModule,
+  DirectivesModule,
+  PipesModule
 ];
 
 @NgModule({

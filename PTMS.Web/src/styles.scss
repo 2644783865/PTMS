@@ -15,6 +15,12 @@ html, body {
   width: 100%;
 }
 
+@media (min-width: 1300px) {
+  .container {
+    max-width: 1250px;
+  }
+}
+
 @media (min-width: 1400px) {
   .container {
     max-width: 1350px;
@@ -52,6 +58,15 @@ html, body {
 }
 
 .table-wrapper {
+  .table-filters {
+    box-shadow: none;
+    padding: 10px 16px 0;
+  }
+
+  mat-row.table-row-updated {
+    background-color: #d4edda;
+  }
+
   &.table-editable {
     .mat-header-row .mat-header-cell:last-child {
       max-width: 100px;
@@ -88,6 +103,57 @@ html, body {
 
   mat-row {
     padding: 5px 0;
+  }
+
+  @include media-breakpoint-down(sm) {
+    mat-table {
+      border: 0;
+      vertical-align: middle
+    }
+
+    mat-header-row {
+      display: none;
+    }
+
+    mat-row {
+      border-bottom: 5px solid #ddd;
+      display: block;
+
+      &:after {
+        content: none;
+      }
+    }
+
+    mat-cell {
+      border-bottom: 1px solid #ddd;
+      display: block;
+      font-size: 1em;
+      text-align: right;
+      padding: 10px 24px;
+
+      &:last-child {
+        border-bottom: 0;
+      }
+
+      &:before {
+        content: attr(mobile-label);
+        float: left;
+        font-weight: bold;
+        min-width: 90px;
+        text-align: left;
+      }
+    }
+
+    &.table-editable {
+      .mat-row .mat-cell:last-child {
+        max-width: none;
+
+        .mat-mini-fab {
+          width: 100%;
+          border-radius: unset;
+        }
+      }
+    }
   }
 }
 

@@ -1,30 +1,36 @@
-import { Injectable, inject, InjectionToken } from '@angular/core';
-import { EntityState, EntityStore, StoreConfig, QueryEntity } from '@datorama/akita';
+import { Injectable } from '@angular/core';
+import { AppPagedEntityState, AppPagedEntityStore, AppPagedQueryEntity } from '@app/core/akita-extensions/app-paged-entity-state';
 import { ObjectDto } from '@app/core/dtos/ObjectDto';
-import { AppPaginator } from '@app/core/paginator/app-paginator.plugin';
+import { ProjectDto } from '@app/core/dtos/ProjectDto';
+import { StoreConfig } from '@datorama/akita';
 
-export interface ObjectState extends EntityState<ObjectDto> { }
+export interface ObjectState extends AppPagedEntityState<ObjectDto> {
+  projects: ProjectDto[];
+}
 
 @Injectable()
 @StoreConfig({
+  idKey: 'ids',
   name: 'objects',
   resettable: true
 })
-export class ObjectStore extends EntityStore<ObjectState, ObjectDto> {
+export class ObjectStore extends AppPagedEntityStore<ObjectState, ObjectDto> {
+  setProjects(projects: ProjectDto[]) {
+    this.update({
+      projects
+    });
+  }
+
   constructor() {
     super();
   }
 }
 
 @Injectable()
-export class ObjectQuery extends QueryEntity<ObjectState, ObjectDto> {
+export class ObjectQuery extends AppPagedQueryEntity<ObjectState, ObjectDto> {
+  projects$ = this.select(s => s.projects);
+
   constructor(protected store: ObjectStore) {
     super(store);
   }
 }
-
-export const OBJECT_PAGINATOR = new InjectionToken('OBJECT_PAGINATOR', {
-  factory: () => {
-    return new AppPaginator<ObjectDto>(inject(ObjectQuery));
-  }
-});
