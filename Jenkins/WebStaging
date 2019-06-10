@@ -11,6 +11,7 @@ pipeline {
  stages {
   stage("Build UI") {
    steps {
+    bat "chcp 1251"
 	bat "xcopy /s /q /y /f \"${configFolder}\\environment.ts\" \"${srcFolder}\\src\\environments\\\""
     bat "cd PTMS.Web & npm install"
 	bat "cd PTMS.Web & npm run build:prod"
@@ -18,12 +19,14 @@ pipeline {
   }
   stage("Apply UI Build") {
    steps {
+    bat "chcp 1251"
 	bat "if exist ${uiFolder} rmdir /s/q ${uiFolder}"
     bat "move \"${srcFolder}\\dist\" ${uiFolder}"
    }
   }
   stage("Restart IIS Site") {
    steps {
+    bat "chcp 1251"
 	bat "${appcmd} stop site PtmsWebUI"
     bat "${appcmd} start site PtmsWebUI"
    }
