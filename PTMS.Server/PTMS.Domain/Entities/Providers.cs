@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PTMS.Domain.Entities
 {
-    public class Providers
+    public class Provider
     {
         public int Id { get; set; }
         public string Name { get; set; }

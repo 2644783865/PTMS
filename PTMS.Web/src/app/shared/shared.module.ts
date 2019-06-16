@@ -27,6 +27,7 @@ import { LoadingOverlayModule } from './loading-overlay/loading-overlay.module';
 import { AutocompleteModule } from './autocomplete/autocomplete.module';
 import { DirectivesModule } from './directives';
 import { PipesModule } from './pipes';
+import { ConfirmDialogModule } from './confirm-dialog/confirm-dialog.module';
 
 let modules = [
   //angular
@@ -61,7 +62,8 @@ let modules = [
   LoadingOverlayModule,
   AutocompleteModule,
   DirectivesModule,
-  PipesModule
+  PipesModule,
+  ConfirmDialogModule
 ];
 
 @NgModule({

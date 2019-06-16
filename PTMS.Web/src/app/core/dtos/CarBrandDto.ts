@@ -1,8 +1,8 @@
 import { CarTypeDto } from './CarTypeDto';
 
 export interface CarBrandDto {
-    cbId: number
-    cbName: string
+    id: number
+    name: string
     carTypeId: number
     l: string
     w: string

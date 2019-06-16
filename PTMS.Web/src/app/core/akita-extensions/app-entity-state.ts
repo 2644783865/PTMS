@@ -13,6 +13,10 @@ export class AppEntityStore<S extends AppEntityState<E>, E, EntityID = ID>
     } as Partial<S>);
   }
 
+  getValue(): S {
+    return this._value();
+  }
+
   constructor() {
     super();
   }

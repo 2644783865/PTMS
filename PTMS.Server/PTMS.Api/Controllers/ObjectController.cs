@@ -24,7 +24,10 @@ namespace PTMS.Api.Controllers
             int? project = null,
             int? page = null,
             int? pageSize = null,
-            ModelFormatsEnum format = ModelFormatsEnum.Full,
+            int? carBrand = null,
+            int? provider = null,
+            int? yearRelease = null,
+            ModelFormatsEnum format = ModelFormatsEnum.Pure,
             bool? active = null)
         {
             var result = await _objectService.FindByParams(
@@ -35,6 +38,9 @@ namespace PTMS.Api.Controllers
                 project,
                 format,
                 active,
+                carBrand,
+                provider,
+                yearRelease,
                 page, 
                 pageSize);
 
@@ -55,6 +61,38 @@ namespace PTMS.Api.Controllers
                 ids,
                 newRouteId,
                 User);
+
+            return result;
+        }
+
+        [PtmsAuthorizeAdmin]
+        [HttpPost("/object/{ids}/changeProvider/{providerId}")]
+        public async Task<ObjectModel> ChangeProvider(decimal ids, int providerId)
+        {
+            var result = await _objectService.ChangeProviderAsync(
+                ids,
+                providerId);
+
+            return result;
+        }
+
+        [PtmsAuthorizeAdmin]
+        [HttpPost("/object/{ids}/enable/{newRouteId}")]
+        public async Task<ObjectModel> EnableVehicle(decimal ids, int newRouteId)
+        {
+            var result = await _objectService.EnableAsync(
+                ids,
+                newRouteId);
+
+            return result;
+        }
+
+        [PtmsAuthorizeAdmin]
+        [HttpPost("/object/{ids}/disable")]
+        public async Task<ObjectModel> DisableVehicle(decimal ids)
+        {
+            var result = await _objectService.DisableAsync(
+                ids);
 
             return result;
         }

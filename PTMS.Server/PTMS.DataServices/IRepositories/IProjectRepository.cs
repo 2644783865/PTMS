@@ -8,5 +8,7 @@ namespace PTMS.DataServices.IRepositories
     public interface IProjectRepository : IDataServiceAsync<Project>
     {
         Task<List<Project>> GetAllAsync();
+
+        Task<Project> GetProjectByRouteIdAsync(int routeId);
     }
 }

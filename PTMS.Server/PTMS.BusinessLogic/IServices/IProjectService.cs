@@ -9,6 +9,7 @@ namespace PTMS.BusinessLogic.IServices
         Task<List<ProjectModel>> GetAllAsync();
 
         Task<ProjectModel> GetByIdAsync(int id);
+        Task<ProjectModel> GetByRouteIdAsync(int routeId);
 
         Task<ProjectModel> AddAsync(ProjectModel model);
 

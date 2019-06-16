@@ -15,7 +15,8 @@ namespace PTMS.Api.Controllers
         {
             _projectService = projectService;
         }
-        
+
+        [PtmsAuthorizeAdmin]
         [HttpGet("/projects")]
         public async Task<ActionResult<List<ProjectModel>>> GetAll()
         {
@@ -28,6 +29,14 @@ namespace PTMS.Api.Controllers
         public async Task<ActionResult<ProjectModel>> GetById(int id)
         {
             var result = await _projectService.GetByIdAsync(id);
+            return result;
+        }
+
+        [PtmsAuthorizeAdmin]
+        [HttpGet("/project/byroute/{routeId}")]
+        public async Task<ActionResult<ProjectModel>> GetByRouteId(int routeId)
+        {
+            var result = await _projectService.GetByRouteIdAsync(routeId);
             return result;
         }
 

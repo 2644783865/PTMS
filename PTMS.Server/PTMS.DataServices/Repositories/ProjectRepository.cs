@@ -21,5 +21,10 @@ namespace PTMS.DataServices.Repositories
             var list = await base.GetAllAsync();
             return list.OrderBy(x => x.Name).ToList();
         }
+
+        public Task<Project> GetProjectByRouteIdAsync(int routeId)
+        {
+            return GetAsync(x => x.ProjectRoutes.Any(y => y.RoutId == routeId));
+        }
     }
 }

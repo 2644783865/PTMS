@@ -11,14 +11,16 @@
       <div class="row">
         <div class="col">
           <mat-form-field>
-            <input matInput placeholder="Маршрут" type="text"
-                   formControlName="routeName" />
+            <input matInput placeholder="Номер ТС" type="text"
+                   formControlName="plateNumber" />
+            <app-input-clear-icon matSuffix controlName="plateNumber"></app-input-clear-icon>
           </mat-form-field>
         </div>
         <div class="col">
           <mat-form-field>
-            <input matInput placeholder="Номер ТС" type="text"
-                   formControlName="plateNumber" />
+            <input matInput placeholder="Маршрут" type="text"
+                   formControlName="routeName" />
+            <app-input-clear-icon matSuffix controlName="routeName"></app-input-clear-icon>
           </mat-form-field>
         </div>
         <div class="col" *ngIf="showProjectsSelect">
@@ -27,6 +29,7 @@
             <app-autocomplete [options]="projects$"
                               formControlName="project">
             </app-autocomplete>
+            <app-input-clear-icon matSuffix controlName="project"></app-input-clear-icon>
           </mat-form-field>
         </div>
         <div class="col">
@@ -38,6 +41,46 @@
                 {{status.key}}
               </mat-option>
             </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field>
+            <mat-label>Марка ТС</mat-label>
+            <app-autocomplete [options]="carBrands$"
+                              formControlName="carBrand">
+            </app-autocomplete>
+            <app-input-clear-icon matSuffix controlName="carBrand"></app-input-clear-icon>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field>
+            <mat-label>Тип ТС</mat-label>
+            <mat-select formControlName="carType">
+              <mat-option *ngFor="let carType of carTypes$ | async" [value]="carType.id">
+                {{carType.name}}
+              </mat-option>
+            </mat-select>
+            <app-input-clear-icon matSuffix controlName="carType"></app-input-clear-icon>
+          </mat-form-field>
+        </div>
+        <div class="col" *ngIf="showProviderSelect">
+          <mat-form-field>
+            <mat-label>Установщик</mat-label>
+            <mat-select formControlName="provider">
+              <mat-option *ngFor="let provider of providers$ | async" [value]="provider.id">
+                {{provider.name}}
+              </mat-option>
+            </mat-select>
+            <app-input-clear-icon matSuffix controlName="provider"></app-input-clear-icon>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field>
+            <input matInput placeholder="Год выпуска" type="text"
+                   formControlName="yearRelease" />
+            <app-input-clear-icon matSuffix controlName="yearRelease"></app-input-clear-icon>
           </mat-form-field>
         </div>
       </div>
@@ -62,7 +105,7 @@
 
         <ng-container matColumnDef="carBrand">
           <mat-header-cell *matHeaderCellDef> Марка ТС </mat-header-cell>
-          <mat-cell *matCellDef="let vehicle" mobile-label="Марка ТС"> {{vehicle.carBrand.cbName}} </mat-cell>
+          <mat-cell *matCellDef="let vehicle" mobile-label="Марка ТС"> {{vehicle.carBrand.name}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="carType">
@@ -75,6 +118,11 @@
           <mat-cell *matCellDef="let vehicle" mobile-label="Год выпуска"> {{vehicle.yearRelease || '-'}} </mat-cell>
         </ng-container>
 
+        <ng-container matColumnDef="phone">
+          <mat-header-cell *matHeaderCellDef> Телефон (SIM) </mat-header-cell>
+          <mat-cell *matCellDef="let vehicle" mobile-label="Телефон (SIM)"> {{vehicle.phone || '-'}} </mat-cell>
+        </ng-container>
+
         <ng-container matColumnDef="status">
           <mat-header-cell *matHeaderCellDef> Статус </mat-header-cell>
           <mat-cell *matCellDef="let vehicle" mobile-label="Статус">
@@ -85,17 +133,26 @@
           </mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="lastTime">
-          <mat-header-cell *matHeaderCellDef> Последнее время </mat-header-cell>
-          <mat-cell *matCellDef="let vehicle" mobile-label="Последнее время"> {{vehicle.lastTime | RusDateTime}} </mat-cell>
+        <ng-container matColumnDef="provider">
+          <mat-header-cell *matHeaderCellDef> Установщик </mat-header-cell>
+          <mat-cell *matCellDef="let vehicle" mobile-label="Установщик"> {{vehicle.provider.name}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="controls">
           <mat-header-cell *matHeaderCellDef></mat-header-cell>
           <mat-cell *matCellDef="let vehicle" class="table-controls">
-            <app-menu-icon-dropdown *ngIf="!vehicle.objOutput">
-              <button mat-menu-item (click)="openChangeRouteDialog(vehicle)">
+            <app-menu-icon-dropdown *ngIf="vehicle.showMenu">
+              <button mat-menu-item *ngIf="vehicle.canChangeRoute" (click)="openChangeRouteDialog(vehicle)">
                 Сменить маршрут ТС
+              </button>
+              <button mat-menu-item *ngIf="vehicle.canChangeProvider" (click)="openChangeProviderDialog(vehicle)">
+                Сменить установщика
+              </button>
+              <button mat-menu-item *ngIf="vehicle.canDisable" (click)="disableVehicle(vehicle)">
+                Вывести из эксплуатации
+              </button>
+              <button mat-menu-item *ngIf="vehicle.canEnable" (click)="openEnableDialog(vehicle)">
+                Ввести в эксплуатацию
               </button>
             </app-menu-icon-dropdown>
           </mat-cell>
@@ -103,7 +160,7 @@
 
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;"
-                 [appUpdatedRow]="row.ids">
+                 [appUpdatedRow]="row.id">
         </mat-row>
       </mat-table>
       <app-paginator [totalCount]="pageData.total"

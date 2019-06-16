@@ -1,10 +1,11 @@
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { ProjectDto } from '@app/core/dtos/ProjectDto';
 import { Observable } from 'rxjs';
-import { ObjectDto } from '@app/core/dtos/ObjectDto';
-import { ObjectQuery } from '../object.state';
+import { debounceTime } from 'rxjs/operators';
 import { ObjectService } from '../object.service';
+import { ObjectQuery, ObjectUI } from '../object.state';
 
 @Component({
   selector: 'app-object-change-route-dialog',
@@ -13,13 +14,15 @@ import { ObjectService } from '../object.service';
 export class ObjectChangeRouteDialogComponent {
   modalLoading$: Observable<boolean>;
   modalForm: FormGroup;
+  projectForSelectedRoute: ProjectDto;
+  showProjects: boolean;
 
   constructor(
     private objectQuery: ObjectQuery,
     private objectService: ObjectService,
     private dialogRef: MatDialogRef<ObjectChangeRouteDialogComponent>,
     private fb: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public vehicle: ObjectDto) { }
+    @Inject(MAT_DIALOG_DATA) public vehicle: ObjectUI) { }
 
   ngOnInit() {
     this.modalLoading$ = this.objectQuery.modalLoading$;
@@ -27,6 +30,15 @@ export class ObjectChangeRouteDialogComponent {
     this.modalForm = this.fb.group({
       newRouteName: ['', Validators.required, this.objectService.routeValidator]
     });
+
+    this.showProjects = !this.objectService.isTransporter;
+
+    if (this.showProjects) {
+      this.modalForm.get('newRouteName')
+        .valueChanges
+        .pipe(debounceTime(200))
+        .subscribe(this.onRouteChange.bind(this));
+    }
   }
 
   async onSubmit() {
@@ -39,5 +51,18 @@ export class ObjectChangeRouteDialogComponent {
 
   onClose(): void {
     this.dialogRef.close();
+  }
+
+  private onRouteChange(routeName: string) {
+    this.projectForSelectedRoute = null;
+
+    if (this.modalForm.get('newRouteName').invalid) {
+      return;
+    }
+
+    this.objectService.getProjectByRouteName(routeName)
+      .then(project => {
+        this.projectForSelectedRoute = project;
+      });
   }
 }

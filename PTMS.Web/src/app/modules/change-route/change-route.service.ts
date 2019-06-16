@@ -34,9 +34,9 @@ export class ChangeRouteService {
         .toPromise()
 
       if (newRoute) {
-        let updateItem = await this.objectDataService.changeRoute(vehicle.ids, newRoute.id).toPromise();
+        let updateItem = await this.objectDataService.changeRoute(vehicle.id, newRoute.id).toPromise();
 
-        this.changeRouteStore.update(updateItem.ids, updateItem);
+        this.changeRouteStore.update(updateItem.id, updateItem);
 
         this.notificationService.success(`Маршрут автобуса номер ${updateItem.name} был успешно изменён`);
 

@@ -11,10 +11,13 @@ namespace PTMS.BusinessLogic.IServices
             ClaimsPrincipal user,
             string plateNumber,
             string routeName,
-            int? vehicleTypeId,
+            int? carTypeId,
             int? projectId,
             ModelFormatsEnum format,
             bool? active,
+            int? carBrandId,
+            int? providerId,
+            int? yearRelease,
             int? page,
             int? pageSize);
 
@@ -29,6 +32,15 @@ namespace PTMS.BusinessLogic.IServices
             int newRouteId,
             ClaimsPrincipal principal);
 
+        Task<ObjectModel> EnableAsync(
+            decimal ids,
+            int newRouteId);
+
+        Task<ObjectModel> DisableAsync(
+            decimal ids);
+
         Task DeleteByIdAsync(int id);
+
+        Task<ObjectModel> ChangeProviderAsync(decimal ids, int providerId);
     }
 }

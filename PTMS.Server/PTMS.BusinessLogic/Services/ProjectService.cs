@@ -11,45 +11,51 @@ namespace PTMS.BusinessLogic.Services
 {
     public class ProjectService : BusinessServiceAsync<Project, ProjectModel>, IProjectService
     {
-        private readonly IProjectRepository _transporterRepository;
+        private readonly IProjectRepository _projectRepository;
 
         public ProjectService(
-            IProjectRepository transporterRepository,
+            IProjectRepository projectRepository,
             IMapper mapper)
             : base(mapper)
         {
-            _transporterRepository = transporterRepository;
+            _projectRepository = projectRepository;
         }
 
         public async Task<List<ProjectModel>> GetAllAsync()
         {
-            var result = await _transporterRepository.GetAllAsync();
+            var result = await _projectRepository.GetAllAsync();
+            return MapToModel(result);
+        }
+
+        public async Task<ProjectModel> GetByRouteIdAsync(int routeId)
+        {
+            var result = await _projectRepository.GetProjectByRouteIdAsync(routeId);
             return MapToModel(result);
         }
 
         public async Task<ProjectModel> GetByIdAsync(int id)
         {
-            var result = await _transporterRepository.GetByIdAsync(id);
+            var result = await _projectRepository.GetByIdAsync(id);
             return MapToModel(result);
         }
 
         public async Task<ProjectModel> AddAsync(ProjectModel model)
         {
             var entity = MapFromModel(model);
-            var result = await _transporterRepository.AddAsync(entity, true);
+            var result = await _projectRepository.AddAsync(entity, true);
             return MapToModel(result);
         }
 
         public async Task<ProjectModel> UpdateAsync(ProjectModel model)
         {
             var entity = MapFromModel(model);
-            var result = await _transporterRepository.UpdateAsync(entity, true);
+            var result = await _projectRepository.UpdateAsync(entity, true);
             return MapToModel(result);
         }
 
         public async Task DeleteByIdAsync(int id)
         {
-            await _transporterRepository.DeleteByIdAsync(id, true);
+            await _projectRepository.DeleteByIdAsync(id, true);
         }
     }
 }

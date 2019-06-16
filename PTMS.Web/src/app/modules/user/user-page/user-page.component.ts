@@ -56,7 +56,8 @@ export class UserPageComponent implements OnInit {
   confirmAccount(user: UserUI) {
     this.dialog.open(UserConfirmDialogComponent, {
       width: '400px',
-      data: user
+      data: user,
+      autoFocus: false
     });
   }
 

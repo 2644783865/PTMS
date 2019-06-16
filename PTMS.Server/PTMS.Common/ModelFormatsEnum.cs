@@ -3,6 +3,7 @@
     public enum ModelFormatsEnum
     {
         Full,
-        Light
+        Light,
+        Pure
     }
 }

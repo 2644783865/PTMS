@@ -5,8 +5,8 @@ namespace PTMS.Domain.Entities
 {
     public class CarBrand
     {
-        public int CbId { get; set; }
-        public string CbName { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
         public int? CarTypeId { get; set; }
         public string L { get; set; }
         public string W { get; set; }

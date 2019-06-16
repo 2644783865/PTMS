@@ -1,0 +1,17 @@
+<h2 mat-dialog-title>
+  {{data.message}}
+</h2>
+<div mat-dialog-actions style="justify-content: space-between;">
+  <button mat-raised-button
+          type="button"
+          (click)="onClose(false)"
+          style="margin-left: unset;">
+    {{data.noButtonText}}
+  </button>
+  <button color="primary"
+          mat-raised-button
+          type="button"
+          (click)="onClose(true)">
+    {{data.yesButtonText}}
+  </button>
+</div>

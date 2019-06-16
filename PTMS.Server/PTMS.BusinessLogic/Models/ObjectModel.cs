@@ -18,7 +18,7 @@ namespace PTMS.BusinessLogic.Models
         public short? VehicleType { get; set; }
         public short? Azmth { get; set; }
         public short ProviderId { get; set; }
-        public decimal Ids { get; set; }
+        public decimal Id { get; set; }
         public int? CarBrandId { get; set; }
         public string UserComment { get; set; }
         public DateTime? DateInserted { get; set; }

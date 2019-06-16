@@ -7,26 +7,31 @@ import { DeleteIconComponent } from './delete-icon.component';
 import { SaveIconComponent } from './save-icon.component';
 import { CancelIconComponent } from './cancel-icon.component';
 import { MenuIconDropdownComponent } from './menu-icon-dropdown.component';
+import { InputClearIconComponent } from './input-clear-icon.component';
+import { MatTooltipModule } from '@angular/material';
 
 @NgModule({
   imports: [
     MatButtonModule,
     MatIconModule,
-    MatMenuModule
+    MatMenuModule,
+    MatTooltipModule
   ],
   declarations: [
     EditIconComponent,
     DeleteIconComponent,
     SaveIconComponent,
     CancelIconComponent,
-    MenuIconDropdownComponent
+    MenuIconDropdownComponent,
+    InputClearIconComponent
   ],
   exports: [
     EditIconComponent,
     DeleteIconComponent,
     SaveIconComponent,
     CancelIconComponent,
-    MenuIconDropdownComponent
+    MenuIconDropdownComponent,
+    InputClearIconComponent
   ]
 })
 export class IconModule { }

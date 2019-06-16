@@ -14,4 +14,8 @@ export class ProjectDataService {
   getAll(): Observable<ProjectDto[]> {
     return this.http.get<ProjectDto[]>('projects');
   }
+
+  getByRouteId(routeId: number): Observable<ProjectDto> {
+    return this.http.get<ProjectDto>(`project/byroute/${routeId}`);
+  }
 }

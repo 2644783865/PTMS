@@ -21,10 +21,22 @@ export class ObjectDataService {
   }
 
   update(item: ObjectDto) {
-    return this.http.put<ObjectDto>(`object/${item.ids}`, item);
+    return this.http.put<ObjectDto>(`object/${item.id}`, item);
   }
 
   changeRoute(id: number, newRouteId: number) {
     return this.http.post<ObjectDto>(`object/${id}/changeRoute/${newRouteId}`);
+  }
+
+  changeProvider(id: number, newProviderId: number) {
+    return this.http.post<ObjectDto>(`object/${id}/changeProvider/${newProviderId}`);
+  }
+
+  enable(id: number, newRouteId: number) {
+    return this.http.post<ObjectDto>(`object/${id}/enable/${newRouteId}`);
+  }
+
+  disable(id: number) {
+    return this.http.post<ObjectDto>(`object/${id}/disable`);
   }
 }

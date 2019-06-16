@@ -3,8 +3,8 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Optional, Output, Self } from '@angular/core';
 import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
 import { MatFormFieldControl } from '@angular/material';
-import { combineLatest, Observable, of, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, startWith, switchMap } from 'rxjs/operators';
+import { combineLatest, Observable, of, Subject, BehaviorSubject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, startWith, switchMap, map, skip } from 'rxjs/operators';
 
 @Component({
   selector: 'app-autocomplete',
@@ -23,6 +23,7 @@ export class AutocompleteComponent implements ControlValueAccessor, OnInit, OnDe
 
   autocompleteControl: FormControl
   stateChanges = new Subject<void>();
+  valueChanges = new BehaviorSubject<Object | null>(null);
   focused = false;
   controlType = 'app-autocomplete';
   id = `app-autocomplete-${AutocompleteComponent.nextId++}`;
@@ -165,6 +166,16 @@ export class AutocompleteComponent implements ControlValueAccessor, OnInit, OnDe
         this.focused = !!origin;
         this.stateChanges.next();
       });
+
+    this.autocompleteControl.valueChanges
+      .pipe(map(x => this.value))
+      .subscribe(newValue => {
+        let previousValue = this.valueChanges.getValue();
+
+        if (newValue != previousValue) {
+          this.valueChanges.next(newValue);
+        }
+      });
   }
 
   onTouch() {
@@ -184,14 +195,8 @@ export class AutocompleteComponent implements ControlValueAccessor, OnInit, OnDe
   }
 
   registerOnChange(fn: (v: any) => void): void {
-    this.autocompleteControl.valueChanges
-      .pipe(
-        startWith(null),
-        switchMap(() => {
-          return of(this.value)
-        }),
-        distinctUntilChanged()
-      )
+    this.valueChanges
+      .pipe(skip(1)) //skip first default value
       .subscribe(fn);
   }
 
@@ -200,6 +205,7 @@ export class AutocompleteComponent implements ControlValueAccessor, OnInit, OnDe
 
   ngOnDestroy() {
     this.stateChanges.complete();
+    this.valueChanges.complete();
     this.focusMonitor.stopMonitoring(this.elRef);
   }
 

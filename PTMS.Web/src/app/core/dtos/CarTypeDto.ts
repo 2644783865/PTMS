@@ -1,7 +1,7 @@
-﻿
+
 
 export interface CarTypeDto {
-    ctId: number
+    id: number
     name: string
     shortName: string
 }

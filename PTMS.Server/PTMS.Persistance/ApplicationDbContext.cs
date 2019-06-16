@@ -26,7 +26,7 @@ namespace PTMS.Persistance
         public virtual DbSet<ProjContracts> ProjContracts { get; set; }
         public virtual DbSet<ProjectRoute> ProjRouts { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
-        public virtual DbSet<Providers> Providers { get; set; }
+        public virtual DbSet<Provider> Providers { get; set; }
         public virtual DbSet<Reports> Reports { get; set; }
         public virtual DbSet<ReportsControl> ReportsControl { get; set; }
         public virtual DbSet<Routs> Routs { get; set; }
@@ -148,18 +148,18 @@ namespace PTMS.Persistance
 
             builder.Entity<CarType>(entity =>
             {
-                entity.HasKey(e => e.CtId)
+                entity.HasKey(e => e.Id)
                     .HasName("PK_CAR_TYPE_");
 
                 entity.ToTable("CAR_TYPE_                      ");
 
-                entity.HasIndex(e => e.CtId)
+                entity.HasIndex(e => e.Id)
                     .HasName("PK_CAR_TYPE_");
 
                 entity.HasIndex(e => e.Name)
                     .HasName("UNQ1_CAR_TYPE_");
 
-                entity.Property(e => e.CtId).HasColumnName("CT_ID_");
+                entity.Property(e => e.Id).HasColumnName("CT_ID_");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -585,30 +585,9 @@ namespace PTMS.Persistance
                     .HasAnnotation("Description", "Перевозчик");
             });
 
-            builder.Entity<Project>(entity =>
-            {
-                entity.ToTable("PROJECTS                       ");
+            builder.ConfigureProjects();
 
-                entity.HasIndex(e => e.Id)
-                    .HasName("PK_PROJECTS");
-
-                entity.HasIndex(e => e.Name)
-                    .HasName("UNQ1_PROJECTS");
-
-                entity.Property(e => e.Id).HasColumnName("ID_");
-
-                entity.Property(e => e.Director)
-                    .HasColumnName("DIRECTOR")
-                    .HasMaxLength(50)
-                    .HasAnnotation("Description", "Директор");
-
-                entity.Property(e => e.Name)
-                    .HasColumnName("NAME_")
-                    .HasMaxLength(50)
-                    .HasAnnotation("Description", "Перевозчик");
-            });
-
-            builder.Entity<Providers>(entity =>
+            builder.Entity<Provider>(entity =>
             {
                 entity.ToTable("PROVIDERS                      ");
 

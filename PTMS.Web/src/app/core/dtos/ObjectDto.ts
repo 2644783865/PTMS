@@ -17,7 +17,7 @@ export interface ObjectDto {
   vehicleType: number
   azmth: number
   providerId: number
-  ids: number
+  id: number
   carBrandId: number
   userComment: string
   dateInserted: Date

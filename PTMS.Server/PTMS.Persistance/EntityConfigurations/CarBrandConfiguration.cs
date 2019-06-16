@@ -9,7 +9,7 @@ namespace PTMS.Persistance.EntityConfigurations
         {
             builder.Entity<CarBrand>(entity =>
             {
-                entity.HasKey(e => e.CbId)
+                entity.HasKey(e => e.Id)
                     .HasName("PK_CAR_BRAND");
 
                 entity.ToTable("CAR_BRAND                      ");
@@ -18,19 +18,19 @@ namespace PTMS.Persistance.EntityConfigurations
                     .HasName("FK_CAR_BRAND_CAR_TYPE")
                     .IsUnique();
 
-                entity.HasIndex(e => e.CbId)
+                entity.HasIndex(e => e.Id)
                     .HasName("PK_CAR_BRAND");
 
-                entity.HasIndex(e => e.CbName)
+                entity.HasIndex(e => e.Name)
                     .HasName("UNQ1_CAR_BRAND");
 
-                entity.Property(e => e.CbId).HasColumnName("CB_ID_");
+                entity.Property(e => e.Id).HasColumnName("CB_ID_");
 
                 entity.Property(e => e.CarTypeId)
                     .HasColumnName("CAR_TYPE_ID_")
                     .HasAnnotation("Description", "Тип автобуса");
 
-                entity.Property(e => e.CbName)
+                entity.Property(e => e.Name)
                     .IsRequired()
                     .HasColumnName("CB_NAME_")
                     .HasMaxLength(50)

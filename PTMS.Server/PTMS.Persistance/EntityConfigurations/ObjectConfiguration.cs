@@ -10,7 +10,10 @@ namespace PTMS.Persistance.EntityConfigurations
         {
             builder.Entity<Objects>(entity =>
             {
-                entity.HasKey(e => new { e.ProjId, e.ObjId })
+                //entity.HasKey(e => new { e.ProjId, e.ObjId })
+                //    .HasName("PK_OBJECTS");
+
+                entity.HasKey(e => e.Id)
                     .HasName("PK_OBJECTS");
 
                 entity.ToTable("OBJECTS                        ");
@@ -19,7 +22,7 @@ namespace PTMS.Persistance.EntityConfigurations
                     .HasName("FK_OBJECTS_1")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Ids)
+                entity.HasIndex(e => e.Id)
                     .HasName("UNQ_IDS");
 
                 entity.HasIndex(e => e.LastRout)
@@ -72,7 +75,7 @@ namespace PTMS.Persistance.EntityConfigurations
                     .HasColumnName("DISP_ROUTE_")
                     .HasAnnotation("Description", "Транслятор");
 
-                entity.Property(e => e.Ids)
+                entity.Property(e => e.Id)
                     .HasColumnName("IDS_")
                     .HasColumnType("NUMERIC(9, 0)");
 

@@ -17,7 +17,7 @@ namespace PTMS.Domain.Entities
         public int? VehicleType { get; set; }
         public int? Azmth { get; set; }
         public int ProviderId { get; set; }
-        public decimal Ids { get; set; }
+        public decimal Id { get; set; }
         public int? CarBrandId { get; set; }
         public string UserComment { get; set; }
         public DateTime? DateInserted { get; set; }
@@ -30,7 +30,7 @@ namespace PTMS.Domain.Entities
         public short? Lowfloor { get; set; }
 
         public CarBrand CarBrand { get; set; }
-        public Providers Provider { get; set; }
+        public Provider Provider { get; set; }
         public Project Project { get; set; }
         public Routs Route { get; set; }
     }

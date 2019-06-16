@@ -1,6 +1,7 @@
 import { Injectable, NgZone } from '@angular/core';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
 import { BehaviorSubject } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -43,12 +44,12 @@ export class NotificationService {
   exception(exception) {
     let errorMessage = '';
 
-    if (exception.error instanceof ErrorEvent) {
-      // client-side error
-      errorMessage = `Error: ${exception.error.message}`;
-    } else {
-      // server-side error
-      errorMessage = exception.message || 'Произошла ошибка. Приносим извинения за неудобства';
+    if (exception.error) {
+      errorMessage = exception.error.message;
+    }
+    else {
+      console.error(exception.message);
+      errorMessage = 'Произошла ошибка. Приносим извинения за неудобства';
     }
 
     this.error(errorMessage);

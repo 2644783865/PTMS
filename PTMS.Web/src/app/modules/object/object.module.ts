@@ -5,6 +5,8 @@ import { ObjectStore, ObjectQuery } from './object.state';
 import { ObjectService } from './object.service';
 import { ObjectRoutingModule } from './object-routing.module';
 import { ObjectChangeRouteDialogComponent } from './object-change-route-dialog/object-change-route-dialog.component';
+import { ObjectChangeProviderDialogComponent } from './object-change-provider-dialog/object-change-provider-dialog.component';
+import { ObjectEnableDialogComponent } from './object-enable-dialog/object-enable-dialog.component';
 
 @NgModule({
   imports: [
@@ -17,11 +19,15 @@ import { ObjectChangeRouteDialogComponent } from './object-change-route-dialog/o
     ObjectService
   ],
   entryComponents: [
-    ObjectChangeRouteDialogComponent
+    ObjectChangeRouteDialogComponent,
+    ObjectChangeProviderDialogComponent,
+    ObjectEnableDialogComponent
   ],
   declarations: [
     ObjectPageComponent,
-    ObjectChangeRouteDialogComponent
+    ObjectChangeRouteDialogComponent,
+    ObjectChangeProviderDialogComponent,
+    ObjectEnableDialogComponent
   ],
   exports: [
     ObjectPageComponent

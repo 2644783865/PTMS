@@ -16,6 +16,9 @@ namespace PTMS.DataServices.IRepositories
             ModelFormatsEnum format,
             bool? active,
             UserAvailableRoutes userRoutesModel,
+            int? carBrandId,
+            int? providerId,
+            int? yearRelease,
             int? page,
             int? pageSize);
 
