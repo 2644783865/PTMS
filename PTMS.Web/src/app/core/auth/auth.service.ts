@@ -91,11 +91,13 @@ export class AuthService {
     this.authStore.update(state);
   }
 
-  isInRole(role: RoleEnum) {
+  isInRole(...roles: RoleEnum[]): boolean {
     let identity = this.authQuery.getValue().identity;
 
     if (identity) {
-      return identity.role == role;
+      return roles.reduce((sum, value) => {
+        return sum || identity.role == value;
+      }, false);
     }
     else {
       throw new Error('User identity is not loaded');

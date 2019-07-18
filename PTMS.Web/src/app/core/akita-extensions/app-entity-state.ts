@@ -17,8 +17,8 @@ export class AppEntityStore<S extends AppEntityState<E>, E, EntityID = ID>
     return this._value();
   }
 
-  constructor() {
-    super();
+  constructor(initialState: Partial<S> = {}) {
+    super(initialState);
   }
 }
 

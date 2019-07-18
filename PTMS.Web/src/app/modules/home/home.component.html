@@ -1,15 +1,75 @@
 <h1>Главная</h1>
-<h4 style="margin-bottom: 25px">Быстрый доступ к часто используемым функциям</h4>
 
-<!--<div class="row">
-  <div class="col-lg-6 col">
-    <mat-card>
-      <mat-card-title>
-        Сменить маршрут автобуса
-      </mat-card-title>
-      <mat-card-content>
-        <app-change-route-widget></app-change-route-widget>
-      </mat-card-content>
-    </mat-card>
-  </div>
-</div>-->
+<app-loading-bar [isLoading]="dataLoading$ | async"></app-loading-bar>
+
+<div *ngIf="(statByProvider$ | async).length > 0">
+  <mat-card>
+    <mat-card-title>
+      Количество автобусов онлайн по группам
+      <span class="update-at-label">
+        {{updateAt}}
+      </span>
+    </mat-card-title>
+    <mat-card-content>
+      <div class="row">
+        <div class="col">
+          <div class="stat-widget-container">
+            <mat-table [dataSource]="statByProject$ | async">
+              <ng-container matColumnDef="project">
+                <mat-header-cell *matHeaderCellDef> Перевозчик </mat-header-cell>
+                <mat-cell *matCellDef="let vehicle" mobile-label="Перевозчик"> {{vehicle.project.name}} </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="onlineNumber">
+                <mat-header-cell *matHeaderCellDef> Количество онлайн </mat-header-cell>
+                <mat-cell *matCellDef="let vehicle" mobile-label="Онлайн"> {{vehicle.onlineNumber}}  </mat-cell>
+              </ng-container>
+
+              <mat-header-row *matHeaderRowDef="displayedColumnsProject"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumnsProject;">
+              </mat-row>
+            </mat-table>
+          </div>
+        </div>
+        <div class="col">
+          <div class="stat-widget-container">
+            <mat-table [dataSource]="statByProvider$ | async">
+              <ng-container matColumnDef="provider">
+                <mat-header-cell *matHeaderCellDef> Поставщик </mat-header-cell>
+                <mat-cell *matCellDef="let vehicle" mobile-label="Поставщик"> {{vehicle.provider.name}} </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="onlineNumber">
+                <mat-header-cell *matHeaderCellDef> Количество онлайн </mat-header-cell>
+                <mat-cell *matCellDef="let vehicle" mobile-label="Онлайн"> {{vehicle.onlineNumber}}  </mat-cell>
+              </ng-container>
+
+              <mat-header-row *matHeaderRowDef="displayedColumnsProvider"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumnsProvider;">
+              </mat-row>
+            </mat-table>
+          </div>
+        </div>
+        <div class="col">
+          <div class="stat-widget-container">
+            <mat-table [dataSource]="statByRoute$ | async">
+              <ng-container matColumnDef="route">
+                <mat-header-cell *matHeaderCellDef> Маршрут </mat-header-cell>
+                <mat-cell *matCellDef="let vehicle" mobile-label="Маршрут"> {{vehicle.route.name}} </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="onlineNumber">
+                <mat-header-cell *matHeaderCellDef> Количество онлайн </mat-header-cell>
+                <mat-cell *matCellDef="let vehicle" mobile-label="Онлайн"> {{vehicle.onlineNumber}}  </mat-cell>
+              </ng-container>
+
+              <mat-header-row *matHeaderRowDef="displayedColumnsRoute"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumnsRoute;">
+              </mat-row>
+            </mat-table>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

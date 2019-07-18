@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PTMS.Api.Attributes;
 using PTMS.BusinessLogic.IServices;
@@ -46,7 +47,16 @@ namespace PTMS.Api.Controllers
 
             return result;
         }
-        
+
+        [PtmsAuthorize(RoleNames.Dispatcher)]
+        [HttpGet("/objects/reporting")]
+        public async Task<ActionResult<List<ObjectModel>>> GetAllForReporting(
+            int minutes = 10)
+        {
+            var result = await _objectService.FindForReportingAsync(minutes);
+            return result;
+        }
+
         [HttpGet("/object/{id}")]
         public async Task<ActionResult<ObjectModel>> GetById(decimal id)
         {

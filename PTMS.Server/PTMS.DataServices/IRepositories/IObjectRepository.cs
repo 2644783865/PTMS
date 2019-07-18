@@ -2,6 +2,8 @@
 using PTMS.DataServices.Infrastructure;
 using PTMS.DataServices.Models;
 using PTMS.Domain.Entities;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace PTMS.DataServices.IRepositories
@@ -25,5 +27,7 @@ namespace PTMS.DataServices.IRepositories
         Task<Objects> GetByIdAsync(decimal id);
 
         Task<Objects> GetFullByIdAsync(decimal id);
+
+        Task<List<Objects>> FindForReporting(DateTime onlineStartDate, DateTime onlineEndDate);
     }
 }

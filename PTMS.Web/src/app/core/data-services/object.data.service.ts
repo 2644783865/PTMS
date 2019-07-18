@@ -16,6 +16,10 @@ export class ObjectDataService {
     return this.http.getPage<ObjectDto>('objects', page, pageSize, params);
   }
 
+  getForReporting(minutes: number): Observable<ObjectDto[]> {
+    return this.http.get<ObjectDto[]>(`objects/reporting`, { minutes });
+  }
+
   getById(id: number) {
     return this.http.get<ObjectDto>(`object/${id}`);
   }

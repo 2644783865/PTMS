@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using PTMS.BusinessLogic.Models;
 using PTMS.Common;
@@ -42,5 +43,7 @@ namespace PTMS.BusinessLogic.IServices
         Task DeleteByIdAsync(int id);
 
         Task<ObjectModel> ChangeProviderAsync(decimal ids, int providerId);
+
+        Task<List<ObjectModel>> FindForReportingAsync(int minutes);
     }
 }

@@ -5,6 +5,7 @@ using PTMS.DataServices.Models;
 using PTMS.Domain.Entities;
 using PTMS.Persistance;
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -98,6 +99,14 @@ namespace PTMS.DataServices.Repositories
         public Task<Objects> GetFullByIdAsync(decimal id)
         {
             return GetAsync(x => x.Id == id, _includesFull);
+        }
+
+        public Task<List<Objects>> FindForReporting(DateTime onlineStartDate, DateTime onlineEndDate)
+        {
+            return FindAsync(x => !x.ObjOutput
+                && x.LastTime.HasValue
+                && x.LastTime.Value >= onlineStartDate
+                && x.LastTime.Value <= onlineEndDate);
         }
     }
 }

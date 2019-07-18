@@ -21,8 +21,6 @@ export class AuthGuard implements CanActivate {
       case RoleEnum.Transporter:
       case RoleEnum.Mechanic:
         return '/change-route';
-      case RoleEnum.Administrator:
-        return '/objects';
       default:
         return '/home';
     }
@@ -43,18 +41,10 @@ export class AuthGuard implements CanActivate {
             this.router.navigate([this.getHomePathByRole(state)]);
             return false;
           }
-
-          //check home page
-          if (state.isLogged && route.routeConfig.path == 'home' && this.getHomePathByRole(state) != '/') {
-            this.router.navigate([this.getHomePathByRole(state)]);
-            return false;
-          }
-
+          
           // check if route is restricted by role
           if (route.data.roles) {
-            let authorized = route.data.roles.reduce((sum, value) => {
-              return sum || state.identity.role == value;
-            }, false);
+            let authorized = this.authService.isInRole(...route.data.roles);
 
             if (!authorized) {
               this.router.navigate([this.getHomePathByRole(state)]);

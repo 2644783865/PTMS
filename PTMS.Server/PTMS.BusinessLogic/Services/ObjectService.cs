@@ -170,6 +170,16 @@ namespace PTMS.BusinessLogic.Services
             await _objectRepository.DeleteByIdAsync(id, true);
         }
 
+        public async Task<List<ObjectModel>> FindForReportingAsync(int minutes)
+        {
+            var startDate = DateTime.Now.AddMinutes(-minutes);
+            var endDate = DateTime.Now.AddMinutes(1);
+
+            var objects = await _objectRepository.FindForReporting(startDate, endDate);
+            var result = MapToModel(objects);
+            return result;
+        }
+
         private async Task<ObjectModel> UpdateAsync(Objects entity)
         {
             var result = await _objectRepository.UpdateAsync(entity, true);

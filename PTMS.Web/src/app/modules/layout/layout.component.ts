@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, combineLatest } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AuthService } from '@app/core/auth/auth.service';
 import { Router } from '@angular/router';
 import { RoleEnum } from '@app/core/enums/role.enum';
@@ -28,7 +28,7 @@ export class LayoutComponent implements OnInit {
     this.authService.identity$.subscribe(identity => {
       if (identity) {
         let routes = [
-          //{ link: 'home', label: 'Главная', visible: true },
+          { link: 'home', label: 'Главная', visible: this.authService.isInRole(RoleEnum.Administrator, RoleEnum.Dispatcher) },
           { link: 'objects', label: 'Транспорт', visible: true },
           { link: 'routes', label: 'Маршруты', visible: false },
           { link: 'change-route', label: 'Сменить Маршрут ТС', visible: this.authService.isInRole(RoleEnum.Transporter) },

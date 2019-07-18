@@ -5,7 +5,7 @@ namespace PTMS.Api.Controllers
 {
     [PtmsAuthorize]
     [ApiController]
-    public class ApiControllerBase : ControllerBase
+    public abstract class ApiControllerBase : ControllerBase
     {
     }
 }
