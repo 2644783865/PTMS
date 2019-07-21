@@ -62,7 +62,7 @@ html, body {
     box-shadow: none;
     padding: 10px 16px 0;
   }
-
+  
   mat-row.table-row-updated {
     background-color: #d4edda;
   }
@@ -179,6 +179,14 @@ html, body {
 
 .add-button {
   margin-bottom: 15px;
+}
+
+.bg-success {
+  background-color: #d4edda !important;
+}
+
+.bg-error {
+  background-color: #f8d7da !important;
 }
 
 .icon-button {

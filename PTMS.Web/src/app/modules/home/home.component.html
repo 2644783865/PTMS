@@ -11,23 +11,81 @@
       </span>
     </mat-card-title>
     <mat-card-content>
+      <div class="row form-full-container align-items-center" [formGroup]="routeStatFilters">
+        <div class="col-3">
+          <mat-checkbox color="primary"
+                        formControlName="showOnlyErrors">
+            Показывать только несовпадающие
+          </mat-checkbox>
+        </div>
+        <div class="col-3">
+          <mat-form-field>
+            <mat-label>Перевозчик</mat-label>
+            <mat-select formControlName="projectId">
+              <mat-option *ngFor="let project of projects$ | async"
+                          [value]="project.id">
+                {{project.name}}
+              </mat-option>
+            </mat-select>
+            <app-input-clear-icon matSuffix controlName="projectId"></app-input-clear-icon>
+          </mat-form-field>
+        </div>
+        <div class="col-3" style="margin-left: auto">
+          <mat-form-field>
+            <mat-label>Показывать онлайн за</mat-label>
+            <mat-select formControlName="intervalId">
+              <mat-option *ngFor="let interval of intervalDropdown"
+                          [value]="interval.value">
+                {{interval.key}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
       <div class="row">
         <div class="col">
           <div class="stat-widget-container">
-            <mat-table [dataSource]="statByProject$ | async">
+            <mat-table [dataSource]="statByProject$ | async" [trackBy]="trackByProjectStat">
               <ng-container matColumnDef="project">
                 <mat-header-cell *matHeaderCellDef> Перевозчик </mat-header-cell>
-                <mat-cell *matCellDef="let vehicle" mobile-label="Перевозчик"> {{vehicle.project.name}} </mat-cell>
+                <mat-cell *matCellDef="let stat"> {{stat.project.name}} </mat-cell>
+                <mat-footer-cell *matFooterCellDef="let stat"> Итого: </mat-footer-cell>
               </ng-container>
 
               <ng-container matColumnDef="onlineNumber">
-                <mat-header-cell *matHeaderCellDef> Количество онлайн </mat-header-cell>
-                <mat-cell *matCellDef="let vehicle" mobile-label="Онлайн"> {{vehicle.onlineNumber}}  </mat-cell>
+                <mat-header-cell *matHeaderCellDef> Онлайн / План </mat-header-cell>
+                <mat-cell *matCellDef="let stat"> {{stat.onlineNumber}} / {{stat.plannedNumber | NA}}</mat-cell>
+                <mat-footer-cell *matFooterCellDef="let stat"> {{totalOnlineByProject$ | async}} / {{totalPlannedByProject$ | async}}</mat-footer-cell>
               </ng-container>
 
               <mat-header-row *matHeaderRowDef="displayedColumnsProject"></mat-header-row>
-              <mat-row *matRowDef="let row; columns: displayedColumnsProject;">
+              <mat-row *matRowDef="let stat; columns: displayedColumnsProject;"
+                       [class.bg-error]="stat.hasError">
               </mat-row>
+              <mat-footer-row *matFooterRowDef="displayedColumnsProject; sticky: true"></mat-footer-row>
+            </mat-table>
+          </div>
+        </div>
+        <div class="col">
+          <div class="stat-widget-container">
+            <mat-table [dataSource]="statByRoute$ | async" [trackBy]="trackByRouteStat">
+              <ng-container matColumnDef="route">
+                <mat-header-cell *matHeaderCellDef> Маршрут </mat-header-cell>
+                <mat-cell *matCellDef="let stat"> {{stat.route.name}} </mat-cell>
+                <mat-footer-cell *matFooterCellDef="let stat"> Итого: </mat-footer-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="onlineNumber">
+                <mat-header-cell *matHeaderCellDef> Онлайн / План </mat-header-cell>
+                <mat-cell *matCellDef="let stat"> {{stat.onlineNumber}} / {{stat.plannedNumber | NA}}  </mat-cell>
+                <mat-footer-cell *matFooterCellDef="let stat"> {{totalOnlineByRoute$ | async}} / {{totalPlannedByRoute$ | async}}</mat-footer-cell>
+              </ng-container>
+
+              <mat-header-row *matHeaderRowDef="displayedColumnsRoute"></mat-header-row>
+              <mat-row *matRowDef="let stat; columns: displayedColumnsRoute;"
+                       [class.bg-error]="stat.hasError">
+              </mat-row>
+              <mat-footer-row *matFooterRowDef="displayedColumnsRoute; sticky: true"></mat-footer-row>
             </mat-table>
           </div>
         </div>
@@ -35,37 +93,21 @@
           <div class="stat-widget-container">
             <mat-table [dataSource]="statByProvider$ | async">
               <ng-container matColumnDef="provider">
-                <mat-header-cell *matHeaderCellDef> Поставщик </mat-header-cell>
-                <mat-cell *matCellDef="let vehicle" mobile-label="Поставщик"> {{vehicle.provider.name}} </mat-cell>
+                <mat-header-cell *matHeaderCellDef> Установщик </mat-header-cell>
+                <mat-cell *matCellDef="let stat"> {{stat.provider.name}} </mat-cell>
+                <mat-footer-cell *matFooterCellDef="let stat"> Итого: </mat-footer-cell>
               </ng-container>
 
               <ng-container matColumnDef="onlineNumber">
-                <mat-header-cell *matHeaderCellDef> Количество онлайн </mat-header-cell>
-                <mat-cell *matCellDef="let vehicle" mobile-label="Онлайн"> {{vehicle.onlineNumber}}  </mat-cell>
+                <mat-header-cell *matHeaderCellDef> Онлайн </mat-header-cell>
+                <mat-cell *matCellDef="let stat"> {{stat.onlineNumber}}  </mat-cell>
+                <mat-footer-cell *matFooterCellDef="let stat"> {{totalOnlineByProvider$ | async}}</mat-footer-cell>
               </ng-container>
 
               <mat-header-row *matHeaderRowDef="displayedColumnsProvider"></mat-header-row>
               <mat-row *matRowDef="let row; columns: displayedColumnsProvider;">
               </mat-row>
-            </mat-table>
-          </div>
-        </div>
-        <div class="col">
-          <div class="stat-widget-container">
-            <mat-table [dataSource]="statByRoute$ | async">
-              <ng-container matColumnDef="route">
-                <mat-header-cell *matHeaderCellDef> Маршрут </mat-header-cell>
-                <mat-cell *matCellDef="let vehicle" mobile-label="Маршрут"> {{vehicle.route.name}} </mat-cell>
-              </ng-container>
-
-              <ng-container matColumnDef="onlineNumber">
-                <mat-header-cell *matHeaderCellDef> Количество онлайн </mat-header-cell>
-                <mat-cell *matCellDef="let vehicle" mobile-label="Онлайн"> {{vehicle.onlineNumber}}  </mat-cell>
-              </ng-container>
-
-              <mat-header-row *matHeaderRowDef="displayedColumnsRoute"></mat-header-row>
-              <mat-row *matRowDef="let row; columns: displayedColumnsRoute;">
-              </mat-row>
+              <mat-footer-row *matFooterRowDef="displayedColumnsProvider; sticky: true"></mat-footer-row>
             </mat-table>
           </div>
         </div>

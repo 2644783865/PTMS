@@ -3,6 +3,7 @@ import localeRu from '@angular/common/locales/ru';
 import { registerLocaleData } from '@angular/common';
 import { RusDatePipe } from './rus-date.pipe';
 import { RusDateTimePipe } from './rus-date-time.pipe';
+import { NaPipe } from './na.pipe';
 
 // the second parameter 'fr' is optional
 registerLocaleData(localeRu);
@@ -10,11 +11,13 @@ registerLocaleData(localeRu);
 @NgModule({
   declarations: [
     RusDatePipe,
-    RusDateTimePipe
+    RusDateTimePipe,
+    NaPipe
   ],
   exports: [
     RusDatePipe,
-    RusDateTimePipe
+    RusDateTimePipe,
+    NaPipe
   ]
 })
 export class PipesModule {}

@@ -5,6 +5,8 @@ import { ProviderDataService } from '@app/core/data-services/provider.data.servi
 import { RouteDataService } from '@app/core/data-services/route.data.service';
 import { ObjectDto } from '@app/core/dtos/ObjectDto';
 import { HomeStore } from './home.state';
+import { PlanDataService } from '@app/core/data-services/plan.data.service';
+import { toDate } from '@app/core/helpers/utils';
 
 @Injectable()
 export class HomeService {
@@ -13,28 +15,33 @@ export class HomeService {
     private objectDataService: ObjectDataService,
     private projectDataService: ProjectDataService,
     private providerDataService: ProviderDataService,
-    private routeDataService: RouteDataService)
+    private routeDataService: RouteDataService,
+    private planDataService: PlanDataService)
   {
   }
 
   async loadRelatedData() {
     this.homeStore.setLoading(true);
 
-    let [ projects, providers, routes ] = await Promise.all([
+    let [ projects, providers, routes, plansByRoutes ] = await Promise.all([
       this.projectDataService.getAll().toPromise(),
       this.providerDataService.getAll().toPromise(),
-      this.routeDataService.getAll().toPromise()
+      this.routeDataService.getAll({ active: true }).toPromise(),
+      this.planDataService.getPlansByRoute(toDate(new Date())).toPromise()
     ]);
 
     this.homeStore.setRelatedData(
       projects,
       providers,
-      routes);
+      routes,
+      plansByRoutes);
 
     this.homeStore.setLoading(false);
   }
 
-  async loadObjectsForReporting(minutes: number) {
+  async loadObjectsForReporting(intervalId: string) {
+    let minutes = this.minutesDictionary[intervalId]();
+
     this.homeStore.setLoading(true);
 
     let result = await this.objectDataService.getForReporting(minutes).toPromise();
@@ -45,9 +52,43 @@ export class HomeService {
       this.homeStore.setLoading(false);
     }, 1000)
   }
+
+  setRouteStatFilters(filters): void {
+    this.homeStore.setRouteStatFilters(filters);
+  }
   
   onDestroy() {
     this.homeStore.reset();
+  }
+
+  private minutesDictionary = {
+    '5': _ => 5,
+    '10': _ => 10,
+    '30': _ => 30,
+    '60': _ => 60,
+    '180': _ => 180,
+    'today': _ => {
+      let startDate = new Date();
+      startDate.setHours(4, 59);
+      return this.getMinutes(startDate, new Date());
+    },
+    'week': _ => {
+      let d = new Date();
+      let day = d.getDay(),
+        diff = d.getDate() - day + (day == 0 ? -6 : 1);
+
+      let startDate = new Date(d.setDate(diff)); //monday
+      startDate.setHours(4, 59);
+
+      return this.getMinutes(startDate, new Date());
+    },
+  };
+
+  private getMinutes(startDate: Date, endDate: Date): number {
+    let difference = endDate.getTime() - startDate.getTime();
+    let minutes = difference / 1000 / 60;
+
+    return minutes;
   }
 
   private mapToModel(vehicle: ObjectDto): void {

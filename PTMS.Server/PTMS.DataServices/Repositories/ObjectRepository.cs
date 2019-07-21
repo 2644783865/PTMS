@@ -106,7 +106,8 @@ namespace PTMS.DataServices.Repositories
             return FindAsync(x => !x.ObjOutput
                 && x.LastTime.HasValue
                 && x.LastTime.Value >= onlineStartDate
-                && x.LastTime.Value <= onlineEndDate);
+                && x.LastTime.Value <= onlineEndDate
+                && x.Route.RouteActive);
         }
     }
 }

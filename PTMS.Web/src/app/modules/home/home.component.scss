@@ -16,7 +16,7 @@
   flex: 2
 }
 
-.mat-cell.mat-column-project {
+.mat-cell.mat-column-project, .mat-footer-cell.mat-column-project {
   flex: 3
 }
 
@@ -30,6 +30,14 @@ mat-card-title {
 
 mat-footer-row, mat-row {
   min-height: 32px;
+}
+
+.mat-footer-row {
+  font-weight: bold;
+}
+
+.mat-table-sticky {
+  border-top: 1px solid #e0e0e0;
 }
 
 .update-at-label {
