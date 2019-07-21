@@ -24,7 +24,7 @@ export class HomeService {
     this.homeStore.setLoading(true);
 
     let [ projects, providers, routes, plansByRoutes ] = await Promise.all([
-      this.projectDataService.getAll().toPromise(),
+      this.projectDataService.getAll({ active: true }).toPromise(),
       this.providerDataService.getAll().toPromise(),
       this.routeDataService.getAll({ active: true }).toPromise(),
       this.planDataService.getPlansByRoute(toDate(new Date())).toPromise()

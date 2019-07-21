@@ -104,7 +104,7 @@ export class UserService {
   }
 
   async loadProjects() {
-    let projects = await this.projectDataService.getAll().toPromise();
+    let projects = await this.projectDataService.getAll({ active: true }).toPromise();
     this.userStore.setProjects(projects);
   }
 

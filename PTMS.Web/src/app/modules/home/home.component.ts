@@ -29,6 +29,7 @@ export class HomeComponent implements OnInit {
 
   statByProvider$: Observable<ProviderStat[]>;
   totalOnlineByProvider$: Observable<number>;
+  totalPlannedByProvider$: Observable<number>;
 
   statByRoute$: Observable<RouteStat[]>;
   totalOnlineByRoute$: Observable<number>;
@@ -54,6 +55,7 @@ export class HomeComponent implements OnInit {
 
     this.statByProvider$ = this.homeQuery.statByProvider$;
     this.totalOnlineByProvider$ = this.homeQuery.totalOnlineByProvider$;
+    this.totalPlannedByProvider$ = this.homeQuery.totalPlannedByProvider$;
 
     this.statByRoute$ = this.homeQuery.statByRoute$;
     this.totalOnlineByRoute$ = this.homeQuery.totalOnlineByRoute$;

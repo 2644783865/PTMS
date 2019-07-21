@@ -11,8 +11,8 @@ export class ProjectDataService {
   constructor(private http: PtmsHttpClient) {
   }
 
-  getAll(): Observable<ProjectDto[]> {
-    return this.http.get<ProjectDto[]>('projects');
+  getAll(params: object = null): Observable<ProjectDto[]> {
+    return this.http.get<ProjectDto[]>('projects', params);
   }
 
   getByRouteId(routeId: number): Observable<ProjectDto> {

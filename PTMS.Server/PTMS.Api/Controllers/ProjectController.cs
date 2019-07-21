@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using PTMS.Api.Attributes;
 using PTMS.BusinessLogic.IServices;
 using PTMS.BusinessLogic.Models;
+using PTMS.Common;
 
 namespace PTMS.Api.Controllers
 {
@@ -16,15 +17,16 @@ namespace PTMS.Api.Controllers
             _projectService = projectService;
         }
 
-        [PtmsAuthorizeAdmin]
+        [PtmsAuthorize(RoleNames.Dispatcher)]
         [HttpGet("/projects")]
-        public async Task<ActionResult<List<ProjectModel>>> GetAll()
+        public async Task<ActionResult<List<ProjectModel>>> GetAll(
+            bool? active = null)
         {
-            var result = await _projectService.GetAllAsync();
+            var result = await _projectService.GetAllAsync(active);
             return result;
         }
 
-        [PtmsAuthorizeAdmin]
+        [PtmsAuthorize(RoleNames.Dispatcher)]
         [HttpGet("/project/{id}")]
         public async Task<ActionResult<ProjectModel>> GetById(int id)
         {
@@ -32,7 +34,7 @@ namespace PTMS.Api.Controllers
             return result;
         }
 
-        [PtmsAuthorizeAdmin]
+        [PtmsAuthorize(RoleNames.Dispatcher)]
         [HttpGet("/project/byroute/{routeId}")]
         public async Task<ActionResult<ProjectModel>> GetByRouteId(int routeId)
         {

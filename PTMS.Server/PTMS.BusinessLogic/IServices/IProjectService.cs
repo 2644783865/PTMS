@@ -6,7 +6,7 @@ namespace PTMS.BusinessLogic.IServices
 {
     public interface IProjectService
     {
-        Task<List<ProjectModel>> GetAllAsync();
+        Task<List<ProjectModel>> GetAllAsync(bool? active);
 
         Task<ProjectModel> GetByIdAsync(int id);
         Task<ProjectModel> GetByRouteIdAsync(int routeId);

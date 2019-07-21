@@ -16,9 +16,26 @@ namespace PTMS.DataServices.Repositories
 
         }
 
-        public async Task<List<Project>> GetAllAsync()
+        public async Task<List<Project>> GetAllAsync(bool? active)
         {
-            var list = await base.GetAllAsync();
+            List<Project> list = null;
+
+            if (active.HasValue)
+            {
+                if (active.Value)
+                {
+                    list = await FindAsync(x => x.ProjectRoutes.Any(y => y.Route.RouteActive));
+                }
+                else
+                {
+                    list = await FindAsync(x => x.ProjectRoutes.All(y => !y.Route.RouteActive));
+                }
+            }
+            else
+            {
+                list = await base.GetAllAsync();
+            }
+
             return list.OrderBy(x => x.Name).ToList();
         }
 

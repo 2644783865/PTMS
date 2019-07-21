@@ -170,6 +170,14 @@ export class HomeQuery extends AppQueryEntity<HomeState, ObjectDto> {
       })
     );
 
+  totalPlannedByProvider$: Observable<number> = this.select(s => s.plansByRoutes)
+    .pipe(
+      switchMap(plansByRoutes => {
+        let result = plansByRoutes.reduce((sum, item) => sum + (item.plannedNumber || 0), 0);
+        return of(result);
+      })
+    );
+
   statByRoute$: Observable<RouteStat[]> = combineLatest(
     this.list$,
     this.select(s => s.routes),

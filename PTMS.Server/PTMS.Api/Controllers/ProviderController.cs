@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using PTMS.Api.Attributes;
 using PTMS.BusinessLogic.IServices;
 using PTMS.BusinessLogic.Models;
+using PTMS.Common;
 
 namespace PTMS.Api.Controllers
 {
@@ -16,7 +17,7 @@ namespace PTMS.Api.Controllers
             _providerService = providerService;
         }
 
-        [PtmsAuthorizeAdmin]
+        [PtmsAuthorize(RoleNames.Dispatcher)]
         [HttpGet("/providers")]
         public async Task<ActionResult<List<ProviderModel>>> GetAll()
         {

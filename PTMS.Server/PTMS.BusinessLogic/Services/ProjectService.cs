@@ -21,9 +21,9 @@ namespace PTMS.BusinessLogic.Services
             _projectRepository = projectRepository;
         }
 
-        public async Task<List<ProjectModel>> GetAllAsync()
+        public async Task<List<ProjectModel>> GetAllAsync(bool? active)
         {
-            var result = await _projectRepository.GetAllAsync();
+            var result = await _projectRepository.GetAllAsync(active);
             return MapToModel(result);
         }
 

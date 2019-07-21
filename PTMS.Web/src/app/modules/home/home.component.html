@@ -101,7 +101,7 @@
               <ng-container matColumnDef="onlineNumber">
                 <mat-header-cell *matHeaderCellDef> Онлайн </mat-header-cell>
                 <mat-cell *matCellDef="let stat"> {{stat.onlineNumber}}  </mat-cell>
-                <mat-footer-cell *matFooterCellDef="let stat"> {{totalOnlineByProvider$ | async}}</mat-footer-cell>
+                <mat-footer-cell *matFooterCellDef="let stat"> {{totalOnlineByProvider$ | async}} / {{totalPlannedByProvider$ | async }}</mat-footer-cell>
               </ng-container>
 
               <mat-header-row *matHeaderRowDef="displayedColumnsProvider"></mat-header-row>
