@@ -13,6 +13,7 @@ pipeline {
    steps {
 	bat "xcopy /s /q /y /f \"${configFolder}\\environment.ts\" \"${srcFolder}\\src\\environments\\\""
     bat "cd PTMS.Web & npm install"
+	bat "cd PTMS.Web & npm install copy-webpack-plugin@4.5.2 --save-dev"
 	bat "cd PTMS.Web & npm run build:prod"
    }
   }
