@@ -20,7 +20,7 @@ pipeline {
    steps {
 	bat "if exist ${uiFolder} rmdir /s/q ${uiFolder}"
     bat "move \"${srcFolder}\\dist\" ${uiFolder}"
-	bat "xcopy \"${srcFolder}\\assets\" \"${uiFolder}\\ptms\\assets\\\" /s/h/e/k/f/c"
+	bat "xcopy \"${srcFolder}\\src\\assets\" \"${uiFolder}\\ptms\\assets\\\" /s/h/e/k/f/c"
    }
   }
   stage("Restart IIS Site") {
