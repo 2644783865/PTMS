@@ -1,4 +1,4 @@
-﻿namespace PTMS.BusinessLogic.Config
+﻿namespace PTMS.Common
 {
     public class AppSettings
     {
@@ -14,5 +14,7 @@
         public string EmailSender { get; set; }
         public string BaseSiteUrl { get; set; }
         public string AdminRecipient { get; set; }
+        public string ProjectsDatabaseConnection { get; set; }
+        public string DataDatabaseConnection { get; set; }
     }
 }

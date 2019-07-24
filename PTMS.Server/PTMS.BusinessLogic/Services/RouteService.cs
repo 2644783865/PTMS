@@ -46,20 +46,20 @@ namespace PTMS.BusinessLogic.Services
         public async Task<RouteModel> AddAsync(RouteModel model)
         {
             var entity = MapFromModel(model);
-            var result = await _routeRepository.AddAsync(entity, true);
+            var result = await _routeRepository.AddAsync(entity);
             return MapToModel(result);
         }
 
         public async Task<RouteModel> UpdateAsync(RouteModel model)
         {
             var entity = MapFromModel(model);
-            var result = await _routeRepository.UpdateAsync(entity, true);
+            var result = await _routeRepository.UpdateAsync(entity);
             return MapToModel(result);
         }
 
         public async Task DeleteByIdAsync(int id)
         {
-            await _routeRepository.DeleteByIdAsync(id, true);
+            await _routeRepository.DeleteByIdAsync(id);
         }
     }
 }

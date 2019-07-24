@@ -17,16 +17,32 @@ namespace PTMS.DataServices.Infrastructure
             : base(dbContext)
         {
         }
+
+        public DataServiceAsync(
+            ApplicationDbContext dbContext,
+            DataSyncServiceEx<TEntity, int> syncService)
+            : base(dbContext, syncService)
+        {
+        }
     }
 
     public abstract class DataServiceAsyncEx<TEntity, TPKey> : IDataServiceExAsync<TEntity, TPKey>
         where TEntity : class, new()
     {
         private readonly ApplicationDbContext _dbContext;
+        private readonly DataSyncServiceEx<TEntity, TPKey> _syncService;
 
         public DataServiceAsyncEx(ApplicationDbContext dbContext)
+            : this(dbContext, null)
+        {
+        }
+
+        public DataServiceAsyncEx(
+            ApplicationDbContext dbContext,
+            DataSyncServiceEx<TEntity, TPKey> syncService)
         {
             _dbContext = dbContext;
+            _syncService = syncService;
         }
 
         private DbSet<TEntity> Set => _dbContext.Set<TEntity>();
@@ -95,31 +111,37 @@ namespace PTMS.DataServices.Infrastructure
             return result;
         }
 
-        public virtual async Task<TEntity> AddAsync(TEntity entity, bool commitChanges)
+        public virtual async Task<TEntity> AddAsync(TEntity entity)
         {
             var addResult = await Set.AddAsync(entity);
+            await _dbContext.SaveChangesAsync();
 
-            if (commitChanges)
+            var result = addResult.Entity;
+            
+            if (_syncService != null)
             {
-                await _dbContext.SaveChangesAsync();
+                _syncService.SyncOnAdd(result);
             }
 
-            return addResult.Entity;
+            return result;
         }
 
-        public virtual async Task<TEntity> UpdateAsync(TEntity entity, bool commitChanges)
+        public virtual async Task<TEntity> UpdateAsync(TEntity entity)
         {
             var updateResult = Set.Update(entity);
+            await _dbContext.SaveChangesAsync();
 
-            if (commitChanges)
+            var result = updateResult.Entity;
+
+            if (_syncService != null)
             {
-                await _dbContext.SaveChangesAsync();
+                _syncService.SyncOnUpdate(result);
             }
 
-            return updateResult.Entity;
+            return result;
         }
 
-        public virtual async Task DeleteByIdAsync(TPKey id, bool commitChanges)
+        public virtual async Task DeleteByIdAsync(TPKey id)
         {
             var item = await Set.FindAsync(id);
 
@@ -129,10 +151,11 @@ namespace PTMS.DataServices.Infrastructure
             }
 
             Set.Remove(item);
+            await _dbContext.SaveChangesAsync();
 
-            if (commitChanges)
+            if (_syncService != null)
             {
-                await _dbContext.SaveChangesAsync();
+                _syncService.SyncOnDelete(id);
             }
         }
 

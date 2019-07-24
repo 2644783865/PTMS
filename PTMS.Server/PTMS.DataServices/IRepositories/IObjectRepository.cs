@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PTMS.DataServices.IRepositories
 {
-    public interface IObjectRepository : IDataServiceAsync<Objects>
+    public interface IObjectRepository : IDataServiceExAsync<Objects, decimal>
     {
         Task<PageResult<Objects>> FindByParamsAsync(
             string plateNumber,
@@ -23,9 +23,7 @@ namespace PTMS.DataServices.IRepositories
             int? yearRelease,
             int? page,
             int? pageSize);
-
-        Task<Objects> GetByIdAsync(decimal id);
-
+        
         Task<Objects> GetFullByIdAsync(decimal id);
 
         Task<List<Objects>> FindForReporting(DateTime onlineStartDate, DateTime onlineEndDate);

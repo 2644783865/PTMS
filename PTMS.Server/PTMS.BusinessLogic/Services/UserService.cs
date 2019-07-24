@@ -129,7 +129,7 @@ namespace PTMS.BusinessLogic.Services
                 ThrowIdentityError(roleResult.Errors);
             }
 
-            await _userRepository.UpdateAsync(user, true);
+            await _userRepository.UpdateAsync(user);
 
             await _emailService.SendEmailAsync(
                 user.Email,
@@ -180,7 +180,7 @@ namespace PTMS.BusinessLogic.Services
                 throw new InvalidOperationException("Incorrect user status. Should be Active, Disabled or Locked");
             }
 
-            await _userRepository.UpdateAsync(user, true);
+            await _userRepository.UpdateAsync(user);
 
             var result = await GetByIdFullAsync(user.Id);
             return result;

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using PTMS.BusinessLogic.Config;
+using PTMS.Common;
 
 namespace PTMS.Api.Config
 {

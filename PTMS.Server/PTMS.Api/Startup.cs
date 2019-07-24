@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,8 +7,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PTMS.Api.Config;
-using PTMS.BusinessLogic.Config;
+using PTMS.Common;
 using PTMS.Persistance;
+using System.Globalization;
 
 namespace PTMS.Api
 {
@@ -29,7 +29,7 @@ namespace PTMS.Api
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseFirebird(Configuration.GetConnectionString("DefaultConnection"));
+                options.UseFirebird(Configuration.GetSection("AppSettings").Get<AppSettings>().ProjectsDatabaseConnection);
             });
 
             services.ConfigureAuthorization(Configuration);

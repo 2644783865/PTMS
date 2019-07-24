@@ -1,15 +1,15 @@
-﻿using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using PTMS.BusinessLogic.Config;
 using PTMS.BusinessLogic.Helpers;
+using PTMS.Common;
 using PTMS.Domain.Entities;
 using PTMS.Persistance;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 
 namespace PTMS.Api.Config
 {

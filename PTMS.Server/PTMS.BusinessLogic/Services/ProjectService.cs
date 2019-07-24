@@ -42,20 +42,20 @@ namespace PTMS.BusinessLogic.Services
         public async Task<ProjectModel> AddAsync(ProjectModel model)
         {
             var entity = MapFromModel(model);
-            var result = await _projectRepository.AddAsync(entity, true);
+            var result = await _projectRepository.AddAsync(entity);
             return MapToModel(result);
         }
 
         public async Task<ProjectModel> UpdateAsync(ProjectModel model)
         {
             var entity = MapFromModel(model);
-            var result = await _projectRepository.UpdateAsync(entity, true);
+            var result = await _projectRepository.UpdateAsync(entity);
             return MapToModel(result);
         }
 
         public async Task DeleteByIdAsync(int id)
         {
-            await _projectRepository.DeleteByIdAsync(id, true);
+            await _projectRepository.DeleteByIdAsync(id);
         }
     }
 }

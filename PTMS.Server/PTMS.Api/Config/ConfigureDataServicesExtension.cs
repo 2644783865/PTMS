@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using PTMS.DataServices.Infrastructure;
 using PTMS.DataServices.IRepositories;
 using PTMS.DataServices.Repositories;
+using PTMS.DataServices.SyncServices;
 
 namespace PTMS.Api.Config
 {
@@ -9,8 +9,6 @@ namespace PTMS.Api.Config
     {
         public static void ConfigureDataServices(this IServiceCollection services)
         {
-            services.AddScoped<IDbTransactionHelper, DbTransactionHelper>();
-
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IObjectRepository, ObjectRepository>();
             services.AddScoped<IRouteRepository, RouteRepository>();
@@ -21,6 +19,8 @@ namespace PTMS.Api.Config
             services.AddScoped<ICarTypeRepository, CarTypeRepository>();
             services.AddScoped<IPlanRepository, PlanRepository>();
             services.AddScoped<IProjectRouteRepository, ProjectRouteRepository>();
+
+            services.AddScoped<ObjectsSyncService>();
         }
     }
 }

@@ -2,6 +2,7 @@
 using PTMS.DataServices.Infrastructure;
 using PTMS.DataServices.IRepositories;
 using PTMS.DataServices.Models;
+using PTMS.DataServices.SyncServices;
 using PTMS.Domain.Entities;
 using PTMS.Persistance;
 using System;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace PTMS.DataServices.Repositories
 {
-    public class ObjectRepository : DataServiceAsync<Objects>, IObjectRepository
+    public class ObjectRepository : DataServiceAsyncEx<Objects, decimal>, IObjectRepository
     {
         private readonly string[] _includesFull =
         {
@@ -34,8 +35,10 @@ namespace PTMS.DataServices.Repositories
             nameof(Objects.Route)
         };
 
-        public ObjectRepository(ApplicationDbContext context)
-            :base(context)
+        public ObjectRepository(
+            ApplicationDbContext context,
+            ObjectsSyncService syncService)
+            :base(context, syncService)
         {
 
         }
@@ -89,11 +92,6 @@ namespace PTMS.DataServices.Repositories
                 page,
                 pageSize,
                 includes);
-        }
-
-        public Task<Objects> GetByIdAsync(decimal id)
-        {
-            return GetAsync(x => x.Id == id);
         }
 
         public Task<Objects> GetFullByIdAsync(decimal id)

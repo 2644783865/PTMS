@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
-using PTMS.BusinessLogic.Config;
 using PTMS.BusinessLogic.IServices;
+using PTMS.Common;
 using System;
 using System.IO;
 using System.Linq;

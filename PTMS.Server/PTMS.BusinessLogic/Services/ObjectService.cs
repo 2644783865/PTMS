@@ -73,7 +73,7 @@ namespace PTMS.BusinessLogic.Services
         public async Task<ObjectModel> AddAsync(ObjectModel model)
         {
             var entity = MapFromModel(model);
-            var result = await _objectRepository.AddAsync(entity, true);
+            var result = await _objectRepository.AddAsync(entity);
             return MapToModel(result);
         }
 
@@ -167,7 +167,7 @@ namespace PTMS.BusinessLogic.Services
 
         public async Task DeleteByIdAsync(int id)
         {
-            await _objectRepository.DeleteByIdAsync(id, true);
+            await _objectRepository.DeleteByIdAsync(id);
         }
 
         public async Task<List<ObjectModel>> FindForReportingAsync(int minutes)
@@ -182,7 +182,7 @@ namespace PTMS.BusinessLogic.Services
 
         private async Task<ObjectModel> UpdateAsync(Objects entity)
         {
-            var result = await _objectRepository.UpdateAsync(entity, true);
+            var result = await _objectRepository.UpdateAsync(entity);
             return await GetByIdAsync(result.Id);
         }
     }

@@ -15,10 +15,10 @@ namespace PTMS.DataServices.Infrastructure
     {
         Task<TEntity> GetByIdAsync(TPKey id);
         
-        Task<TEntity> AddAsync(TEntity entity, bool commitChanges);
+        Task<TEntity> AddAsync(TEntity entity);
 
-        Task<TEntity> UpdateAsync(TEntity entity, bool commitChanges);
+        Task<TEntity> UpdateAsync(TEntity entity);
 
-        Task DeleteByIdAsync(TPKey id, bool commitChanges);
+        Task DeleteByIdAsync(TPKey id);
     }
 }

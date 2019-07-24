@@ -1,10 +1,9 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using PTMS.BusinessLogic.Config;
 using PTMS.BusinessLogic.Helpers;
 using PTMS.BusinessLogic.IServices;
 using PTMS.BusinessLogic.Models.Account;
-using PTMS.DataServices.Infrastructure;
+using PTMS.Common;
 using PTMS.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -22,20 +21,17 @@ namespace PTMS.BusinessLogic.Services
         private readonly AppSignInManager _signInManager;
         private readonly AppSettings _appSettings;
         private readonly IEmailService _emailService;
-        private readonly IDbTransactionHelper _dbTransactionHelper;
 
         public AccountService(
             AppUserManager userManager,
             AppSignInManager signInManager,
             IOptions<AppSettings> appSettings,
-            IEmailService emailService,
-            IDbTransactionHelper dbTransactionHelper)
+            IEmailService emailService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailService = emailService;
             _appSettings = appSettings.Value;
-            _dbTransactionHelper = dbTransactionHelper;
         }
 
         public async Task<string> Login(string email, string password)
