@@ -1,10 +1,10 @@
-﻿using System;
-using System.IO;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
+using PTMS.Common;
 using PTMS.Persistance;
+using System;
 
 namespace PTMS.DbCreator
 {
@@ -20,7 +20,7 @@ namespace PTMS.DbCreator
 
                 IConfigurationRoot configuration = builder.Build();
 
-                var connectionString = configuration.GetConnectionString("DefaultConnection");
+                var connectionString = configuration.GetSection("AppSettings").Get<AppSettings>().ProjectsDatabaseConnection;
 
                 var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
                 optionsBuilder.UseFirebird(connectionString);
