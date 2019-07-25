@@ -32,11 +32,11 @@ pipeline {
   }
   stage("Apply Server Build") {
    steps {
-    bat "${appcmd} stop site PtmsServer"
+    bat "iisreset /stop"
 	bat "if exist ${serverFolder} rmdir /s/q ${serverFolder}"
     bat "move ${tempServerFolder} ${serverFolder}"
 	bat "xcopy /s/y ${configFolder}\\appsettings.json ${serverFolder}"
-	bat "${appcmd} start site PtmsServer"
+	bat "iisreset /start"
    }
   }
  }
