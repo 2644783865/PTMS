@@ -77,11 +77,51 @@ declare variable SQL_ varchar(500) = 'SELECT {columnsWithComma} FROM {_tableName
             sb.AppendLine($@"
 BEGIN
     for execute statement (:SQL_)
-    on external '{_projectsConnection.DataSource}/{_projectsConnection.Port}:{_projectsConnection.Database}'
-    AS USER '{_projectsConnection.UserID}' PASSWORD '{_projectsConnection.Password}'
+    {GetConnectionToProjectsDbSql()}
     into  {variableWithComma}
     do begin
        insert into {_tableName} ({columnsWithComma}) values ({variableWithComma});
+    end
+END
+");
+
+            var result = sb.ToString();
+            return result;
+        }
+
+        protected virtual string GetUpdateStatement(TEntity entity)
+        {
+            var columnsWithComma = string.Join(", ", _columnDefenitions.Keys);
+            var primaryKeyValue = GetPrimaryKeyValue(entity);
+
+            var sb = new StringBuilder();
+
+            sb.AppendLine($@"
+EXECUTE BLOCK 
+AS
+declare variable SQL_ varchar(500) = 'SELECT {columnsWithComma} FROM {_tableName} where {_primaryKeyFieldName} = {primaryKeyValue}';
+");
+            var variableDefenitions = _columnDefenitions.ToDictionary(x => "o_" + x.Key, x => x.Value);
+            var variableWithComma = string.Join(", ", variableDefenitions.Keys.Select(x => ":" + x));
+
+            var setStatement = string.Join(", ", _columnDefenitions.Keys.Select(x => $"{x} = :o_{x}"));
+
+            foreach (var varName in variableDefenitions.Keys)
+            {
+                var varType = variableDefenitions[varName];
+
+                sb.AppendLine($"declare variable {varName} {varType};");
+            }
+
+            sb.AppendLine($@"
+BEGIN
+    for execute statement (:SQL_)
+    {GetConnectionToProjectsDbSql()}
+    into  {variableWithComma}
+    do begin
+       update {_tableName}
+       set {setStatement}
+       Where {_primaryKeyFieldName} = {primaryKeyValue};
     end
 END
 ");
@@ -104,9 +144,8 @@ END
 
         public void SyncOnUpdate(TEntity entity)
         {
-            var id = GetPrimaryKeyValue(entity);
-            SyncOnDelete(id);
-            SyncOnAdd(entity);
+            var sql = GetUpdateStatement(entity);
+            ExecuteSql(sql);
         }
 
         public void SyncOnDelete(TPKey id)
@@ -114,8 +153,8 @@ END
             var sql = GetDeleteStatement(id);
             ExecuteSql(sql);
         }
-        
-        private Dictionary<string, string> GetColumnDefinitions()
+
+        protected Dictionary<string, string> GetColumnDefinitions()
         {
             var entityType = _dbContext.Model.FindEntityType(typeof(TEntity));
             var result = new Dictionary<string, string>();
@@ -137,7 +176,7 @@ END
             return result;
         }
 
-        private TPKey GetPrimaryKeyValue(TEntity entity)
+        protected TPKey GetPrimaryKeyValue(TEntity entity)
         {
             return (TPKey)entity
                 .GetType()
@@ -145,7 +184,7 @@ END
                 .GetValue(entity, null);
         }
 
-        private string GetPrimaryKeyPropertyName()
+        protected string GetPrimaryKeyPropertyName()
         {
             var keyName = _dbContext.Model
                 .FindEntityType(typeof(TEntity))
@@ -157,7 +196,7 @@ END
             return keyName;
         }
 
-        private string GetPrimaryKeyFieldName()
+        protected string GetPrimaryKeyFieldName()
         {
             var keyName = _dbContext.Model
                 .FindEntityType(typeof(TEntity))
@@ -170,10 +209,16 @@ END
             return keyName;
         }
 
-        private string GetTableName()
+        protected string GetTableName()
         {
             var mapping = _dbContext.Model.FindEntityType(typeof(TEntity)).Relational();
             return mapping.TableName;
+        }
+
+        protected string GetConnectionToProjectsDbSql()
+        {
+            return $@"on external '{_projectsConnection.DataSource}/{_projectsConnection.Port}:{_projectsConnection.Database}'
+    AS USER '{_projectsConnection.UserID}' PASSWORD '{_projectsConnection.Password}'";
         }
 
         private void ExecuteSql(string sql)
@@ -187,6 +232,7 @@ END
                     {
                         using (var reader = command.ExecuteReader())
                         {
+                            transaction.Commit();
                         }
                     }
                 }
