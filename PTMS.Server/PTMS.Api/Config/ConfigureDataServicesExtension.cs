@@ -19,6 +19,7 @@ namespace PTMS.Api.Config
             services.AddScoped<ICarTypeRepository, CarTypeRepository>();
             services.AddScoped<IPlanRepository, PlanRepository>();
             services.AddScoped<IProjectRouteRepository, ProjectRouteRepository>();
+            services.AddScoped<IFactOfObjectRouteRepository, FactOfObjectRouteRepository>();
 
             services.AddScoped<ObjectsSyncService>();
         }

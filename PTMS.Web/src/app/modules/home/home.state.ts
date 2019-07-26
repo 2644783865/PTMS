@@ -23,6 +23,7 @@ export interface HomeState extends AppEntityState<ObjectDto> {
 
 export interface ProjectStat {
   project: ProjectDto,
+  factNumber: number,
   plannedNumber: number,
   onlineNumber: number,
   hasError: boolean
@@ -30,6 +31,7 @@ export interface ProjectStat {
 
 export interface RouteStat {
   route: RouteDto,
+  factNumber: number,
   plannedNumber: number,
   onlineNumber: number,
   hasError: boolean
@@ -103,9 +105,11 @@ export class HomeQuery extends AppQueryEntity<HomeState, ObjectDto> {
       let result = projects.map(project => {
         let filteredPlans = plansByRoutes.filter(x => x.projectId == project.id);
         let plannedNumber = filteredPlans.reduce((sum, x) => sum + x.plannedNumber, 0);
+        let factNumber = filteredPlans.reduce((sum, x) => sum + x.factNumber, 0);
 
         let item: ProjectStat = {
           project,
+          factNumber: filteredPlans.length > 0 ? factNumber : undefined,
           plannedNumber: filteredPlans.length > 0 ? plannedNumber : undefined,
           onlineNumber: objects.filter(x => x.projId == project.id).length,
           hasError: false
@@ -132,6 +136,14 @@ export class HomeQuery extends AppQueryEntity<HomeState, ObjectDto> {
     .pipe(
       switchMap(stats => {
         let result = stats.reduce((sum, item) => sum + item.onlineNumber, 0);
+        return of(result);
+      })
+    );
+
+  totalFactByProject$: Observable<number> = this.statByProject$
+    .pipe(
+      switchMap(stats => {
+        let result = stats.reduce((sum, item) => sum + (item.factNumber || 0), 0);
         return of(result);
       })
     );
@@ -169,7 +181,7 @@ export class HomeQuery extends AppQueryEntity<HomeState, ObjectDto> {
         return of(result);
       })
     );
-
+    
   totalPlannedByProvider$: Observable<number> = this.select(s => s.plansByRoutes)
     .pipe(
       switchMap(plansByRoutes => {
@@ -190,6 +202,7 @@ export class HomeQuery extends AppQueryEntity<HomeState, ObjectDto> {
 
         let item: RouteStat = {
           route,
+          factNumber: planByRoute ? planByRoute.factNumber : undefined,
           plannedNumber: planByRoute ? planByRoute.plannedNumber : undefined,
           onlineNumber: objects.filter(x => x.lastRout == route.id).length,
           hasError: false
@@ -225,6 +238,14 @@ export class HomeQuery extends AppQueryEntity<HomeState, ObjectDto> {
     .pipe(
       switchMap(stats => {
         let result = stats.reduce((sum, item) => sum + (item.plannedNumber || 0), 0);
+        return of(result);
+      })
+    );
+
+  totalFactByRoute$: Observable<number> = this.statByRoute$
+    .pipe(
+    switchMap(stats => {
+        let result = stats.reduce((sum, item) => sum + (item.factNumber || 0), 0);
         return of(result);
       })
     );

@@ -25,6 +25,7 @@ export class HomeComponent implements OnInit {
 
   statByProject$: Observable<ProjectStat[]>;
   totalOnlineByProject$: Observable<number>;
+  totalFactByProject$: Observable<number>;
   totalPlannedByProject$: Observable<number>;
 
   statByProvider$: Observable<ProviderStat[]>;
@@ -33,6 +34,7 @@ export class HomeComponent implements OnInit {
 
   statByRoute$: Observable<RouteStat[]>;
   totalOnlineByRoute$: Observable<number>;
+  totalFactByRoute$: Observable<number>;
   totalPlannedByRoute$: Observable<number>;
 
   displayedColumnsProject = ['project', 'onlineNumber'];
@@ -51,6 +53,7 @@ export class HomeComponent implements OnInit {
 
     this.statByProject$ = this.homeQuery.statByProject$;
     this.totalOnlineByProject$ = this.homeQuery.totalOnlineByProject$;
+    this.totalFactByProject$ = this.homeQuery.totalFactByProject$;
     this.totalPlannedByProject$ = this.homeQuery.totalPlannedByProject$;
 
     this.statByProvider$ = this.homeQuery.statByProvider$;
@@ -59,6 +62,7 @@ export class HomeComponent implements OnInit {
 
     this.statByRoute$ = this.homeQuery.statByRoute$;
     this.totalOnlineByRoute$ = this.homeQuery.totalOnlineByRoute$;
+    this.totalFactByRoute$ = this.homeQuery.totalFactByRoute$
     this.totalPlannedByRoute$ = this.homeQuery.totalPlannedByRoute$;
 
     this.setFilters();
