@@ -1,0 +1,29 @@
+pipeline {
+ agent any
+ environment {
+  appcmd = "C:\\Windows\\System32\\inetsrv\\appcmd.exe"
+  
+  srcFolder = "${workspace}\\PTMS.Web"
+  destFolder = "C:\\projects\\PTMS_PROD"
+  uiFolder = "${destFolder}\\PTMS-UI"
+  configFolder = "${destFolder}\\Configs"
+ }
+ stages {
+  stage("Build UI") {
+   steps {
+	bat "xcopy /s /q /y /f \"${configFolder}\\environment.ts\" \"${srcFolder}\\src\\environments\\\""
+    bat "cd PTMS.Web & npm install"
+	bat "cd PTMS.Web & npm run build:prod"
+   }
+  }
+  stage("Apply UI Build") {
+   steps {
+    bat "${appcmd} stop site PtmsWebUI"
+	bat "if exist ${uiFolder} rmdir /s/q ${uiFolder}"
+    bat "move \"${srcFolder}\\dist\" ${uiFolder}"
+	bat "xcopy \"${srcFolder}\\src\\assets\" \"${uiFolder}\\ptms\\assets\\\" /s/h/e/k/f/c"
+	bat "${appcmd} start site PtmsWebUI"
+   }
+  }
+ }
+}

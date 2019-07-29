@@ -1,0 +1,41 @@
+pipeline {
+ agent any
+ environment {
+  destFolder = "C:\\projects\\PTMS_Prod"
+  dbCreatorFolder = "${destFolder}\\PTMS-DbCreator"  
+  serverFolderName = "PTMS-Server"
+  serverFolder = "${destFolder}\\${serverFolderName}"
+  tempServerFolder = "${destFolder}\\PTMS-Server-Temp"
+  configFolder = "${destFolder}\\Configs"
+ }
+ stages {
+  stage("Build DbCreator") {
+   steps {
+	bat "if exist ${dbCreatorFolder} rmdir /s/q ${dbCreatorFolder}"
+    bat "cd PTMS.Server & dotnet publish PTMS.DbCreator -r win-x64 --self-contained -c Release -o ${dbCreatorFolder}"
+	bat "xcopy /s/y ${configFolder}\\appsettings.json ${dbCreatorFolder}"
+   }
+  }
+  stage("Build Server") {
+   steps {
+	bat "if exist ${tempServerFolder} rmdir /s/q ${tempServerFolder}"
+    bat "cd PTMS.Server & dotnet publish PTMS.Api -c Release -o ${tempServerFolder}"
+   }
+  }
+  stage("Run DbCreator") {
+   steps {
+    bat "${dbCreatorFolder}\\PTMS.DbCreator.exe"
+	bat "if exist ${dbCreatorFolder} rmdir /s/q ${dbCreatorFolder}"
+   }
+  }
+  stage("Apply Server Build") {
+   steps {
+    bat "iisreset /stop"
+	bat "if exist ${serverFolder} rmdir /s/q ${serverFolder}"
+    bat "move ${tempServerFolder} ${serverFolder}"
+	bat "xcopy /s/y ${configFolder}\\appsettings.json ${serverFolder}"
+	bat "iisreset /start"
+   }
+  }
+ }
+}
