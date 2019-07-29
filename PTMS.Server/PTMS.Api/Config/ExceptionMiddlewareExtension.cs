@@ -1,37 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-public static class ExceptionMiddlewareExtension
+public class ExceptionMiddleware
 {
-    public static void ConfigureExceptionHandler(this IApplicationBuilder app)
+    private readonly RequestDelegate _next;
+    private readonly ILogger _logger;
+
+    public ExceptionMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
     {
-        app.UseExceptionHandler(errorApp =>
+        _logger = loggerFactory.CreateLogger<ExceptionMiddleware>();
+        _next = next;
+    }
+
+    public async Task InvokeAsync(HttpContext context)
+    {
+        try
         {
-            errorApp.Run(async context =>
+            await _next(context);
+        }
+        catch (Exception exception)
+        {
+            var error = GetError(exception);
+            var statusCode = (int)GetErrorCode(exception);
+            var request = context.Request;
+
+            _logger.LogError(exception, $"Request Url: {request.Host}{request.Path} {request.QueryString}");
+
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = statusCode;
+
+            var response = JsonConvert.SerializeObject(error, new JsonSerializerSettings
             {
-                var exceptionHandlerPathFeature =
-                    context.Features.Get<IExceptionHandlerPathFeature>();
-
-                var error = GetError(exceptionHandlerPathFeature?.Error);
-                var statusCode = (int)GetErrorCode(exceptionHandlerPathFeature?.Error);
-
-                context.Response.ContentType = "application/json";
-                context.Response.StatusCode = statusCode;
-
-                var response = JsonConvert.SerializeObject(error, new JsonSerializerSettings
-                {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver()
-                });
-
-                await context.Response.WriteAsync(response);
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
             });
-        });
+
+            await context.Response.WriteAsync(response);
+        }
     }
 
     private static Error GetError(Exception exception)
@@ -40,7 +52,7 @@ public static class ExceptionMiddlewareExtension
 
         var error = new Error()
         {
-            Message =  !string.IsNullOrEmpty(message) ? message : "Произошла неизвестная ошибка. Пожалуйста, обратитесь к администратору.",
+            Message = !string.IsNullOrEmpty(message) ? message : "Произошла неизвестная ошибка. Пожалуйста, обратитесь к администратору.",
             StackTrace = exception?.StackTrace,
             InnerException = exception?.InnerException
         };

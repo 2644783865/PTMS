@@ -18,11 +18,11 @@ pipeline {
   }
   stage("Apply UI Build") {
    steps {
-    bat "${appcmd} stop site PtmsWebUI"
+    bat "${appcmd} stop site PtmsWebUiProd"
 	bat "if exist ${uiFolder} rmdir /s/q ${uiFolder}"
     bat "move \"${srcFolder}\\dist\" ${uiFolder}"
 	bat "xcopy \"${srcFolder}\\src\\assets\" \"${uiFolder}\\ptms\\assets\\\" /s/h/e/k/f/c"
-	bat "${appcmd} start site PtmsWebUI"
+	bat "${appcmd} start site PtmsWebUiProd"
    }
   }
  }
