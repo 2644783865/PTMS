@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, merge } from 'rxjs';
+import { Observable } from 'rxjs';
 import { HomeQuery, ProjectStat, ProviderStat, RouteStat } from './home.state';
 import { HomeService } from './home.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -24,18 +24,12 @@ export class HomeComponent implements OnInit {
   intervalDropdown: KeyValuePair<string>[];
 
   statByProject$: Observable<ProjectStat[]>;
-  totalOnlineByProject$: Observable<number>;
-  totalFactByProject$: Observable<number>;
-  totalPlannedByProject$: Observable<number>;
-
   statByProvider$: Observable<ProviderStat[]>;
-  totalOnlineByProvider$: Observable<number>;
-  totalPlannedByProvider$: Observable<number>;
-
   statByRoute$: Observable<RouteStat[]>;
-  totalOnlineByRoute$: Observable<number>;
-  totalFactByRoute$: Observable<number>;
-  totalPlannedByRoute$: Observable<number>;
+
+  totalOnline$: Observable<number>;
+  totalFact$: Observable<number>;
+  totalPlanned$: Observable<number>;
 
   displayedColumnsProject = ['project', 'onlineNumber'];
   displayedColumnsProvider = ['provider', 'onlineNumber'];
@@ -52,18 +46,12 @@ export class HomeComponent implements OnInit {
     this.projects$ = this.homeQuery.projects$;
 
     this.statByProject$ = this.homeQuery.statByProject$;
-    this.totalOnlineByProject$ = this.homeQuery.totalOnlineByProject$;
-    this.totalFactByProject$ = this.homeQuery.totalFactByProject$;
-    this.totalPlannedByProject$ = this.homeQuery.totalPlannedByProject$;
-
     this.statByProvider$ = this.homeQuery.statByProvider$;
-    this.totalOnlineByProvider$ = this.homeQuery.totalOnlineByProvider$;
-    this.totalPlannedByProvider$ = this.homeQuery.totalPlannedByProvider$;
-
     this.statByRoute$ = this.homeQuery.statByRoute$;
-    this.totalOnlineByRoute$ = this.homeQuery.totalOnlineByRoute$;
-    this.totalFactByRoute$ = this.homeQuery.totalFactByRoute$
-    this.totalPlannedByRoute$ = this.homeQuery.totalPlannedByRoute$;
+
+    this.totalOnline$ = this.homeQuery.totalOnline$;
+    this.totalFact$ = this.homeQuery.totalFact$
+    this.totalPlanned$ = this.homeQuery.totalPlanned$;
 
     this.setFilters();
     

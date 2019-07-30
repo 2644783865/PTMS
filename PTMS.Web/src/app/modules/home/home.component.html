@@ -42,27 +42,37 @@
           </mat-form-field>
         </div>
       </div>
-      <div class="row">
+      <mat-divider></mat-divider>
+      <div class="row total-row">
+        <div class="col-lg-auto col-12">
+          <b>Глонасс: </b> {{totalOnline$ | async}}
+        </div>
+        <div class="col-lg-auto col-12">
+          <b>Перевозчик: </b> {{totalFact$ | async}}
+        </div>
+        <div class="col-lg-auto col-12">
+          <b>План: </b> {{totalPlanned$ | async}}
+        </div>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="row" style="margin-top: 1px;">
         <div class="col-lg-4 col-md-6 col-12">
           <div class="stat-widget-container">
             <mat-table [dataSource]="statByProject$ | async" [trackBy]="trackByProjectStat">
               <ng-container matColumnDef="project">
                 <mat-header-cell *matHeaderCellDef> Перевозчик </mat-header-cell>
                 <mat-cell *matCellDef="let stat"> {{stat.project.name}} </mat-cell>
-                <mat-footer-cell *matFooterCellDef="let stat"> Итого: </mat-footer-cell>
               </ng-container>
 
               <ng-container matColumnDef="onlineNumber">
-                <mat-header-cell *matHeaderCellDef> Глонасс / Факт / План </mat-header-cell>
+                <mat-header-cell *matHeaderCellDef> Глонасс / Перевозчик / План </mat-header-cell>
                 <mat-cell *matCellDef="let stat"> {{stat.onlineNumber}} / {{stat.factNumber | NA}} / {{stat.plannedNumber | NA}}</mat-cell>
-                <mat-footer-cell *matFooterCellDef="let stat"> {{totalOnlineByProject$ | async}} / {{totalFactByProject$ | async}} / {{totalPlannedByProject$ | async}}</mat-footer-cell>
               </ng-container>
 
               <mat-header-row *matHeaderRowDef="displayedColumnsProject"></mat-header-row>
               <mat-row *matRowDef="let stat; columns: displayedColumnsProject;"
                        [class.bg-error]="stat.hasError">
               </mat-row>
-              <mat-footer-row *matFooterRowDef="displayedColumnsProject; sticky: true"></mat-footer-row>
             </mat-table>
           </div>
         </div>
@@ -72,20 +82,17 @@
               <ng-container matColumnDef="route">
                 <mat-header-cell *matHeaderCellDef> Маршрут </mat-header-cell>
                 <mat-cell *matCellDef="let stat"> {{stat.route.name}} </mat-cell>
-                <mat-footer-cell *matFooterCellDef="let stat"> Итого: </mat-footer-cell>
               </ng-container>
 
               <ng-container matColumnDef="onlineNumber">
-                <mat-header-cell *matHeaderCellDef> Глонасс / Факт / План </mat-header-cell>
+                <mat-header-cell *matHeaderCellDef> Глонасс / Перевозчик / План </mat-header-cell>
                 <mat-cell *matCellDef="let stat"> {{stat.onlineNumber}} / {{stat.factNumber | NA}} / {{stat.plannedNumber | NA}} </mat-cell>
-                <mat-footer-cell *matFooterCellDef="let stat"> {{totalOnlineByRoute$ | async}} / {{totalFactByRoute$ | async}} / {{totalPlannedByRoute$ | async}}</mat-footer-cell>
               </ng-container>
 
               <mat-header-row *matHeaderRowDef="displayedColumnsRoute"></mat-header-row>
               <mat-row *matRowDef="let stat; columns: displayedColumnsRoute;"
                        [class.bg-error]="stat.hasError">
               </mat-row>
-              <mat-footer-row *matFooterRowDef="displayedColumnsRoute; sticky: true"></mat-footer-row>
             </mat-table>
           </div>
         </div>
@@ -95,19 +102,16 @@
               <ng-container matColumnDef="provider">
                 <mat-header-cell *matHeaderCellDef> Установщик </mat-header-cell>
                 <mat-cell *matCellDef="let stat"> {{stat.provider.name}} </mat-cell>
-                <mat-footer-cell *matFooterCellDef="let stat"> Итого: </mat-footer-cell>
               </ng-container>
 
               <ng-container matColumnDef="onlineNumber">
                 <mat-header-cell *matHeaderCellDef> Онлайн </mat-header-cell>
                 <mat-cell *matCellDef="let stat"> {{stat.onlineNumber}}  </mat-cell>
-                <mat-footer-cell *matFooterCellDef="let stat"> {{totalOnlineByProvider$ | async}} / {{totalPlannedByProvider$ | async }}</mat-footer-cell>
               </ng-container>
 
               <mat-header-row *matHeaderRowDef="displayedColumnsProvider"></mat-header-row>
               <mat-row *matRowDef="let row; columns: displayedColumnsProvider;">
               </mat-row>
-              <mat-footer-row *matFooterRowDef="displayedColumnsProvider; sticky: true"></mat-footer-row>
             </mat-table>
           </div>
         </div>

@@ -3,12 +3,7 @@
 
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
-$form-blue: #3f51b5;
-$app-success-color: $green;
-$app-info-color: $cyan;
-$app-warn-color: $orange;
-$app-error-color: $red;
-
+@import "variables";
 
 html, body {
   height: 100%;
@@ -17,13 +12,7 @@ html, body {
 
 @media (min-width: 1300px) {
   .container {
-    max-width: 1250px;
-  }
-}
-
-@media (min-width: 1400px) {
-  .container {
-    max-width: 1350px;
+    max-width: calc(100% - 100px);
   }
 }
 

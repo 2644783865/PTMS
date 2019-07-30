@@ -35,12 +35,15 @@ namespace PTMS.DataServices.Repositories
             nameof(Objects.Route)
         };
 
+        private readonly IRouteRepository _routeRepository;
+
         public ObjectRepository(
+            IRouteRepository routeRepository,
             ApplicationDbContext context,
             ObjectsSyncService syncService)
             :base(context, syncService)
         {
-
+            _routeRepository = routeRepository;
         }
 
         public Task<PageResult<Objects>> FindByParamsAsync(
@@ -64,11 +67,21 @@ namespace PTMS.DataServices.Repositories
                 projectId = userRoutesModel.ProjectId;
             }
 
-            Expression<Func<Objects, bool>> filter = x => (string.IsNullOrEmpty(plateNumber) || x.Name.Contains(plateNumber, StringComparison.InvariantCultureIgnoreCase))
+            if (!string.IsNullOrEmpty(plateNumber))
+            {
+                plateNumber = plateNumber.ToUpper();
+            }
+
+            if (!string.IsNullOrEmpty(routeName))
+            {
+                routeName = routeName.ToUpper();
+            }
+
+            Expression<Func<Objects, bool>> filter = x => (string.IsNullOrEmpty(plateNumber) || x.Name.Contains(plateNumber))
                 && (!projectId.HasValue || x.ProjId == projectId)
                 && (!carBrandId.HasValue || x.CarBrandId == carBrandId)
                 && (!providerId.HasValue || x.ProviderId == providerId)
-                && (string.IsNullOrEmpty(routeName) || x.Route.Name.Equals(routeName, StringComparison.InvariantCultureIgnoreCase))
+                && (string.IsNullOrEmpty(routeName) || x.Route.Name.Equals(routeName))
                 && (!carTypeId.HasValue || x.CarBrand.CarTypeId == carTypeId)
                 && (!locked.HasValue || x.ObjOutput == locked.Value)
                 && (!yearRelease.HasValue || x.YearRelease == yearRelease)
@@ -87,8 +100,8 @@ namespace PTMS.DataServices.Repositories
 
             return FindPagedAsync(
                 filter,
-                x => x.Name,
-                true,
+                x => x.LastTime,
+                false,
                 page,
                 pageSize,
                 includes);
@@ -102,9 +115,9 @@ namespace PTMS.DataServices.Repositories
         public Task<List<Objects>> FindForReporting(DateTime onlineStartDate, DateTime onlineEndDate)
         {
             return FindAsync(x => !x.ObjOutput
-                && x.LastTime.HasValue
-                && x.LastTime.Value >= onlineStartDate
-                && x.LastTime.Value <= onlineEndDate
+                && x.LastStationTime.HasValue
+                && x.LastStationTime.Value >= onlineStartDate
+                && x.LastStationTime.Value <= onlineEndDate
                 && x.Route.RouteActive);
         }
     }

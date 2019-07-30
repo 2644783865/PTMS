@@ -138,6 +138,16 @@
           <mat-cell *matCellDef="let vehicle" mobile-label="Установщик"> {{vehicle.provider.name}} </mat-cell>
         </ng-container>
 
+        <ng-container matColumnDef="lastTime">
+          <mat-header-cell *matHeaderCellDef> Время посл. отклика </mat-header-cell>
+          <mat-cell *matCellDef="let vehicle" mobile-label="Время последнего отклика"> {{vehicle.lastTime | RusDateTime}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="lastStationTime">
+          <mat-header-cell *matHeaderCellDef> Время посл. остановки </mat-header-cell>
+          <mat-cell *matCellDef="let vehicle" mobile-label="Время последней остановки"> {{vehicle.lastStationTime | RusDateTime}} </mat-cell>
+        </ng-container>
+
         <ng-container matColumnDef="controls">
           <mat-header-cell *matHeaderCellDef></mat-header-cell>
           <mat-cell *matCellDef="let vehicle" class="table-controls">

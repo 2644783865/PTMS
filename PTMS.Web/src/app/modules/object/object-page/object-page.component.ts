@@ -20,7 +20,7 @@ import { ObjectQuery, ObjectUI } from '../object.state';
   templateUrl: './object-page.component.html'
 })
 export class ObjectPageComponent implements OnInit {
-  private readonly allColumns = ['plateNumber', 'route', 'transporter', 'carBrand', 'carType', 'provider', 'yearRelease', 'phone', 'status', 'controls'];
+  private readonly allColumns = ['plateNumber', 'route', 'transporter', 'carBrand', 'carType', 'provider', 'lastTime', 'lastStationTime', 'yearRelease', 'phone', 'status', 'controls'];
 
   pagination$: Observable<AppPaginationResponse<ObjectUI>>;
   dataLoading$: Observable<boolean>;  
@@ -117,7 +117,7 @@ export class ObjectPageComponent implements OnInit {
       plateNumber: [],
       routeName: [],
       project: [],
-      active: [1],
+      active: [-1],
       provider: [],
       carBrand: [],
       carType: [],
