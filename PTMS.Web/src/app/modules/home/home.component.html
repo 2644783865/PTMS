@@ -45,7 +45,7 @@
       <mat-divider></mat-divider>
       <div class="row total-row">
         <div class="col-lg-auto col-12">
-          <b>Глонасс: </b> {{totalOnline$ | async}}
+          <b>Факт: </b> {{totalOnline$ | async}}
         </div>
         <div class="col-lg-auto col-12">
           <b>Перевозчик: </b> {{totalFact$ | async}}
@@ -65,7 +65,7 @@
               </ng-container>
 
               <ng-container matColumnDef="onlineNumber">
-                <mat-header-cell *matHeaderCellDef> Глонасс / Перевозчик / План </mat-header-cell>
+                <mat-header-cell *matHeaderCellDef> Факт / Перевозчик / План </mat-header-cell>
                 <mat-cell *matCellDef="let stat"> {{stat.onlineNumber}} / {{stat.factNumber | NA}} / {{stat.plannedNumber | NA}}</mat-cell>
               </ng-container>
 
@@ -85,7 +85,7 @@
               </ng-container>
 
               <ng-container matColumnDef="onlineNumber">
-                <mat-header-cell *matHeaderCellDef> Глонасс / Перевозчик / План </mat-header-cell>
+                <mat-header-cell *matHeaderCellDef> Факт / Перевозчик / План </mat-header-cell>
                 <mat-cell *matCellDef="let stat"> {{stat.onlineNumber}} / {{stat.factNumber | NA}} / {{stat.plannedNumber | NA}} </mat-cell>
               </ng-container>
 
