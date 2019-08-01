@@ -29,7 +29,9 @@ namespace PTMS.Api.Controllers
             int? provider = null,
             int? yearRelease = null,
             ModelFormatsEnum format = ModelFormatsEnum.Pure,
-            bool? active = null)
+            bool? active = null,
+            string sortBy = "lastTime",
+            OrderByEnum orderBy = OrderByEnum.Desc)
         {
             var result = await _objectService.FindByParams(
                 User,
@@ -42,6 +44,8 @@ namespace PTMS.Api.Controllers
                 carBrand,
                 provider,
                 yearRelease,
+                sortBy,
+                orderBy,
                 page, 
                 pageSize);
 

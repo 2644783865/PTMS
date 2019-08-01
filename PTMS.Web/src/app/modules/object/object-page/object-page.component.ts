@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material';
+import { MatDialog, Sort } from '@angular/material';
 import { AppPaginationResponse } from '@app/core/akita-extensions/app-paged-entity-state';
 import { CarBrandDto } from '@app/core/dtos/CarBrandDto';
 import { CarTypeDto } from '@app/core/dtos/CarTypeDto';
@@ -17,10 +17,11 @@ import { ObjectQuery, ObjectUI } from '../object.state';
 
 @Component({
   selector: 'app-object-page',
-  templateUrl: './object-page.component.html'
+  templateUrl: './object-page.component.html',
+  styleUrls: ['./object-page.component.scss']
 })
 export class ObjectPageComponent implements OnInit {
-  private readonly allColumns = ['plateNumber', 'route', 'transporter', 'carBrand', 'carType', 'provider', 'lastTime', 'lastStationTime', 'yearRelease', 'phone', 'status', 'controls'];
+  private readonly allColumns = ['name', 'route', 'transporter', 'carBrand', 'carType', 'provider', 'lastTime', 'lastStationTime', 'yearRelease', 'phone', 'status', 'controls'];
   private _updateInterval: number = 1000 * 10; //10 секунд
   private _intervalId;
 
@@ -116,6 +117,15 @@ export class ObjectPageComponent implements OnInit {
     return item.id;
   }
 
+  sortData(event: Sort) {
+    this.filters.patchValue({
+      sortBy: event.active,
+      orderBy: event.direction
+    });
+
+    this.search();
+  }
+
   ngOnDestroy() {
     this.clearInterval();
     this.objectService.onDestroy();
@@ -131,6 +141,8 @@ export class ObjectPageComponent implements OnInit {
       carBrand: [],
       carType: [],
       yearRelease: [],
+      sortBy: ['lastTime'],
+      orderBy: ['desc']
     });
     
     merge(

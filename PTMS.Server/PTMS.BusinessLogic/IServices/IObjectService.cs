@@ -19,6 +19,8 @@ namespace PTMS.BusinessLogic.IServices
             int? carBrandId,
             int? providerId,
             int? yearRelease,
+            string sortBy,
+            OrderByEnum orderBy,
             int? page,
             int? pageSize);
 

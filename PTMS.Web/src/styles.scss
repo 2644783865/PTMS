@@ -94,6 +94,10 @@ html, body {
     padding: 5px 0;
   }
 
+  .mat-sort-header-button {
+    border-bottom: 1px dotted black;
+  }
+
   @include media-breakpoint-down(sm) {
     mat-table {
       border: 0;

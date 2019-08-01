@@ -15,7 +15,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatTableModule, MatDialogModule, MatListModule } from '@angular/material/';
+import { MatTableModule, MatDialogModule, MatListModule, MatSortModule } from '@angular/material/';
 
 import { PaginatorModule } from './paginator/paginator.module';
 import { PageHeaderModule } from './page-header/page-header.module';
@@ -51,6 +51,7 @@ let modules = [
   MatTableModule,
   MatDialogModule,
   MatListModule,
+  MatSortModule,
 
   //app
   PaginatorModule,

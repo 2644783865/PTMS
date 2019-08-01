@@ -42,6 +42,8 @@ namespace PTMS.BusinessLogic.Services
             int? carBrandId,
             int? providerId,
             int? yearRelease,
+            string sortBy,
+            OrderByEnum orderBy,
             int? page,
             int? pageSize)
         {
@@ -58,6 +60,8 @@ namespace PTMS.BusinessLogic.Services
                 carBrandId,
                 providerId,
                 yearRelease,
+                sortBy,
+                orderBy,
                 page,
                 pageSize);
 

@@ -57,6 +57,8 @@ namespace PTMS.DataServices.Repositories
             int? carBrandId,
             int? providerId,
             int? yearRelease,
+            string sortBy,
+            OrderByEnum orderBy,
             int? page,
             int? pageSize)
         {
@@ -98,10 +100,28 @@ namespace PTMS.DataServices.Repositories
                 includes = _includesFull;
             }
 
+            Expression<Func<Objects, object>> sortByFilter = null;
+
+            switch (sortBy.ToLower())
+            {
+                case "name":
+                    sortByFilter = x => x.Name;
+                    break;
+                case "laststationtime":
+                    sortByFilter = x => x.LastStationTime;
+                    break;
+                case "yearrelease":
+                    sortByFilter = x => x.YearRelease;
+                    break;
+                default:
+                    sortByFilter = x => x.LastTime;
+                    break;
+            }
+
             return FindPagedAsync(
                 filter,
-                x => x.LastTime,
-                false,
+                sortByFilter,
+                orderBy,
                 page,
                 pageSize,
                 includes);

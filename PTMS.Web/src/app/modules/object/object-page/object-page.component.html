@@ -88,9 +88,16 @@
 
     <app-loading-bar [isLoading]="dataLoading$ | async"></app-loading-bar>
 
-    <mat-table [dataSource]="pageData.data" [trackBy]="trackById">
-      <ng-container matColumnDef="plateNumber">
-        <mat-header-cell *matHeaderCellDef> Номер </mat-header-cell>
+    <mat-table [dataSource]="pageData.data"
+               [trackBy]="trackById"
+               matSort
+               [matSortActive]="filters.get('sortBy').value"
+               [matSortDirection]="filters.get('orderBy').value"
+               [matSortDisableClear]="true"
+               (matSortChange)="sortData($event)">
+
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Номер </mat-header-cell>
         <mat-cell *matCellDef="let vehicle" mobile-label="Номер"> {{vehicle.name}} </mat-cell>
       </ng-container>
 
@@ -140,12 +147,12 @@
       </ng-container>
 
       <ng-container matColumnDef="lastTime">
-        <mat-header-cell *matHeaderCellDef> Время посл. отклика </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Время посл. отклика </mat-header-cell>
         <mat-cell *matCellDef="let vehicle" mobile-label="Время последнего отклика"> {{vehicle.lastTime | RusDateTime}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="lastStationTime">
-        <mat-header-cell *matHeaderCellDef> Время посл. остановки </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Время посл. остановки </mat-header-cell>
         <mat-cell *matCellDef="let vehicle" mobile-label="Время последней остановки"> {{vehicle.lastStationTime | RusDateTime}} </mat-cell>
       </ng-container>
 

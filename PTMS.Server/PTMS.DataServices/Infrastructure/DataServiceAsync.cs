@@ -79,11 +79,12 @@ namespace PTMS.DataServices.Infrastructure
         protected async Task<PageResult<TEntity>> FindPagedAsync(
             Expression<Func<TEntity, bool>> filter,
             Expression<Func<TEntity, object>> orderBySelector,
-            bool orderByAsc,
+            OrderByEnum orderByEnum,
             int? page,
             int? pageSize,
             params string[] includes)
         {
+            var orderByAsc = orderByEnum == OrderByEnum.Asc;
             var query = Prepare(filter, includes);
 
             query = orderByAsc
