@@ -51,7 +51,7 @@ html, body {
     box-shadow: none;
     padding: 10px 16px 0;
   }
-  
+
   mat-row.table-row-updated {
     background-color: #d4edda;
   }
@@ -130,6 +130,8 @@ html, body {
         font-weight: bold;
         min-width: 90px;
         text-align: left;
+        max-width: 60%;
+        padding-right: 5px;
       }
     }
 

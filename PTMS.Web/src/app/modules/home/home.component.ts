@@ -95,8 +95,12 @@ export class HomeComponent implements OnInit {
     });
 
     this.routeStatFilters.get('intervalId').valueChanges.subscribe(_ => {
-      this.loadReports();
-      this.startUpdateInterval();
+      this.clearInterval();
+
+      window.setTimeout(() => {
+        this.loadReports();
+        this.startUpdateInterval();
+      });
     });
 
     this.routeStatFilters.valueChanges.subscribe(newFilters => {

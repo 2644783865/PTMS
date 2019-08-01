@@ -21,6 +21,8 @@ import { ObjectQuery, ObjectUI } from '../object.state';
 })
 export class ObjectPageComponent implements OnInit {
   private readonly allColumns = ['plateNumber', 'route', 'transporter', 'carBrand', 'carType', 'provider', 'lastTime', 'lastStationTime', 'yearRelease', 'phone', 'status', 'controls'];
+  private _updateInterval: number = 1000 * 10; //10 секунд
+  private _intervalId;
 
   pagination$: Observable<AppPaginationResponse<ObjectUI>>;
   dataLoading$: Observable<boolean>;  
@@ -74,6 +76,8 @@ export class ObjectPageComponent implements OnInit {
     await this.objectService.loadRelatedData();
 
     this.search();
+
+    this.startUpdateInterval();
   }
 
   openChangeRouteDialog(vehicle: ObjectUI) {
@@ -108,7 +112,12 @@ export class ObjectPageComponent implements OnInit {
     window.setTimeout(() => this.objectService.loadPage(event, this.filters.value));
   }
 
+  trackById(item: ObjectUI) {
+    return item.id;
+  }
+
   ngOnDestroy() {
+    this.clearInterval();
     this.objectService.onDestroy();
   }
 
@@ -139,5 +148,27 @@ export class ObjectPageComponent implements OnInit {
       this.filters.get('carBrand').valueChanges,
       this.filters.get('carType').valueChanges
     ).subscribe(_ => this.search());
+  }
+
+  private startUpdateInterval() {
+    let that = this;
+
+    this.clearInterval();
+
+    this._intervalId = setInterval(async _ => {
+      let { currentPage, perPage } = that.objectQuery.getValue();
+      let pageEvent = {
+        page: currentPage,
+        pageSize: perPage
+      } as PaginatorEvent;
+
+      that.search(pageEvent);
+    }, this._updateInterval);
+  }
+
+  private clearInterval() {
+    if (this._intervalId) {
+      clearInterval(this._intervalId);
+    }
   }
 }

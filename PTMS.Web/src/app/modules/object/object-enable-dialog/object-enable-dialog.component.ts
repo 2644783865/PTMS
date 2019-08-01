@@ -25,8 +25,14 @@ export class ObjectEnableDialogComponent {
   ngOnInit() {
     this.modalLoading$ = this.objectQuery.modalLoading$;
 
+    let routeName = this.vehicle.route ? this.vehicle.route.name : '';
+
+    if (routeName) {
+      this.projectForSelectedRoute = this.vehicle.project;
+    }
+
     this.modalForm = this.fb.group({
-      newRouteName: ['', Validators.required, this.objectService.routeValidator]
+      newRouteName: [routeName, Validators.required, this.objectService.routeValidator]
     });
 
     this.modalForm.get('newRouteName')
