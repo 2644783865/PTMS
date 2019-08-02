@@ -110,6 +110,27 @@ namespace PTMS.DataServices.Repositories
                 case "laststationtime":
                     sortByFilter = x => x.LastStationTime;
                     break;
+                case "transporter":
+                    sortByFilter = x => x.Project.Name;
+                    break;
+                case "route":
+                    sortByFilter = x => x.Route.Name;
+                    break;
+                case "carbrand":
+                    sortByFilter = x => x.CarBrand.Name;
+                    break;
+                case "cartype":
+                    sortByFilter = x => x.CarBrand.CarType.Name;
+                    break;
+                case "provider":
+                    sortByFilter = x => x.Provider.Name;
+                    break;
+                case "phone":
+                    sortByFilter = x => x.Phone;
+                    break;
+                case "status":
+                    sortByFilter = x => x.ObjOutput ? 1 : 0;
+                    break;
                 case "yearrelease":
                     sortByFilter = x => x.YearRelease;
                     break;

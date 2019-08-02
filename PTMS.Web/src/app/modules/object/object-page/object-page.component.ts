@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { MatDialog, Sort } from '@angular/material';
 import { AppPaginationResponse } from '@app/core/akita-extensions/app-paged-entity-state';
 import { CarBrandDto } from '@app/core/dtos/CarBrandDto';
@@ -30,6 +30,7 @@ export class ObjectPageComponent implements OnInit {
   displayedColumns: string[];
   filters: FormGroup;
   statuses: Map<string, number>;
+  updatePerInterval: FormControl;
 
   projects$: Observable<ProjectDto[]>;
   providers$: Observable<ProviderDto[]>;
@@ -71,14 +72,13 @@ export class ObjectPageComponent implements OnInit {
       ['Только выведенные', 0],
       ['Все ТС', -1]
     ]);
-
+    
     this.initFilters();
+    this.initUpdateInterval();
 
     await this.objectService.loadRelatedData();
 
     this.search();
-
-    this.startUpdateInterval();
   }
 
   openChangeRouteDialog(vehicle: ObjectUI) {
@@ -162,19 +162,38 @@ export class ObjectPageComponent implements OnInit {
     ).subscribe(_ => this.search());
   }
 
+  private initUpdateInterval() {
+    this.updatePerInterval = new FormControl([true]);
+    this.updatePerInterval.valueChanges.subscribe(val => {
+      if (val) {
+        this.reloadCurrentPage();
+        this.startUpdateInterval();
+      }
+      else {
+        this.clearInterval();
+      }
+    });
+
+    this.startUpdateInterval();
+  }
+
+  private reloadCurrentPage() {
+    let { currentPage, perPage } = this.objectQuery.getValue();
+    let pageEvent = {
+      page: currentPage,
+      pageSize: perPage
+    } as PaginatorEvent;
+
+    this.search(pageEvent);
+  }
+
   private startUpdateInterval() {
     let that = this;
 
     this.clearInterval();
 
-    this._intervalId = setInterval(async _ => {
-      let { currentPage, perPage } = that.objectQuery.getValue();
-      let pageEvent = {
-        page: currentPage,
-        pageSize: perPage
-      } as PaginatorEvent;
-
-      that.search(pageEvent);
+    this._intervalId = setInterval(_ => {
+      that.reloadCurrentPage();
     }, this._updateInterval);
   }
 

@@ -84,6 +84,12 @@
           </mat-form-field>
         </div>
       </div>
+      <div class="text-right">
+        <mat-checkbox color="primary"
+                      [formControl]="updatePerInterval">
+          Обновлять каждые 10 секунд
+        </mat-checkbox>
+      </div>
     </mat-card>
 
     <app-loading-bar [isLoading]="dataLoading$ | async"></app-loading-bar>
@@ -102,37 +108,37 @@
       </ng-container>
 
       <ng-container matColumnDef="transporter">
-        <mat-header-cell *matHeaderCellDef> Перевозчик </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Перевозчик </mat-header-cell>
         <mat-cell *matCellDef="let vehicle" mobile-label="Перевозчик"> {{vehicle.project ? vehicle.project.name : '-'}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="route">
-        <mat-header-cell *matHeaderCellDef> Маршрут </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Маршрут </mat-header-cell>
         <mat-cell *matCellDef="let vehicle" mobile-label="Маршрут"> {{vehicle.route ? vehicle.route.name : '-'}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="carBrand">
-        <mat-header-cell *matHeaderCellDef> Марка ТС </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Марка ТС </mat-header-cell>
         <mat-cell *matCellDef="let vehicle" mobile-label="Марка ТС"> {{vehicle.carBrand ? vehicle.carBrand.name : '-'}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="carType">
-        <mat-header-cell *matHeaderCellDef> Тип ТС </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Тип ТС </mat-header-cell>
         <mat-cell *matCellDef="let vehicle" mobile-label="Тип ТС"> {{vehicle.carBrand ? vehicle.carBrand.carType.name : '-'}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="yearRelease">
-        <mat-header-cell *matHeaderCellDef> Год выпуска </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Год выпуска </mat-header-cell>
         <mat-cell *matCellDef="let vehicle" mobile-label="Год выпуска"> {{vehicle.yearRelease || '-'}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="phone">
-        <mat-header-cell *matHeaderCellDef> Телефон (SIM) </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Телефон (SIM) </mat-header-cell>
         <mat-cell *matCellDef="let vehicle" mobile-label="Телефон (SIM)"> {{vehicle.phone || '-'}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="status">
-        <mat-header-cell *matHeaderCellDef> Статус </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Статус </mat-header-cell>
         <mat-cell *matCellDef="let vehicle" mobile-label="Статус">
           <span class="label-pill label-pill-full-width"
                 [ngClass]="vehicle.objOutput ? 'label-pill-error' : 'label-pill-success'">
@@ -142,7 +148,7 @@
       </ng-container>
 
       <ng-container matColumnDef="provider">
-        <mat-header-cell *matHeaderCellDef> Установщик </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Установщик </mat-header-cell>
         <mat-cell *matCellDef="let vehicle" mobile-label="Установщик"> {{vehicle.provider ? vehicle.provider.name : '-'}} </mat-cell>
       </ng-container>
 
