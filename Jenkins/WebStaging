@@ -1,8 +1,6 @@
 pipeline {
  agent any
  environment {
-  appcmd = "C:\\Windows\\System32\\inetsrv\\appcmd.exe"
-  
   srcFolder = "${workspace}\\PTMS.Web"
   destFolder = "C:\\projects\\PTMS"
   uiFolder = "${destFolder}\\PTMS-UI"
@@ -18,11 +16,11 @@ pipeline {
   }
   stage("Apply UI Build") {
    steps {
-    bat "${appcmd} stop site PtmsWebUI"
+    bat "iisreset /stop"
 	bat "if exist ${uiFolder} rmdir /s/q ${uiFolder}"
     bat "move \"${srcFolder}\\dist\" ${uiFolder}"
 	bat "xcopy \"${srcFolder}\\src\\assets\" \"${uiFolder}\\ptms\\assets\\\" /s/h/e/k/f/c"
-	bat "${appcmd} start site PtmsWebUI"
+	bat "iisreset /start"
    }
   }
  }
