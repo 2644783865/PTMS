@@ -19,6 +19,7 @@ namespace PTMS.Api.Config
             services.AddScoped<ICarBrandService, CarBrandService>();
             services.AddScoped<ICarTypeService, CarTypeService>();
             services.AddScoped<IPlanService, PlanService>();
+            services.AddScoped<IBlockTypeService, BlockTypeService>();
         }
     }
 }

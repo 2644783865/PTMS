@@ -14,6 +14,7 @@ import { ObjectChangeRouteDialogComponent } from '../object-change-route-dialog/
 import { ObjectEnableDialogComponent } from '../object-enable-dialog/object-enable-dialog.component';
 import { ObjectService } from '../object.service';
 import { ObjectQuery, ObjectUI } from '../object.state';
+import { BlockTypeDto } from '@app/core/dtos/BlockTypeDto';
 
 @Component({
   selector: 'app-object-page',
@@ -21,7 +22,7 @@ import { ObjectQuery, ObjectUI } from '../object.state';
   styleUrls: ['./object-page.component.scss']
 })
 export class ObjectPageComponent implements OnInit {
-  private readonly allColumns = ['name', 'route', 'transporter', 'carBrand', 'carType', 'provider', 'lastTime', 'lastStationTime', 'yearRelease', 'phone', 'status', 'controls'];
+  private readonly allColumns = ['name', 'route', 'transporter', 'carBrand', 'carType', 'provider', 'lastTime', 'lastStationTime', 'yearRelease', 'phone', 'block', 'status', 'controls'];
   private _updateInterval: number = 1000 * 10; //10 секунд
   private _intervalId;
 
@@ -36,8 +37,9 @@ export class ObjectPageComponent implements OnInit {
   providers$: Observable<ProviderDto[]>;
   carTypes$: Observable<CarTypeDto[]>;
   carBrands$: Observable<CarBrandDto[]>;
-  showProjectsSelect: boolean;
-  showProviderSelect: boolean;
+  blockTypes$: Observable<BlockTypeDto[]>;
+
+  isTransporter: boolean;
 
   constructor(
     private objectQuery: ObjectQuery,
@@ -53,18 +55,15 @@ export class ObjectPageComponent implements OnInit {
     this.providers$ = this.objectQuery.providers$;
     this.carBrands$ = this.objectQuery.carBrands$;
     this.carTypes$ = this.objectQuery.carTypes$;
+    this.blockTypes$ = this.objectQuery.blockTypes$;
     
-    let isTransporter = this.objectService.isTransporter;
+    this.isTransporter = this.objectService.isTransporter;
 
-    if (isTransporter) {
-      this.displayedColumns = this.allColumns.filter(x => !['transporter', 'provider', 'phone'].includes(x));
-      this.showProjectsSelect = false;
-      this.showProviderSelect = false;
+    if (this.isTransporter) {
+      this.displayedColumns = this.allColumns.filter(x => !['transporter', 'provider', 'phone', 'block'].includes(x));
     }
     else {
       this.displayedColumns = this.allColumns;
-      this.showProjectsSelect = true;
-      this.showProviderSelect = true;
     }
 
     this.statuses = new Map<string, number>([
@@ -141,6 +140,8 @@ export class ObjectPageComponent implements OnInit {
       carBrand: [],
       carType: [],
       yearRelease: [],
+      blockType: [],
+      blockNumber: [],
       sortBy: ['lastTime'],
       orderBy: ['desc']
     });
@@ -148,7 +149,8 @@ export class ObjectPageComponent implements OnInit {
     merge(
       this.filters.get('plateNumber').valueChanges,
       this.filters.get('routeName').valueChanges,
-      this.filters.get('yearRelease').valueChanges
+      this.filters.get('yearRelease').valueChanges,
+      this.filters.get('blockNumber').valueChanges
     )
       .pipe(debounceTime(400))
       .subscribe(_ => this.search());
@@ -158,7 +160,8 @@ export class ObjectPageComponent implements OnInit {
       this.filters.get('active').valueChanges,
       this.filters.get('provider').valueChanges,
       this.filters.get('carBrand').valueChanges,
-      this.filters.get('carType').valueChanges
+      this.filters.get('carType').valueChanges,
+      this.filters.get('blockType').valueChanges
     ).subscribe(_ => this.search());
   }
 

@@ -11,7 +11,7 @@ namespace PTMS.Persistance
     public class ApplicationDbContext : IdentityDbContext<AppUser, AppRole, int, IdentityUserClaim<int>, AppUserRole, IdentityUserLogin<int>, IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
         public virtual DbSet<ArmUsers> ArmUsers { get; set; }
-        public virtual DbSet<BlockTypes> BlockTypes { get; set; }
+        public virtual DbSet<BlockType> BlockTypes { get; set; }
         public virtual DbSet<Bs> Bs { get; set; }
         public virtual DbSet<BsRoute> BsRoute { get; set; }
         public virtual DbSet<CarBrand> CarBrand { get; set; }
@@ -19,7 +19,7 @@ namespace PTMS.Persistance
         public virtual DbSet<Changed> Changed { get; set; }
         public virtual DbSet<Days> Days { get; set; }
         public virtual DbSet<DefaultPlans> DefaultPlans { get; set; }
-        public virtual DbSet<Granits> Granits { get; set; }
+        public virtual DbSet<Granit> Granits { get; set; }
         public virtual DbSet<IbeTodo> IbeTodo { get; set; }
         public virtual DbSet<Objects> Objects { get; set; }
         public virtual DbSet<Plans> Plans { get; set; }
@@ -81,22 +81,22 @@ namespace PTMS.Persistance
                     .HasMaxLength(100);
             });
 
-            builder.Entity<BlockTypes>(entity =>
+            builder.Entity<BlockType>(entity =>
             {
-                entity.HasKey(e => e.BtId)
+                entity.HasKey(e => e.Id)
                     .HasName("PK_BLOCK_TYPES_1");
 
                 entity.ToTable("BLOCK_TYPES                    ");
 
-                entity.HasIndex(e => e.BtId)
+                entity.HasIndex(e => e.Id)
                     .HasName("PK_BLOCK_TYPES_1");
 
-                entity.HasIndex(e => e.BtName)
+                entity.HasIndex(e => e.Name)
                     .HasName("UNQ1_BLOCK_TYPES");
 
-                entity.Property(e => e.BtId).HasColumnName("BT_ID_");
+                entity.Property(e => e.Id).HasColumnName("BT_ID_");
 
-                entity.Property(e => e.BtName)
+                entity.Property(e => e.Name)
                     .IsRequired()
                     .HasColumnName("BT_NAME_")
                     .HasMaxLength(50)
@@ -368,37 +368,7 @@ namespace PTMS.Persistance
                     .HasDefaultValueSql("DEFAULT 0");
             });
 
-            builder.Entity<Granits>(entity =>
-            {
-                entity.ToTable("GRANITS                        ");
-
-                entity.HasIndex(e => e.BlockNumber)
-                    .HasName("UNQ1_BLOCK_NUM");
-
-                entity.HasIndex(e => e.BlockType)
-                    .HasName("FK_GRANITS_2")
-                    .IsUnique();
-
-                entity.HasIndex(e => e.Id)
-                    .HasName("PK_GRANITS");
-
-                entity.HasIndex(e => e.Oids)
-                    .HasName("GRANITS_IDX1");
-
-                entity.Property(e => e.Id).HasColumnName("ID_");
-
-                entity.Property(e => e.BlockNumber)
-                    .HasColumnName("BLOCK_NUMBER")
-                    .HasAnnotation("Description", "Номер блока");
-
-                entity.Property(e => e.BlockType)
-                    .HasColumnName("BLOCK_TYPE")
-                    .HasAnnotation("Description", "Тип блока");
-
-                entity.Property(e => e.Oids)
-                    .HasColumnName("OIDS_")
-                    .HasAnnotation("Description", "ID автобуса");
-            });
+            builder.ConfigureGranits();
 
             builder.Entity<IbeTodo>(entity =>
             {

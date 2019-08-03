@@ -4,6 +4,7 @@ namespace PTMS.Domain.Entities
 {
     public class Objects
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public short ObjId { get; set; }
         public DateTime? LastTime { get; set; }
@@ -17,7 +18,6 @@ namespace PTMS.Domain.Entities
         public int? VehicleType { get; set; }
         public int? Azmth { get; set; }
         public int ProviderId { get; set; }
-        public decimal Id { get; set; }
         public int? CarBrandId { get; set; }
         public string UserComment { get; set; }
         public DateTime? DateInserted { get; set; }
@@ -33,5 +33,6 @@ namespace PTMS.Domain.Entities
         public Provider Provider { get; set; }
         public Project Project { get; set; }
         public Routs Route { get; set; }
+        public Granit Block { get; set; }
     }
 }

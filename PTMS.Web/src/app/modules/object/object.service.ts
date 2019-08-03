@@ -14,6 +14,7 @@ import { AppPaginationResponse } from '@app/core/akita-extensions/app-paged-enti
 import { CarBrandDataService } from '@app/core/data-services/car-brand.data.service';
 import { CarTypeDataService } from '@app/core/data-services/car-type.data.service';
 import { ConfirmDialogService } from '@app/shared/confirm-dialog/confirm-dialog.service';
+import { BlockTypeDataService } from '@app/core/data-services/block-type.data.service';
 
 @Injectable()
 export class ObjectService {
@@ -24,6 +25,7 @@ export class ObjectService {
     private providerDataService: ProviderDataService,
     private carBrandDataService: CarBrandDataService,
     private carTypeDataService: CarTypeDataService,
+    private blockTypeDataService: BlockTypeDataService,
     private routeHelper: RouteHelper,
     private notificationService: NotificationService,
     private authService: AuthService,
@@ -65,11 +67,12 @@ export class ObjectService {
   async loadRelatedData() {
     let isTransporter = this.isTransporter;
 
-    let [ projects, providers, carBrands, carTypes ] = await Promise.all([
+    let [projects, providers, carBrands, carTypes, blockTypes ] = await Promise.all([
       !isTransporter ? this.projectDataService.getAll().toPromise() : Promise.resolve([]),
       !isTransporter ? this.providerDataService.getAll().toPromise() : Promise.resolve([]),
       this.carBrandDataService.getAll().toPromise(),
-      this.carTypeDataService.getAll().toPromise()
+      this.carTypeDataService.getAll().toPromise(),
+      !isTransporter ? this.blockTypeDataService.getAll().toPromise() : Promise.resolve([])
     ]);
 
     carBrands.forEach(x => {
@@ -80,7 +83,8 @@ export class ObjectService {
       projects,
       providers,
       carBrands,
-      carTypes);
+      carTypes,
+      blockTypes);
   }
 
   async getProjectByRouteName(routeName: string) {
@@ -218,12 +222,16 @@ export class ObjectService {
 
     let state = this.objectStore.getValue();
 
-    if (state.projects) {
+    if (state.projects.length > 0) {
       vehicle.project = state.projects.find(x => x.id == vehicle.projId);
     }
 
-    if (state.providers) {
+    if (state.providers.length > 0) {
       vehicle.provider = state.providers.find(x => x.id == vehicle.providerId);
+    }
+
+    if (state.blockTypes.length > 0 && vehicle.block) {
+      vehicle.block.blockType = state.blockTypes.find(x => x.id == vehicle.block.blockTypeId);
     }
 
     vehicle.carBrand = state.carBrands.find(x => x.id == vehicle.carBrandId);

@@ -32,7 +32,8 @@ namespace PTMS.DataServices.Repositories
 
         private readonly string[] _includesPure =
         {
-            nameof(Objects.Route)
+            nameof(Objects.Route),
+            nameof(Objects.Block)
         };
 
         private readonly IRouteRepository _routeRepository;
@@ -57,6 +58,8 @@ namespace PTMS.DataServices.Repositories
             int? carBrandId,
             int? providerId,
             int? yearRelease,
+            string blockNumber,
+            int? blockTypeId,
             string sortBy,
             OrderByEnum orderBy,
             int? page,
@@ -87,6 +90,8 @@ namespace PTMS.DataServices.Repositories
                 && (!carTypeId.HasValue || x.CarBrand.CarTypeId == carTypeId)
                 && (!locked.HasValue || x.ObjOutput == locked.Value)
                 && (!yearRelease.HasValue || x.YearRelease == yearRelease)
+                && (string.IsNullOrEmpty(blockNumber) || x.Block.BlockNumber.ToString().Contains(blockNumber))
+                && (!blockTypeId.HasValue || x.Block.BlockTypeId == blockTypeId)
                 && (userRoutesModel.RouteIds == null || (x.LastRout.HasValue && userRoutesModel.RouteIds.Contains(x.LastRout.Value)));
 
             var includes = _includesPure;
@@ -133,6 +138,9 @@ namespace PTMS.DataServices.Repositories
                     break;
                 case "yearrelease":
                     sortByFilter = x => x.YearRelease;
+                    break;
+                case "block":
+                    sortByFilter = x => x.Block.BlockType.Name;
                     break;
                 default:
                     sortByFilter = x => x.LastTime;

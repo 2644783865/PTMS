@@ -2,6 +2,7 @@ import { CarBrandDto } from './CarBrandDto';
 import { RouteDto } from './RouteDto';
 import { ProjectDto } from './ProjectDto';
 import { ProviderDto } from './ProviderDto';
+import { GranitDto } from './GranitDto';
 
 export interface ObjectDto {
   name: string
@@ -29,8 +30,10 @@ export interface ObjectDto {
   lastAddInfo: number
   lowfloor: number
   statusName: string
+
   carBrand: CarBrandDto
   provider: ProviderDto
   route: RouteDto
   project: ProjectDto
+  block: GranitDto
 }

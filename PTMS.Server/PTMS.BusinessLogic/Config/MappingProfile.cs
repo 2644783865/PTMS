@@ -15,7 +15,10 @@ namespace PTMS.BusinessLogic.Config
             CreateMap<Objects, ObjectModel>();
             CreateMap<ObjectModel, Objects>()
                 .ForMember(m => m.CarBrand, options => options.Ignore())
-                .ForMember(m => m.Provider, options => options.Ignore());
+                .ForMember(m => m.Provider, options => options.Ignore())
+                .ForMember(m => m.Route, options => options.Ignore())
+                .ForMember(m => m.Block, options => options.Ignore())
+                .ForMember(m => m.Project, options => options.Ignore());
 
             CreateMap<Project, ProjectModel>();
             CreateMap<ProjectModel, Project>();
@@ -24,6 +27,15 @@ namespace PTMS.BusinessLogic.Config
                 .ForMember(m => m.Status, options => options.MapFrom(x => new UserStatusModel(x.Status)));
 
             CreateMap<AppRole, RoleModel>();
+
+            CreateMap<BlockType, BlockTypeModel>();
+            CreateMap<BlockTypeModel, BlockType>();
+
+            CreateMap<CarType, CarTypeModel>();
+            CreateMap<CarTypeModel, CarType>();
+
+            CreateMap<CarBrand, CarBrandModel>();
+            CreateMap<CarBrandModel, CarBrand>();
         }
     }
 }

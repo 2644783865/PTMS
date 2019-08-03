@@ -1,13 +1,12 @@
-﻿namespace PTMS.Domain.Entities
+﻿namespace PTMS.BusinessLogic.Models
 {
-    public class Granit
+    public class GranitModel
     {
         public int Id { get; set; }
         public int? BlockNumber { get; set; }
         public int? BlockTypeId { get; set; }
         public int ObjectId { get; set; }
 
-        public Objects Object { get; set; }
-        public BlockType BlockType { get; set; }
+        public BlockTypeModel BlockType { get; set; }
     }
 }

@@ -20,6 +20,8 @@ namespace PTMS.Api.Config
             services.AddScoped<IPlanRepository, PlanRepository>();
             services.AddScoped<IProjectRouteRepository, ProjectRouteRepository>();
             services.AddScoped<IFactOfObjectRouteRepository, FactOfObjectRouteRepository>();
+            services.AddScoped<IBlockTypeRepository, BlockTypeRepository>();
+            services.AddScoped<IGranitRepository, GranitRepository>();
 
             services.AddScoped<ObjectsSyncService>();
         }

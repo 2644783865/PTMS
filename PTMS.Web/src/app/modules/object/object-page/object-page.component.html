@@ -23,13 +23,20 @@
             <app-input-clear-icon matSuffix controlName="routeName"></app-input-clear-icon>
           </mat-form-field>
         </div>
-        <div class="col" *ngIf="showProjectsSelect">
+        <div class="col" *ngIf="!isTransporter">
           <mat-form-field>
-            <mat-label>{{(projects$ | async) ? 'Перевозчик' : 'Загрузка ...'}}</mat-label>
+            <mat-label>Перевозчик</mat-label>
             <app-autocomplete [options]="projects$"
                               formControlName="project">
             </app-autocomplete>
             <app-input-clear-icon matSuffix controlName="project"></app-input-clear-icon>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field>
+            <input matInput placeholder="Номер Блока" type="text"
+                   formControlName="blockNumber" />
+            <app-input-clear-icon matSuffix controlName="blockNumber"></app-input-clear-icon>
           </mat-form-field>
         </div>
         <div class="col">
@@ -65,7 +72,7 @@
             <app-input-clear-icon matSuffix controlName="carType"></app-input-clear-icon>
           </mat-form-field>
         </div>
-        <div class="col" *ngIf="showProviderSelect">
+        <div class="col" *ngIf="!isTransporter">
           <mat-form-field>
             <mat-label>Установщик</mat-label>
             <mat-select formControlName="provider">
@@ -74,6 +81,17 @@
               </mat-option>
             </mat-select>
             <app-input-clear-icon matSuffix controlName="provider"></app-input-clear-icon>
+          </mat-form-field>
+        </div>
+        <div class="col" *ngIf="!isTransporter">
+          <mat-form-field>
+            <mat-label>Тип Блока</mat-label>
+            <mat-select formControlName="blockType">
+              <mat-option *ngFor="let blockType of blockTypes$ | async" [value]="blockType.id">
+                {{blockType.name}}
+              </mat-option>
+            </mat-select>
+            <app-input-clear-icon matSuffix controlName="blockType"></app-input-clear-icon>
           </mat-form-field>
         </div>
         <div class="col">
@@ -100,6 +118,7 @@
                [matSortActive]="filters.get('sortBy').value"
                [matSortDirection]="filters.get('orderBy').value"
                [matSortDisableClear]="true"
+               matSortStart="desc"
                (matSortChange)="sortData($event)">
 
       <ng-container matColumnDef="name">
@@ -133,8 +152,16 @@
       </ng-container>
 
       <ng-container matColumnDef="phone">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Телефон (SIM) </mat-header-cell>
-        <mat-cell *matCellDef="let vehicle" mobile-label="Телефон (SIM)"> {{vehicle.phone || '-'}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Телефон (IMEI) </mat-header-cell>
+        <mat-cell *matCellDef="let vehicle" mobile-label="Телефон (IMEI)"> {{vehicle.phone || '-'}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="block">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Блок </mat-header-cell>
+        <mat-cell *matCellDef="let vehicle" mobile-label="Блок">
+          <span *ngIf="vehicle.block">{{vehicle.block.blockType.name}}<br />{{vehicle.block.blockNumber}}</span>
+          <span *ngIf="!vehicle.block">-</span>
+        </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="status">

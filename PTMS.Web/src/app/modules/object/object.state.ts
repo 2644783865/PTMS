@@ -6,6 +6,7 @@ import { StoreConfig } from '@datorama/akita';
 import { ProviderDto } from '@app/core/dtos/ProviderDto';
 import { CarBrandDto } from '@app/core/dtos/CarBrandDto';
 import { CarTypeDto } from '@app/core/dtos/CarTypeDto';
+import { BlockTypeDto } from '@app/core/dtos/BlockTypeDto';
 
 export interface ObjectUI extends ObjectDto {
   canChangeRoute: boolean;
@@ -21,6 +22,7 @@ export interface ObjectState extends AppPagedEntityState<ObjectUI> {
   providers: ProviderDto[];
   carBrands: CarBrandDto[];
   carTypes: CarTypeDto[];
+  blockTypes: BlockTypeDto[];
 }
 
 @Injectable()
@@ -35,13 +37,15 @@ export class ObjectStore extends AppPagedEntityStore<ObjectState, ObjectUI> {
     projects: ProjectDto[],
     providers: ProviderDto[],
     carBrands: CarBrandDto[],
-    carTypes: CarTypeDto[]) {
+    carTypes: CarTypeDto[],
+    blockTypes: BlockTypeDto[]) {
 
     this.update({
       projects,
       providers,
       carBrands,
-      carTypes
+      carTypes,
+      blockTypes
     });
   }
 
@@ -56,6 +60,7 @@ export class ObjectQuery extends AppPagedQueryEntity<ObjectState, ObjectUI> {
   providers$ = this.select(s => s.providers);
   carBrands$ = this.select(s => s.carBrands);
   carTypes$ = this.select(s => s.carTypes);
+  blockTypes$ = this.select(s => s.blockTypes);
 
   constructor(protected store: ObjectStore) {
     super(store);

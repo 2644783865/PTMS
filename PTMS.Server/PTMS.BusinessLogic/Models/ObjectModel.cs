@@ -5,6 +5,7 @@ namespace PTMS.BusinessLogic.Models
 {
     public class ObjectModel
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public short ObjId { get; set; }
         public DateTime? LastTime { get; set; }
@@ -18,7 +19,6 @@ namespace PTMS.BusinessLogic.Models
         public short? VehicleType { get; set; }
         public short? Azmth { get; set; }
         public short ProviderId { get; set; }
-        public decimal Id { get; set; }
         public int? CarBrandId { get; set; }
         public string UserComment { get; set; }
         public DateTime? DateInserted { get; set; }
@@ -55,5 +55,6 @@ namespace PTMS.BusinessLogic.Models
         public ProviderModel Provider { get; set; }
         public RouteModel Route { get; set; }
         public ProjectModel Project { get; set; }
+        public GranitModel Block { get; set; }
     }
 }

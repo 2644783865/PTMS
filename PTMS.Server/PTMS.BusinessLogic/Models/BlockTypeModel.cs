@@ -1,6 +1,6 @@
-﻿namespace PTMS.Domain.Entities
+﻿namespace PTMS.BusinessLogic.Models
 {
-    public class BlockType
+    public class BlockTypeModel
     {
         public int Id { get; set; }
         public string Name { get; set; }

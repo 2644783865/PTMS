@@ -21,6 +21,8 @@ namespace PTMS.DataServices.IRepositories
             int? carBrandId,
             int? providerId,
             int? yearRelease,
+            string blockNumber,
+            int? blockTypeId,
             string sortBy,
             OrderByEnum orderBy,
             int? page,

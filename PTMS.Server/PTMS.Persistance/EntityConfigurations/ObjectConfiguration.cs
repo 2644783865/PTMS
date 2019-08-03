@@ -169,6 +169,10 @@ namespace PTMS.Persistance.EntityConfigurations
                 entity.HasOne(e => e.Route)
                     .WithMany()
                     .HasForeignKey(e => e.LastRout);
+
+                entity.HasOne(e => e.Block)
+                    .WithOne(e => e.Object)
+                    .HasForeignKey<Granit>(e => e.ObjectId);
             });
         }
     }
