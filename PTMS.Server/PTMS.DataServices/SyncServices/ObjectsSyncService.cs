@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace PTMS.DataServices.SyncServices
 {
-    public class ObjectsSyncService : DataSyncServiceEx<Objects, decimal>
+    public class ObjectsSyncService : DataSyncService<Objects>
     {
         public ObjectsSyncService(
             ApplicationDbContext dbContext,

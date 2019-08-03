@@ -66,14 +66,14 @@ namespace PTMS.Api.Controllers
         }
 
         [HttpGet("/object/{id}")]
-        public async Task<ActionResult<ObjectModel>> GetById(decimal id)
+        public async Task<ActionResult<ObjectModel>> GetById(int id)
         {
             var result = await _objectService.GetByIdAsync(id);
             return result;
         }
 
         [HttpPost("/object/{ids}/changeRoute/{newRouteId}")]
-        public async Task<ObjectModel> ChangeRoute(decimal ids, int newRouteId)
+        public async Task<ObjectModel> ChangeRoute(int ids, int newRouteId)
         {
             var result = await _objectService.ChangeRouteAsync(
                 ids,
@@ -85,7 +85,7 @@ namespace PTMS.Api.Controllers
 
         [PtmsAuthorizeAdmin]
         [HttpPost("/object/{ids}/changeProvider/{providerId}")]
-        public async Task<ObjectModel> ChangeProvider(decimal ids, int providerId)
+        public async Task<ObjectModel> ChangeProvider(int ids, int providerId)
         {
             var result = await _objectService.ChangeProviderAsync(
                 ids,
@@ -96,7 +96,7 @@ namespace PTMS.Api.Controllers
 
         [PtmsAuthorizeAdmin]
         [HttpPost("/object/{ids}/enable/{newRouteId}")]
-        public async Task<ObjectModel> EnableVehicle(decimal ids, int newRouteId)
+        public async Task<ObjectModel> EnableVehicle(int ids, int newRouteId)
         {
             var result = await _objectService.EnableAsync(
                 ids,
@@ -107,7 +107,7 @@ namespace PTMS.Api.Controllers
 
         [PtmsAuthorizeAdmin]
         [HttpPost("/object/{ids}/disable")]
-        public async Task<ObjectModel> DisableVehicle(decimal ids)
+        public async Task<ObjectModel> DisableVehicle(int ids)
         {
             var result = await _objectService.DisableAsync(
                 ids);

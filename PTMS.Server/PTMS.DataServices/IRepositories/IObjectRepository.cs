@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PTMS.DataServices.IRepositories
 {
-    public interface IObjectRepository : IDataServiceExAsync<Objects, decimal>
+    public interface IObjectRepository : IDataServiceAsync<Objects>
     {
         Task<PageResult<Objects>> FindByParamsAsync(
             string plateNumber,

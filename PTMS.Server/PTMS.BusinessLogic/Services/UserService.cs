@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
-using PTMS.BusinessLogic.Config;
 using PTMS.BusinessLogic.Helpers;
 using PTMS.BusinessLogic.Infrastructure;
 using PTMS.BusinessLogic.IServices;

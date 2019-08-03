@@ -3,11 +3,11 @@ using PTMS.BusinessLogic.IServices;
 using PTMS.BusinessLogic.Services;
 using PTMS.Infrastructure;
 
-namespace PTMS.Api.Config
+namespace PTMS.DI
 {
-    public static class ConfigureBusinessLogicExtension
+    internal static class ConfigureBusinessLogicExtension
     {
-        public static void ConfigureBusinessLogic(this IServiceCollection services)
+        internal static void ConfigureBusinessLogic(this IServiceCollection services)
         {
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IObjectService, ObjectService>();

@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PTMS.Api.Config;
 using PTMS.Common;
+using PTMS.DI;
 using PTMS.Persistance;
 using System.Globalization;
 
@@ -25,17 +26,9 @@ namespace PTMS.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
-
-            services.AddDbContext<ApplicationDbContext>(options =>
-            {
-                options.UseFirebird(Configuration.GetSection("AppSettings").Get<AppSettings>().ProjectsDatabaseConnection);
-            });
+            services.ConfigureAppCore(Configuration);
 
             services.ConfigureAuthorization(Configuration);
-            services.ConfigureDataServices();
-            services.ConfigureBusinessLogic();
-            services.ConfigureAutomapper();
 
             services.Configure<RequestLocalizationOptions>(options =>
             {

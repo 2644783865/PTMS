@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace PTMS.DataServices.Repositories
 {
-    public class ObjectRepository : DataServiceAsyncEx<Objects, decimal>, IObjectRepository
+    public class ObjectRepository : DataServiceAsync<Objects>, IObjectRepository
     {
         private readonly string[] _includesFull =
         {

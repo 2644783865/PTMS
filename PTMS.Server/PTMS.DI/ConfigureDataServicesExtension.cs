@@ -3,11 +3,11 @@ using PTMS.DataServices.IRepositories;
 using PTMS.DataServices.Repositories;
 using PTMS.DataServices.SyncServices;
 
-namespace PTMS.Api.Config
+namespace PTMS.DI
 {
-    public static class ConfigureDataServicesExtension
+    internal static class ConfigureDataServicesExtension
     {
-        public static void ConfigureDataServices(this IServiceCollection services)
+        internal static void ConfigureDataServices(this IServiceCollection services)
         {
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IObjectRepository, ObjectRepository>();

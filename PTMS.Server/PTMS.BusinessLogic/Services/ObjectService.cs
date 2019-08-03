@@ -72,7 +72,7 @@ namespace PTMS.BusinessLogic.Services
             return MapToModel(result);
         }
 
-        public async Task<ObjectModel> GetByIdAsync(decimal id)
+        public async Task<ObjectModel> GetByIdAsync(int id)
         {
             var result = await _objectRepository.GetFullByIdAsync(id);
             return MapToModel(result);
@@ -86,12 +86,12 @@ namespace PTMS.BusinessLogic.Services
         }
 
         public async Task<ObjectModel> ChangeRouteAsync(
-            decimal ids, 
+            int id, 
             int newRouteId,
             ClaimsPrincipal principal)
         {
             var userRoutesModel = await _userManager.GetAvailableRoutesModel(principal);
-            var entity = await _objectRepository.GetByIdAsync(ids);
+            var entity = await _objectRepository.GetByIdAsync(id);
 
             if (userRoutesModel.ProjectId.HasValue && userRoutesModel.ProjectId != entity.ProjId)
             {
@@ -118,10 +118,10 @@ namespace PTMS.BusinessLogic.Services
         }
 
         public async Task<ObjectModel> ChangeProviderAsync(
-            decimal ids, 
+            int id, 
             int providerId)
         {
-            var entity = await _objectRepository.GetByIdAsync(ids);
+            var entity = await _objectRepository.GetByIdAsync(id);
             entity.ProviderId = providerId;
 
             var result = await UpdateAsync(entity);
@@ -129,10 +129,10 @@ namespace PTMS.BusinessLogic.Services
         }
 
         public async Task<ObjectModel> EnableAsync(
-            decimal ids,
+            int id,
             int newRouteId)
         {
-            var entity = await _objectRepository.GetByIdAsync(ids);
+            var entity = await _objectRepository.GetByIdAsync(id);
 
             if (!entity.ObjOutput)
             {
@@ -150,9 +150,9 @@ namespace PTMS.BusinessLogic.Services
         }
 
         public async Task<ObjectModel> DisableAsync(
-            decimal ids)
+            int id)
         {
-            var entity = await _objectRepository.GetByIdAsync(ids);
+            var entity = await _objectRepository.GetByIdAsync(id);
 
             if (entity.ObjOutput)
             {

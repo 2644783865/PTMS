@@ -26,27 +26,27 @@ namespace PTMS.BusinessLogic.IServices
             int? page,
             int? pageSize);
 
-        Task<ObjectModel> GetByIdAsync(decimal ids);
+        Task<ObjectModel> GetByIdAsync(int ids);
 
         Task<ObjectModel> AddAsync(ObjectModel model);
 
         Task<ObjectModel> UpdateAsync(ObjectModel model);
 
         Task<ObjectModel> ChangeRouteAsync(
-            decimal ids,
+            int ids,
             int newRouteId,
             ClaimsPrincipal principal);
 
         Task<ObjectModel> EnableAsync(
-            decimal ids,
+            int ids,
             int newRouteId);
 
         Task<ObjectModel> DisableAsync(
-            decimal ids);
+            int ids);
 
         Task DeleteByIdAsync(int id);
 
-        Task<ObjectModel> ChangeProviderAsync(decimal ids, int providerId);
+        Task<ObjectModel> ChangeProviderAsync(int ids, int providerId);
 
         Task<List<ObjectModel>> FindForReportingAsync(int minutes);
     }

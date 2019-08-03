@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PTMS.BusinessLogic\PTMS.BusinessLogic.csproj" />
+    <ProjectReference Include="..\PTMS.Common\PTMS.Common.csproj" />
+    <ProjectReference Include="..\PTMS.DataServices\PTMS.DataServices.csproj" />
+    <ProjectReference Include="..\PTMS.Domain\PTMS.Domain.csproj" />
+    <ProjectReference Include="..\PTMS.Infrastructure\PTMS.Infrastructure.csproj" />
+    <ProjectReference Include="..\PTMS.Persistance\PTMS.Persistance.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="EntityFrameworkCore.FirebirdSql">
+      <HintPath>..\EntityFramework.Firebird\EntityFrameworkCore.FirebirdSql.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
