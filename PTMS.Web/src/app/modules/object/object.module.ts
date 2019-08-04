@@ -7,6 +7,7 @@ import { ObjectRoutingModule } from './object-routing.module';
 import { ObjectChangeRouteDialogComponent } from './object-change-route-dialog/object-change-route-dialog.component';
 import { ObjectChangeProviderDialogComponent } from './object-change-provider-dialog/object-change-provider-dialog.component';
 import { ObjectEnableDialogComponent } from './object-enable-dialog/object-enable-dialog.component';
+import { ObjectAddEditDialogComponent } from './object-add-edit-dialog/object-add-edit-dialog.component';
 
 @NgModule({
   imports: [
@@ -21,13 +22,15 @@ import { ObjectEnableDialogComponent } from './object-enable-dialog/object-enabl
   entryComponents: [
     ObjectChangeRouteDialogComponent,
     ObjectChangeProviderDialogComponent,
-    ObjectEnableDialogComponent
+    ObjectEnableDialogComponent,
+    ObjectAddEditDialogComponent
   ],
   declarations: [
     ObjectPageComponent,
     ObjectChangeRouteDialogComponent,
     ObjectChangeProviderDialogComponent,
-    ObjectEnableDialogComponent
+    ObjectEnableDialogComponent,
+    ObjectAddEditDialogComponent
   ],
   exports: [
     ObjectPageComponent

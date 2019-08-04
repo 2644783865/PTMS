@@ -15,7 +15,7 @@ namespace PTMS.Domain.Entities
         public short? LastStation { get; set; }
         public DateTime? LastStationTime { get; set; }
         public int? LastRout { get; set; }
-        public int? VehicleType { get; set; }
+        public int? CarTypeId { get; set; }
         public int? Azmth { get; set; }
         public int ProviderId { get; set; }
         public int? CarBrandId { get; set; }

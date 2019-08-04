@@ -23,7 +23,7 @@ namespace PTMS.DataServices.SyncServices
                 nameof(Objects.Id),
                 nameof(Objects.ProjId),
                 nameof(Objects.ObjId),
-                nameof(Objects.VehicleType),
+                nameof(Objects.CarTypeId),
                 nameof(Objects.Name),
                 nameof(Objects.CarBrandId),
                 nameof(Objects.ProviderId),

@@ -116,16 +116,16 @@ namespace PTMS.Api.Controllers
         }
 
         [HttpPost("/object")]
-        public async Task<ObjectModel> Post([FromBody]ObjectModel model)
+        public async Task<ObjectModel> Post([FromBody]ObjectAddEditRequest model)
         {
             var result = await _objectService.AddAsync(model);
             return result;
         }
         
         [HttpPut("/object/{id}")]
-        public async Task<ObjectModel> Put(int id, [FromBody]ObjectModel model)
+        public async Task<ObjectModel> Put(int id, [FromBody]ObjectAddEditRequest model)
         {
-            var result = await _objectService.UpdateAsync(model);
+            var result = await _objectService.UpdateAsync(id, model);
             return result;
         }
         

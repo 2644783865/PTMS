@@ -15,6 +15,7 @@ import { CarBrandDataService } from '@app/core/data-services/car-brand.data.serv
 import { CarTypeDataService } from '@app/core/data-services/car-type.data.service';
 import { ConfirmDialogService } from '@app/shared/confirm-dialog/confirm-dialog.service';
 import { BlockTypeDataService } from '@app/core/data-services/block-type.data.service';
+import { ObjectAddEditRequestDto } from '@app/core/dtos/ObjectAddEditRequestDto';
 
 @Injectable()
 export class ObjectService {
@@ -34,8 +35,11 @@ export class ObjectService {
   }  
 
   get isTransporter(): boolean {
-    return this.authService.isInRole(RoleEnum.Transporter)
-      || this.authService.isInRole(RoleEnum.Mechanic);
+    return this.authService.isInRole(RoleEnum.Transporter, RoleEnum.Mechanic);
+  }
+
+  get canAddVehicle(): boolean {
+    return this.authService.isInRole(RoleEnum.Administrator);
   }
 
   get routeValidator() {
@@ -194,6 +198,31 @@ export class ObjectService {
     }
   }
 
+  async addOrUpdate(vehicleId: number, formValue: any) {
+    try {
+      this.objectStore.setModalLoading(true);
+
+      let dto = formValue as ObjectAddEditRequestDto;
+      dto.carBrandId = formValue.carBrand ? formValue.carBrand.id : null;
+
+      let updateItem = vehicleId > 0
+        ? await this.objectDataService.update(vehicleId, dto).toPromise()
+        : await this.objectDataService.add(dto).toPromise();
+
+      this.objectStore.update(updateItem.id, this.mapToModel(updateItem));
+
+      this.notificationService.success(`ТС номер ${updateItem.name} был успешно ${vehicleId > 0 ? 'отредактирован' : 'добавлен'}`, updateItem.id);
+
+      return updateItem;
+    }
+    catch (exc) {
+      this.notificationService.exception(exc);
+    }
+    finally {
+      this.objectStore.setModalLoading(false);
+    }
+  }
+
   onDestroy() {
     this.objectStore.reset();
   }
@@ -213,12 +242,16 @@ export class ObjectService {
   private mapToModel(item: ObjectDto): ObjectUI {
     let vehicle = item as ObjectUI;
 
+    vehicle.canUpdate = this.authService.isInRole(RoleEnum.Administrator);
     vehicle.canChangeRoute = !vehicle.objOutput;
     vehicle.canChangeProvider = !vehicle.objOutput && this.authService.isInRole(RoleEnum.Administrator);
     vehicle.canEnable = vehicle.objOutput && this.authService.isInRole(RoleEnum.Administrator);
     vehicle.canDisable = !vehicle.objOutput && this.authService.isInRole(RoleEnum.Administrator);
 
-    vehicle.showMenu = vehicle.canChangeRoute || vehicle.canChangeProvider || vehicle.canEnable || vehicle.canDisable;
+    vehicle.showMenu = vehicle.canChangeRoute
+      || vehicle.canChangeProvider
+      || vehicle.canEnable
+      || vehicle.canDisable;
 
     let state = this.objectStore.getValue();
 

@@ -45,7 +45,9 @@ namespace PTMS.DataServices.Infrastructure
             _syncService = syncService;
         }
 
-        private DbSet<TEntity> Set => _dbContext.Set<TEntity>();
+        private DbSet<TEntity> EntitySet => _dbContext.Set<TEntity>();
+
+        protected IQueryable<TEntity> EntityQuery => EntitySet.AsQueryable();
 
         public Task<TEntity> GetByIdAsync(TPKey id)
         {
@@ -105,8 +107,8 @@ namespace PTMS.DataServices.Infrastructure
                 .ToListAsync();
 
             var totalCount = filter != null
-                ? await Set.Where(filter).CountAsync()
-                : await Set.CountAsync();
+                ? await EntitySet.Where(filter).CountAsync()
+                : await EntitySet.CountAsync();
 
             var result = new PageResult<TEntity>(list, totalCount);
             return result;
@@ -114,7 +116,7 @@ namespace PTMS.DataServices.Infrastructure
 
         public virtual async Task<TEntity> AddAsync(TEntity entity)
         {
-            var addResult = await Set.AddAsync(entity);
+            var addResult = await EntitySet.AddAsync(entity);
             await _dbContext.SaveChangesAsync();
 
             var result = addResult.Entity;
@@ -129,7 +131,7 @@ namespace PTMS.DataServices.Infrastructure
 
         public virtual async Task<TEntity> UpdateAsync(TEntity entity)
         {
-            var updateResult = Set.Update(entity);
+            var updateResult = EntitySet.Update(entity);
             await _dbContext.SaveChangesAsync();
 
             var result = updateResult.Entity;
@@ -144,14 +146,14 @@ namespace PTMS.DataServices.Infrastructure
 
         public virtual async Task DeleteByIdAsync(TPKey id)
         {
-            var item = await Set.FindAsync(id);
+            var item = await EntitySet.FindAsync(id);
 
             if (item == null)
             {
                 throw new KeyNotFoundException("Не удалось удалить элемент. Элемент не найден в базе.");
             }
 
-            Set.Remove(item);
+            EntitySet.Remove(item);
             await _dbContext.SaveChangesAsync();
 
             if (_syncService != null)
@@ -170,8 +172,8 @@ namespace PTMS.DataServices.Infrastructure
             params string[] includes)
         {
             var query = filter != null 
-                ? Set.Where(filter)
-                : Set.AsQueryable();
+                ? EntitySet.Where(filter)
+                : EntitySet.AsQueryable();
 
             query = includes.Aggregate(query, (s, i) => s.Include(i));
 

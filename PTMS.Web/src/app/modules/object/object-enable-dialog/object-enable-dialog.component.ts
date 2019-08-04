@@ -25,7 +25,9 @@ export class ObjectEnableDialogComponent {
   ngOnInit() {
     this.modalLoading$ = this.objectQuery.modalLoading$;
 
-    let routeName = this.vehicle.route ? this.vehicle.route.name : '';
+    let routeName = (this.vehicle.route && this.vehicle.route.id > 0)
+      ? this.vehicle.route.name
+      : '';
 
     if (routeName) {
       this.projectForSelectedRoute = this.vehicle.project;

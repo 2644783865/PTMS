@@ -1,0 +1,75 @@
+<h1 mat-dialog-title>
+  {{ (isNewVehicle ? 'Добавить ТС ' : 'Редактировать ТС ') + modalForm.get('name').value}}
+</h1>
+<form class="form-full-container"
+      [formGroup]="modalForm"
+      (ngSubmit)="onSubmit()">
+  <div mat-dialog-content>
+    <div class="row">
+      <div class="col">
+        <mat-form-field>
+          <input matInput placeholder="Номер *" type="text"
+                 formControlName="name">
+          <app-input-error controlName="name"></app-input-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Телефон (IMEI) *" type="number"
+                 formControlName="phone">
+          <app-input-error controlName="phone"></app-input-error>
+        </mat-form-field>
+        <mat-form-field *ngIf="isNewVehicle">
+          <mat-label>Установщик</mat-label>
+          <mat-select formControlName="providerId">
+            <mat-option *ngFor="let provider of providers$ | async" [value]="provider.id">
+              {{provider.name}}
+            </mat-option>
+          </mat-select>
+          <app-input-clear-icon matSuffix controlName="providerId"></app-input-clear-icon>
+          <app-input-error controlName="providerId"></app-input-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Год выпуска" type="number"
+                 formControlName="yearRelease">
+          <app-input-error controlName="yearRelease"></app-input-error>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field>
+          <mat-label>Марка ТС</mat-label>
+          <app-autocomplete [options]="carBrands$"
+                            formControlName="carBrand">
+          </app-autocomplete>
+          <app-input-clear-icon matSuffix controlName="carBrand"></app-input-clear-icon>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Номер блока" type="number"
+                 formControlName="blockNumber">
+          <app-input-error controlName="blockNumber"></app-input-error>
+          <app-input-clear-icon matSuffix controlName="blockNumber"></app-input-clear-icon>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Тип блока</mat-label>
+          <mat-select formControlName="blockTypeId">
+            <mat-option *ngFor="let blockType of blockTypes$ | async" [value]="blockType.id">
+              {{blockType.name}}
+            </mat-option>
+          </mat-select>
+          <app-input-clear-icon matSuffix controlName="blockTypeId"></app-input-clear-icon>
+          <app-input-error controlName="blockTypeId"></app-input-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-raised-button
+            type="button"
+            (click)="onClose()">
+      Отмена
+    </button>
+    <app-loading-button color="primary"
+                        type="submit"
+                        [isLoading]="modalLoading$ | async">
+      Сохранить
+    </app-loading-button>
+  </div>
+</form>

@@ -8,5 +8,7 @@ namespace PTMS.DataServices.IRepositories
     public interface ICarBrandRepository : IDataServiceAsync<CarBrand>
     {
         Task<List<CarBrand>> GetAllAsync();
+
+        Task<int?> GetCarTypeIdByBrandId(int id);
     }
 }

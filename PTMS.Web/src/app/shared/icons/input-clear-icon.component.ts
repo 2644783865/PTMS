@@ -10,7 +10,8 @@ import { FormGroupDirective, AbstractControl } from '@angular/forms';
           aria-label="Clear"
           (click)="onClick($event)"
           matTooltip="Очистить поле"
-          matTooltipPosition="above">
+          matTooltipPosition="above"
+          type="button">
     <mat-icon>close</mat-icon>
   </button>
 `

@@ -18,17 +18,26 @@ namespace PTMS.BusinessLogic.Services
         private readonly AppUserManager _userManager;
         private readonly IObjectRepository _objectRepository;
         private readonly IProjectRepository _projectRepository;
+        private readonly IGranitRepository _granitRepository;
+        private readonly ICarBrandRepository _carBrandRepository;
+        private readonly IBusDataRepository _busDataRepository;
 
         public ObjectService(
             AppUserManager userManager,
             IObjectRepository objectRepository,
             IProjectRepository projectRepository,
+            IGranitRepository granitRepository,
+            ICarBrandRepository carBrandRepository,
+            IBusDataRepository busDataRepository,
             IMapper mapper)
             : base(mapper)
         {
             _userManager = userManager;
             _objectRepository = objectRepository;
             _projectRepository = projectRepository;
+            _granitRepository = granitRepository;
+            _carBrandRepository = carBrandRepository;
+            _busDataRepository = busDataRepository;
         }
 
         public async Task<PageResult<ObjectModel>> FindByParams(
@@ -77,14 +86,7 @@ namespace PTMS.BusinessLogic.Services
             var result = await _objectRepository.GetFullByIdAsync(id);
             return MapToModel(result);
         }
-
-        public async Task<ObjectModel> AddAsync(ObjectModel model)
-        {
-            var entity = MapFromModel(model);
-            var result = await _objectRepository.AddAsync(entity);
-            return MapToModel(result);
-        }
-
+        
         public async Task<ObjectModel> ChangeRouteAsync(
             int id, 
             int newRouteId,
@@ -114,6 +116,9 @@ namespace PTMS.BusinessLogic.Services
             entity.ProjId = project.Id;
 
             var result = await UpdateAsync(entity);
+
+            await _busDataRepository.UpdateBusRoutes(entity);
+
             return result;
         }
 
@@ -166,13 +171,6 @@ namespace PTMS.BusinessLogic.Services
             return result;
         }
 
-        public async Task<ObjectModel> UpdateAsync(ObjectModel model)
-        {
-            var entity = MapFromModel(model);
-            var result = await UpdateAsync(entity);
-            return result;
-        }
-
         public async Task DeleteByIdAsync(int id)
         {
             await _objectRepository.DeleteByIdAsync(id);
@@ -183,9 +181,94 @@ namespace PTMS.BusinessLogic.Services
             var startDate = DateTime.Now.AddMinutes(-minutes);
             var endDate = DateTime.Now.AddMinutes(1);
 
-            var objects = await _objectRepository.FindForReporting(startDate, endDate);
+            var objects = await _objectRepository.FindForReportingAsync(startDate, endDate);
             var result = MapToModel(objects);
             return result;
+        }
+
+        public async Task<ObjectModel> AddAsync(ObjectAddEditRequest request)
+        {
+            var entity = new Objects()
+            {
+                ObjOutput = true,
+                DateInserted = DateTime.Now,
+                ObjOutputDate = DateTime.Now
+            };
+
+            await SetNewValues(entity, request);
+
+            var result = await _objectRepository.AddAsync(entity);
+            await HandleBlock(result.Id, null, request);
+
+            return await GetByIdAsync(result.Id);
+        }
+
+        public async Task<ObjectModel> UpdateAsync(int id, ObjectAddEditRequest request)
+        {
+            var entity = await _objectRepository.GetByIdWithBlockAsync(id);
+            var block = entity.Block;
+            entity.Block = null;
+
+            await SetNewValues(entity, request);
+
+            var result = await _objectRepository.UpdateAsync(entity);
+            await HandleBlock(entity.Id, block, request);
+
+            return await GetByIdAsync(result.Id);
+        }
+
+        private async Task HandleBlock(int objectId, Granit block, ObjectAddEditRequest request)
+        {
+            if (request.BlockNumber.HasValue && request.BlockTypeId.HasValue)
+            {
+                if (block != null)
+                {
+                    block.BlockNumber = request.BlockNumber;
+                    block.BlockTypeId = request.BlockTypeId.Value;
+
+                    await _granitRepository.UpdateAsync(block);
+                }
+                else
+                {
+                    var granit = new Granit
+                    {
+                        ObjectId = objectId,
+                        BlockNumber = request.BlockNumber.Value,
+                        BlockTypeId = request.BlockTypeId.Value
+                    };
+
+                    await _granitRepository.AddAsync(granit);
+                }
+            }
+            else
+            {
+                if (block != null)
+                {
+                    await _granitRepository.DeleteByIdAsync(block.Id);
+                }
+            }
+        }
+
+        private async Task SetNewValues(Objects entity, ObjectAddEditRequest request)
+        {
+            entity.Name = request.Name;
+            entity.CarBrandId = request.CarBrandId;
+            entity.YearRelease = request.YearRelease;
+            entity.Phone = request.Phone;
+
+            if (entity.Id == 0)
+            {
+                entity.ProviderId = request.ProviderId;
+            }
+
+            if (entity.CarBrandId.HasValue)
+            {
+                entity.CarTypeId = await _carBrandRepository.GetCarTypeIdByBrandId(entity.CarBrandId.Value);
+            }
+            else
+            {
+                entity.CarTypeId = null;
+            }
         }
 
         private async Task<ObjectModel> UpdateAsync(Objects entity)

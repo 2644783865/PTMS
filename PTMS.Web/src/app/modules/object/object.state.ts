@@ -9,6 +9,7 @@ import { CarTypeDto } from '@app/core/dtos/CarTypeDto';
 import { BlockTypeDto } from '@app/core/dtos/BlockTypeDto';
 
 export interface ObjectUI extends ObjectDto {
+  canUpdate: boolean;
   canChangeRoute: boolean;
   canChangeProvider: boolean;
   canEnable: boolean;

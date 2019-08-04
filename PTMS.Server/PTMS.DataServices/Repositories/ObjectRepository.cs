@@ -1,4 +1,5 @@
-﻿using PTMS.Common;
+﻿using Microsoft.EntityFrameworkCore;
+using PTMS.Common;
 using PTMS.DataServices.Infrastructure;
 using PTMS.DataServices.IRepositories;
 using PTMS.DataServices.Models;
@@ -20,14 +21,15 @@ namespace PTMS.DataServices.Repositories
             nameof(Objects.CarBrand) + "." + nameof(Objects.CarBrand.CarType),
             nameof(Objects.Provider),
             nameof(Objects.Route),
-            nameof(Objects.Project),
+            nameof(Objects.Block)
         };
 
         private readonly string[] _includesLight =
         {
             nameof(Objects.CarBrand),
             nameof(Objects.CarBrand) + "." + nameof(Objects.CarBrand.CarType),
-            nameof(Objects.Route)
+            nameof(Objects.Route),
+            nameof(Objects.Block)
         };
 
         private readonly string[] _includesPure =
@@ -156,18 +158,49 @@ namespace PTMS.DataServices.Repositories
                 includes);
         }
 
-        public Task<Objects> GetFullByIdAsync(decimal id)
+        public Task<Objects> GetFullByIdAsync(int id)
         {
-            return GetAsync(x => x.Id == id, _includesFull);
+            return GetByIdAsync(id, _includesFull);
         }
 
-        public Task<List<Objects>> FindForReporting(DateTime onlineStartDate, DateTime onlineEndDate)
+        public Task<Objects> GetByIdWithBlockAsync(int id)
+        {
+            return GetByIdAsync(id, nameof(Objects.Block));
+        }
+
+        public Task<List<Objects>> FindForReportingAsync(DateTime onlineStartDate, DateTime onlineEndDate)
         {
             return FindAsync(x => !x.ObjOutput
                 && x.LastStationTime.HasValue
                 && x.LastStationTime.Value >= onlineStartDate
                 && x.LastStationTime.Value <= onlineEndDate
                 && x.Route.RouteActive);
+        }
+
+        public override async Task<Objects> AddAsync(Objects entity)
+        {
+            var maxObjId = await EntityQuery.MaxAsync(x => x.ObjId);
+            entity.ObjId = (short)(maxObjId + 1);
+            await PrepareObject(entity);
+            return await base.AddAsync(entity);
+        }
+
+        public override async Task<Objects> UpdateAsync(Objects entity)
+        {
+            await PrepareObject(entity);
+            return await base.UpdateAsync(entity);
+        }
+
+        private async Task PrepareObject(Objects entity)
+        {
+            entity.Name = entity.Name.ToUpper();
+
+            var ifVehicleWithNameAlreadyExist = await GetAsync(x => x.Name == entity.Name && x.Id != entity.Id);
+
+            if (ifVehicleWithNameAlreadyExist != null)
+            {
+                throw new Exception("ТС с таким номером уже существует");
+            }
         }
     }
 }

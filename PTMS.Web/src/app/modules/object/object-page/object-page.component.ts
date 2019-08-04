@@ -15,6 +15,7 @@ import { ObjectEnableDialogComponent } from '../object-enable-dialog/object-enab
 import { ObjectService } from '../object.service';
 import { ObjectQuery, ObjectUI } from '../object.state';
 import { BlockTypeDto } from '@app/core/dtos/BlockTypeDto';
+import { ObjectAddEditDialogComponent } from '../object-add-edit-dialog/object-add-edit-dialog.component';
 
 @Component({
   selector: 'app-object-page',
@@ -40,6 +41,7 @@ export class ObjectPageComponent implements OnInit {
   blockTypes$: Observable<BlockTypeDto[]>;
 
   isTransporter: boolean;
+  canAddVehicle: boolean;
 
   constructor(
     private objectQuery: ObjectQuery,
@@ -58,9 +60,11 @@ export class ObjectPageComponent implements OnInit {
     this.blockTypes$ = this.objectQuery.blockTypes$;
     
     this.isTransporter = this.objectService.isTransporter;
+    this.canAddVehicle = this.objectService.canAddVehicle;
 
     if (this.isTransporter) {
-      this.displayedColumns = this.allColumns.filter(x => !['transporter', 'provider', 'phone', 'block'].includes(x));
+      let columnsToHide = ['transporter', 'provider', 'phone', 'block'];
+      this.displayedColumns = this.allColumns.filter(x => !columnsToHide.includes(x));
     }
     else {
       this.displayedColumns = this.allColumns;
@@ -101,6 +105,13 @@ export class ObjectPageComponent implements OnInit {
       width: '400px',
       data: vehicle,
       autoFocus: false
+    });
+  }
+
+  openAddEditDialog(vehicle: ObjectUI) {
+    this.dialog.open(ObjectAddEditDialogComponent, {
+      width: '600px',
+      data: vehicle || null
     });
   }
 

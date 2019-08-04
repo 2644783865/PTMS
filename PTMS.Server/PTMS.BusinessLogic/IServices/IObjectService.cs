@@ -28,9 +28,9 @@ namespace PTMS.BusinessLogic.IServices
 
         Task<ObjectModel> GetByIdAsync(int ids);
 
-        Task<ObjectModel> AddAsync(ObjectModel model);
+        Task<ObjectModel> AddAsync(ObjectAddEditRequest model);
 
-        Task<ObjectModel> UpdateAsync(ObjectModel model);
+        Task<ObjectModel> UpdateAsync(int id, ObjectAddEditRequest model);
 
         Task<ObjectModel> ChangeRouteAsync(
             int ids,

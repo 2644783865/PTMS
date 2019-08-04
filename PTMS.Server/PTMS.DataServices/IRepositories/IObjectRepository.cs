@@ -28,8 +28,10 @@ namespace PTMS.DataServices.IRepositories
             int? page,
             int? pageSize);
         
-        Task<Objects> GetFullByIdAsync(decimal id);
+        Task<Objects> GetFullByIdAsync(int id);
 
-        Task<List<Objects>> FindForReporting(DateTime onlineStartDate, DateTime onlineEndDate);
+        Task<Objects> GetByIdWithBlockAsync(int id);
+        
+        Task<List<Objects>> FindForReportingAsync(DateTime onlineStartDate, DateTime onlineEndDate);
     }
 }

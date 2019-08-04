@@ -22,6 +22,7 @@ namespace PTMS.DI
             services.AddScoped<IFactOfObjectRouteRepository, FactOfObjectRouteRepository>();
             services.AddScoped<IBlockTypeRepository, BlockTypeRepository>();
             services.AddScoped<IGranitRepository, GranitRepository>();
+            services.AddScoped<IBusDataRepository, BusDataRepository>();
 
             services.AddScoped<ObjectsSyncService>();
         }

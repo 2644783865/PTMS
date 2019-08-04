@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { AppPaginationResponse } from '../akita-extensions/app-paged-entity-state';
 import { PtmsHttpClient } from '../data-services/ptms.http.client';
 import { ObjectDto } from '../dtos/ObjectDto';
+import { ObjectAddEditRequestDto } from '../dtos/ObjectAddEditRequestDto';
 
 @Injectable({
   providedIn: 'root'
@@ -24,8 +25,12 @@ export class ObjectDataService {
     return this.http.get<ObjectDto>(`object/${id}`);
   }
 
-  update(item: ObjectDto) {
-    return this.http.put<ObjectDto>(`object/${item.id}`, item);
+  add(item: ObjectAddEditRequestDto) {
+    return this.http.post<ObjectDto>(`object`, item);
+  }
+
+  update(id: number, item: ObjectAddEditRequestDto) {
+    return this.http.put<ObjectDto>(`object/${id}`, item);
   }
 
   changeRoute(id: number, newRouteId: number) {

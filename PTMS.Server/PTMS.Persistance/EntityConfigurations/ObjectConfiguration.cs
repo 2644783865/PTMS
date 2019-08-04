@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 using PTMS.Domain.Entities;
 using PTMS.Persistance.Converters;
 
@@ -43,7 +45,7 @@ namespace PTMS.Persistance.EntityConfigurations
                     .HasName("FK_OBJECTS_3")
                     .IsUnique();
 
-                entity.HasIndex(e => e.VehicleType)
+                entity.HasIndex(e => e.CarTypeId)
                     .HasName("FK_OBJECTS_2")
                     .IsUnique();
 
@@ -75,9 +77,15 @@ namespace PTMS.Persistance.EntityConfigurations
                     .HasColumnName("DISP_ROUTE_")
                     .HasAnnotation("Description", "Транслятор");
 
+                var converter = new ValueConverter<int, decimal>(
+                    v => v,
+                    v => (int)v,
+                    new ConverterMappingHints(valueGeneratorFactory: (p, t) => new TemporaryIntValueGenerator()));
+
                 entity.Property(e => e.Id)
                     .HasColumnName("IDS_")
-                    .HasColumnType("NUMERIC(9, 0)");
+                    .HasColumnType("NUMERIC(9, 0)")
+                    .HasConversion(converter);
 
                 entity.Property(e => e.LastAddInfo)
                     .HasColumnName("LAST_ADD_INFO_");
@@ -145,7 +153,7 @@ namespace PTMS.Persistance.EntityConfigurations
                     .HasColumnName("USER_COMMENT_")
                     .HasMaxLength(100);
 
-                entity.Property(e => e.VehicleType)
+                entity.Property(e => e.CarTypeId)
                     .HasColumnName("VEHICLE_TYPE_")
                     .HasDefaultValueSql("DEFAULT 1")
                     .HasAnnotation("Description", "Тип автобуса");

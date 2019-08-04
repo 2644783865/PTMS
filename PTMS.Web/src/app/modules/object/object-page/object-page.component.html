@@ -1,8 +1,10 @@
 <app-page-header>Транспорт</app-page-header>
 
-<!--<div class="add-button">
-  <button mat-raised-button color="primary">Добавить новое ТС</button>
-</div>-->
+<div class="add-button" *ngIf="canAddVehicle">
+  <button mat-raised-button color="primary" (click)="openAddEditDialog()">
+    Добавить новое ТС
+  </button>
+</div>
 
 <div *ngIf="(pagination$ | async) as pageData">
   <div class="table-wrapper table-editable mat-elevation-z8">
@@ -193,8 +195,11 @@
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
         <mat-cell *matCellDef="let vehicle" class="table-controls">
           <app-menu-icon-dropdown *ngIf="vehicle.showMenu">
+            <button mat-menu-item *ngIf="vehicle.canUpdate" (click)="openAddEditDialog(vehicle)">
+              Редактировать
+            </button>
             <button mat-menu-item *ngIf="vehicle.canChangeRoute" (click)="openChangeRouteDialog(vehicle)">
-              Сменить маршрут ТС
+              Сменить маршрут
             </button>
             <button mat-menu-item *ngIf="vehicle.canChangeProvider" (click)="openChangeProviderDialog(vehicle)">
               Сменить установщика

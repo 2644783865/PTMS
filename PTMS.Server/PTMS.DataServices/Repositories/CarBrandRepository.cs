@@ -21,5 +21,11 @@ namespace PTMS.DataServices.Repositories
             var list = await base.GetAllAsync();
             return list.OrderBy(x => x.Name).ToList();
         }
+
+        public async Task<int?> GetCarTypeIdByBrandId(int id)
+        {
+            var carBrand = await GetByIdAsync(id);
+            return carBrand?.CarTypeId;
+        }
     }
 }
