@@ -34,7 +34,7 @@
             <app-input-clear-icon matSuffix controlName="project"></app-input-clear-icon>
           </mat-form-field>
         </div>
-        <div class="col">
+        <div class="col" *ngIf="!isTransporter">
           <mat-form-field>
             <input matInput placeholder="Номер Блока" type="text"
                    formControlName="blockNumber" />

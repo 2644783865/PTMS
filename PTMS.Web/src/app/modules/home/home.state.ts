@@ -134,9 +134,16 @@ export class HomeQuery extends AppQueryEntity<HomeState, ObjectDto> {
 
   statByProvider$: Observable<ProviderStat[]> = combineLatest(
     this.list$,
-    this.select(s => s.providers)
+    this.select(s => s.providers),
+    this.select(s => s.plansByRoutes),
+    this.select(s => s.routeStatFilters)
   ).pipe(
-    switchMap(([objects, providers]) => {
+    switchMap(([objects, providers, plansByRoutes, routeStatFilters]) => {
+      if (routeStatFilters.projectId) {
+        let routeIds = plansByRoutes.filter(x => x.projectId == routeStatFilters.projectId).map(x => x.routeId);
+        objects = objects.filter(x => routeIds.includes(x.lastRout));
+      }
+
       let result = providers.map(provider => {
         let item: ProviderStat = {
           provider,
