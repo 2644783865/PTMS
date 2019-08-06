@@ -9,6 +9,7 @@ export class UpdatedRowDirective {
   @Input('appUpdatedRow') rowId: number | string;
 
   private subscription: Subscription;
+  private entityId: string | number;
 
   constructor(
     private el: ElementRef,
@@ -17,11 +18,18 @@ export class UpdatedRowDirective {
 
   ngOnInit() {
     this.subscription = this.notificationService.updatedEntityId$
-      .subscribe(this.onUpdate.bind(this));
+      .subscribe((eId) => {
+        this.entityId = eId;
+        this.onUpdate();
+      });
   }
 
-  private onUpdate(entityId: number | string) {
-    if (this.rowId == entityId) {
+  ngOnChanges() {
+    this.onUpdate();
+  }
+
+  private onUpdate() {
+    if (this.rowId == this.entityId) {
       this.el.nativeElement.classList.add("table-row-updated");
     }
     else {
