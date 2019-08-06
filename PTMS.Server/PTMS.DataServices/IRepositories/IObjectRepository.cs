@@ -27,8 +27,12 @@ namespace PTMS.DataServices.IRepositories
             OrderByEnum orderBy,
             int? page,
             int? pageSize);
-        
+
+        Task<bool> AnyByPlateNumberAsync(string name, int? currentEntityId);
+
         Task<Objects> GetFullByIdAsync(int id);
+
+        Task<Objects> GetPureByIdAsync(int id);
 
         Task<Objects> GetByIdWithBlockAsync(int id);
         

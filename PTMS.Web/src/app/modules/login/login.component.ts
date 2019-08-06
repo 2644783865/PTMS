@@ -73,7 +73,7 @@ export class LoginComponent implements OnInit {
           },
           errorResponse => {
             this.loading$.next(false);
-            this.notificationService.error(errorResponse.error.message);
+            this.notificationService.exception(errorResponse);
           })
     }
   }

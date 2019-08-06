@@ -7,6 +7,7 @@ import { ProviderDto } from '@app/core/dtos/ProviderDto';
 import { Observable } from 'rxjs';
 import { ObjectService } from '../object.service';
 import { ObjectQuery, ObjectUI } from '../object.state';
+import { RouteDto } from '@app/core/dtos/RouteDto';
 
 @Component({
   selector: 'app-object-add-edit-dialog',
@@ -16,10 +17,12 @@ export class ObjectAddEditDialogComponent {
   modalLoading$: Observable<boolean>;
   modalForm: FormGroup;
   isNewVehicle: boolean;
+  showRouteRequired: boolean = false;
 
   providers$: Observable<ProviderDto[]>;
   carBrands$: Observable<CarBrandDto[]>;
   blockTypes$: Observable<BlockTypeDto[]>;
+  routes$: Observable<RouteDto[]>;
 
   constructor(
     private objectQuery: ObjectQuery,
@@ -35,12 +38,14 @@ export class ObjectAddEditDialogComponent {
     this.providers$ = this.objectQuery.providers$;
     this.carBrands$ = this.objectQuery.carBrands$;
     this.blockTypes$ = this.objectQuery.blockTypes$;
+    this.routes$ = this.objectQuery.routes$;
 
     this.modalForm = this.fb.group({
       name: ['', Validators.required],
       providerId: ['', Validators.required],
       phone: ['', Validators.required],
       carBrand: [],
+      route: [],
       yearRelease: [],
       blockNumber: [],
       blockTypeId: []
@@ -53,11 +58,17 @@ export class ObjectAddEditDialogComponent {
         name: vehicle.name,
         providerId: vehicle.providerId,
         phone: vehicle.phone,
+        route: vehicle.route || null,
         carBrand: vehicle.carBrand || null,
         yearRelease: vehicle.yearRelease,
         blockNumber: vehicle.block ? vehicle.block.blockNumber : null,
         blockTypeId: vehicle.block ? vehicle.block.blockTypeId : null
       });
+
+      if (!vehicle.objOutput) {
+        this.modalForm.get('route').setValidators(Validators.required);
+        this.showRouteRequired = true;
+      }
     }
   }
 

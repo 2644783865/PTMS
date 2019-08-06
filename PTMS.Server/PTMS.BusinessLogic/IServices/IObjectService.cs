@@ -45,9 +45,7 @@ namespace PTMS.BusinessLogic.IServices
             int ids);
 
         Task DeleteByIdAsync(int id);
-
-        Task<ObjectModel> ChangeProviderAsync(int ids, int providerId);
-
+        
         Task<List<ObjectModel>> FindForReportingAsync(int minutes);
     }
 }

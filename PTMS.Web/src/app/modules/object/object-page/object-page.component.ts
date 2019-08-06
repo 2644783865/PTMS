@@ -9,7 +9,6 @@ import { ProviderDto } from '@app/core/dtos/ProviderDto';
 import { PaginatorEvent } from '@app/shared/paginator/paginator.event';
 import { merge, Observable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { ObjectChangeProviderDialogComponent } from '../object-change-provider-dialog/object-change-provider-dialog.component';
 import { ObjectChangeRouteDialogComponent } from '../object-change-route-dialog/object-change-route-dialog.component';
 import { ObjectEnableDialogComponent } from '../object-enable-dialog/object-enable-dialog.component';
 import { ObjectService } from '../object.service';
@@ -86,14 +85,6 @@ export class ObjectPageComponent implements OnInit {
 
   openChangeRouteDialog(vehicle: ObjectUI) {
     this.dialog.open(ObjectChangeRouteDialogComponent, {
-      width: '400px',
-      data: vehicle,
-      autoFocus: false
-    });
-  }
-
-  openChangeProviderDialog(vehicle: ObjectUI) {
-    this.dialog.open(ObjectChangeProviderDialogComponent, {
       width: '400px',
       data: vehicle,
       autoFocus: false

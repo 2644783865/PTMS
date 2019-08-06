@@ -7,11 +7,11 @@ import { ProviderDto } from '@app/core/dtos/ProviderDto';
 import { CarBrandDto } from '@app/core/dtos/CarBrandDto';
 import { CarTypeDto } from '@app/core/dtos/CarTypeDto';
 import { BlockTypeDto } from '@app/core/dtos/BlockTypeDto';
+import { RouteDto } from '@app/core/dtos/RouteDto';
 
 export interface ObjectUI extends ObjectDto {
   canUpdate: boolean;
   canChangeRoute: boolean;
-  canChangeProvider: boolean;
   canEnable: boolean;
   canDisable: boolean;
 
@@ -24,6 +24,7 @@ export interface ObjectState extends AppPagedEntityState<ObjectUI> {
   carBrands: CarBrandDto[];
   carTypes: CarTypeDto[];
   blockTypes: BlockTypeDto[];
+  routes: RouteDto[]
 }
 
 @Injectable()
@@ -39,14 +40,16 @@ export class ObjectStore extends AppPagedEntityStore<ObjectState, ObjectUI> {
     providers: ProviderDto[],
     carBrands: CarBrandDto[],
     carTypes: CarTypeDto[],
-    blockTypes: BlockTypeDto[]) {
+    blockTypes: BlockTypeDto[],
+    routes: RouteDto[]) {
 
     this.update({
       projects,
       providers,
       carBrands,
       carTypes,
-      blockTypes
+      blockTypes,
+      routes
     });
   }
 
@@ -62,6 +65,7 @@ export class ObjectQuery extends AppPagedQueryEntity<ObjectState, ObjectUI> {
   carBrands$ = this.select(s => s.carBrands);
   carTypes$ = this.select(s => s.carTypes);
   blockTypes$ = this.select(s => s.blockTypes);
+  routes$ = this.select(s => s.routes);
 
   constructor(protected store: ObjectStore) {
     super(store);

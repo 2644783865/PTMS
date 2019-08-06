@@ -8,7 +8,6 @@ import { RouteHelper } from '@app/core/helpers/route.helper';
 import { ObjectDto } from '@app/core/dtos/ObjectDto';
 import { AuthService } from '@app/core/auth/auth.service';
 import { RoleEnum } from '@app/core/enums/role.enum';
-import { ProviderDto } from '@app/core/dtos/ProviderDto';
 import { ProviderDataService } from '@app/core/data-services/provider.data.service';
 import { AppPaginationResponse } from '@app/core/akita-extensions/app-paged-entity-state';
 import { CarBrandDataService } from '@app/core/data-services/car-brand.data.service';
@@ -16,6 +15,8 @@ import { CarTypeDataService } from '@app/core/data-services/car-type.data.servic
 import { ConfirmDialogService } from '@app/shared/confirm-dialog/confirm-dialog.service';
 import { BlockTypeDataService } from '@app/core/data-services/block-type.data.service';
 import { ObjectAddEditRequestDto } from '@app/core/dtos/ObjectAddEditRequestDto';
+import { RouteDataService } from '@app/core/data-services/route.data.service';
+import { RouteDto } from '@app/core/dtos/RouteDto';
 
 @Injectable()
 export class ObjectService {
@@ -27,6 +28,7 @@ export class ObjectService {
     private carBrandDataService: CarBrandDataService,
     private carTypeDataService: CarTypeDataService,
     private blockTypeDataService: BlockTypeDataService,
+    private routeDataService: RouteDataService,
     private routeHelper: RouteHelper,
     private notificationService: NotificationService,
     private authService: AuthService,
@@ -71,12 +73,13 @@ export class ObjectService {
   async loadRelatedData() {
     let isTransporter = this.isTransporter;
 
-    let [projects, providers, carBrands, carTypes, blockTypes ] = await Promise.all([
+    let [projects, providers, carBrands, carTypes, blockTypes, routes ] = await Promise.all([
       !isTransporter ? this.projectDataService.getAll().toPromise() : Promise.resolve([]),
       !isTransporter ? this.providerDataService.getAll().toPromise() : Promise.resolve([]),
       this.carBrandDataService.getAll().toPromise(),
       this.carTypeDataService.getAll().toPromise(),
-      !isTransporter ? this.blockTypeDataService.getAll().toPromise() : Promise.resolve([])
+      !isTransporter ? this.blockTypeDataService.getAll().toPromise() : Promise.resolve([]),
+      this.routeDataService.getAll({ active: true }).toPromise()
     ]);
 
     carBrands.forEach(x => {
@@ -88,7 +91,10 @@ export class ObjectService {
       providers,
       carBrands,
       carTypes,
-      blockTypes);
+      blockTypes,
+      routes);
+
+    this.routeHelper.setRoutes(routes);
   }
 
   async getProjectByRouteName(routeName: string) {
@@ -129,33 +135,9 @@ export class ObjectService {
     }
   }
 
-  async changeProvider(vehicle: ObjectUI, provider: ProviderDto) {
+  async enable(vehicle: ObjectUI, newRoute: RouteDto) {
     try {
       this.objectStore.setModalLoading(true);
-
-      let updateItem = await this.objectDataService.changeProvider(vehicle.id, provider.id).toPromise();
-
-      this.objectStore.update(updateItem.id, this.mapToModel(updateItem));
-
-      this.notificationService.success(`Установщик для ТС номер ${updateItem.name} был успешно изменён на ${updateItem.provider.name}`, updateItem.id);
-
-      return updateItem;
-    }
-    catch (exc) {
-      this.notificationService.exception(exc);
-    }
-    finally {
-      this.objectStore.setModalLoading(false);
-    }
-  }
-
-  async enable(vehicle: ObjectUI, newRouteName: string) {
-    try {
-      this.objectStore.setModalLoading(true);
-
-      let newRoute = await this.routeHelper
-        .getRouteByName(newRouteName)
-        .toPromise()
 
       let updateItem = await this.objectDataService.enable(vehicle.id, newRoute.id).toPromise();
 
@@ -204,12 +186,13 @@ export class ObjectService {
 
       let dto = formValue as ObjectAddEditRequestDto;
       dto.carBrandId = formValue.carBrand ? formValue.carBrand.id : null;
+      dto.routeId = formValue.route ? formValue.route.id : null;
 
       let updateItem = vehicleId > 0
         ? await this.objectDataService.update(vehicleId, dto).toPromise()
         : await this.objectDataService.add(dto).toPromise();
 
-      this.objectStore.update(updateItem.id, this.mapToModel(updateItem));
+      this.objectStore.addOrUpdate(updateItem.id, this.mapToModel(updateItem));
 
       this.notificationService.success(`ТС номер ${updateItem.name} был успешно ${vehicleId > 0 ? 'отредактирован' : 'добавлен'}`, updateItem.id);
 
@@ -243,17 +226,20 @@ export class ObjectService {
     let vehicle = item as ObjectUI;
 
     vehicle.canUpdate = this.authService.isInRole(RoleEnum.Administrator);
-    vehicle.canChangeRoute = !vehicle.objOutput;
-    vehicle.canChangeProvider = !vehicle.objOutput && this.authService.isInRole(RoleEnum.Administrator);
+    vehicle.canChangeRoute = !vehicle.objOutput && this.isTransporter;
     vehicle.canEnable = vehicle.objOutput && this.authService.isInRole(RoleEnum.Administrator);
     vehicle.canDisable = !vehicle.objOutput && this.authService.isInRole(RoleEnum.Administrator);
 
     vehicle.showMenu = vehicle.canChangeRoute
-      || vehicle.canChangeProvider
+      || vehicle.canUpdate
       || vehicle.canEnable
       || vehicle.canDisable;
 
     let state = this.objectStore.getValue();
+
+    if (state.routes.length > 0) {
+      vehicle.route = state.routes.find(x => x.id == vehicle.lastRout);
+    }
 
     if (state.projects.length > 0) {
       vehicle.project = state.projects.find(x => x.id == vehicle.projId);

@@ -26,6 +26,17 @@ export class RouteHelper implements AsyncValidator {
     return this._routes$.asObservable();
   }
 
+  setRoutes(routes: RouteDto[]) {
+    if (this._routes$ == null) {
+      this._routes$ = new AsyncSubject<RouteDto[]>();
+      this._routes$.next(routes);
+      this._routes$.complete();
+    }
+    else {
+      throw new Error("Routes are already initialized");
+    }
+  }
+
   validate(ctrl: AbstractControl): Observable<ValidationErrors | null> {
     return this.getRouteByName(ctrl.value)
       .pipe(

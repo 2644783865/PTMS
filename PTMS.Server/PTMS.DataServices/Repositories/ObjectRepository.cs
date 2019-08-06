@@ -34,7 +34,6 @@ namespace PTMS.DataServices.Repositories
 
         private readonly string[] _includesPure =
         {
-            nameof(Objects.Route),
             nameof(Objects.Block)
         };
 
@@ -92,7 +91,7 @@ namespace PTMS.DataServices.Repositories
                 && (!carTypeId.HasValue || x.CarBrand.CarTypeId == carTypeId)
                 && (!locked.HasValue || x.ObjOutput == locked.Value)
                 && (!yearRelease.HasValue || x.YearRelease == yearRelease)
-                && (string.IsNullOrEmpty(blockNumber) || x.Block.BlockNumber.ToString().Contains(blockNumber))
+                && (string.IsNullOrEmpty(blockNumber) || x.Phone.ToString().Contains(blockNumber) || x.Block.BlockNumber.ToString().Contains(blockNumber))
                 && (!blockTypeId.HasValue || x.Block.BlockTypeId == blockTypeId)
                 && (userRoutesModel.RouteIds == null || (x.LastRout.HasValue && userRoutesModel.RouteIds.Contains(x.LastRout.Value)));
 
@@ -163,6 +162,11 @@ namespace PTMS.DataServices.Repositories
             return GetByIdAsync(id, _includesFull);
         }
 
+        public Task<Objects> GetPureByIdAsync(int id)
+        {
+            return GetByIdAsync(id, _includesPure);
+        }
+
         public Task<Objects> GetByIdWithBlockAsync(int id)
         {
             return GetByIdAsync(id, nameof(Objects.Block));
@@ -181,26 +185,29 @@ namespace PTMS.DataServices.Repositories
         {
             var maxObjId = await EntityQuery.MaxAsync(x => x.ObjId);
             entity.ObjId = (short)(maxObjId + 1);
-            await PrepareObject(entity);
+            PrepareObject(entity);
             return await base.AddAsync(entity);
         }
 
         public override async Task<Objects> UpdateAsync(Objects entity)
         {
-            await PrepareObject(entity);
+            PrepareObject(entity);
             return await base.UpdateAsync(entity);
         }
 
-        private async Task PrepareObject(Objects entity)
+        public async Task<bool> AnyByPlateNumberAsync(string name, int? currentEntityId)
+        {
+            name = name.ToUpper();
+
+            var vehicle = await GetAsync(x => x.Name == name 
+                && (!currentEntityId.HasValue || x.Id != currentEntityId));
+
+            return vehicle != null;
+        }
+
+        private void PrepareObject(Objects entity)
         {
             entity.Name = entity.Name.ToUpper();
-
-            var ifVehicleWithNameAlreadyExist = await GetAsync(x => x.Name == entity.Name && x.Id != entity.Id);
-
-            if (ifVehicleWithNameAlreadyExist != null)
-            {
-                throw new Exception("ТС с таким номером уже существует");
-            }
         }
     }
 }

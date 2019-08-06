@@ -82,18 +82,7 @@ namespace PTMS.Api.Controllers
 
             return result;
         }
-
-        [PtmsAuthorizeAdmin]
-        [HttpPost("/object/{ids}/changeProvider/{providerId}")]
-        public async Task<ObjectModel> ChangeProvider(int ids, int providerId)
-        {
-            var result = await _objectService.ChangeProviderAsync(
-                ids,
-                providerId);
-
-            return result;
-        }
-
+        
         [PtmsAuthorizeAdmin]
         [HttpPost("/object/{ids}/enable/{newRouteId}")]
         public async Task<ObjectModel> EnableVehicle(int ids, int newRouteId)
@@ -115,20 +104,23 @@ namespace PTMS.Api.Controllers
             return result;
         }
 
+        [PtmsAuthorize(RoleNames.Dispatcher)]
         [HttpPost("/object")]
         public async Task<ObjectModel> Post([FromBody]ObjectAddEditRequest model)
         {
             var result = await _objectService.AddAsync(model);
             return result;
         }
-        
+
+        [PtmsAuthorize(RoleNames.Dispatcher)]
         [HttpPut("/object/{id}")]
         public async Task<ObjectModel> Put(int id, [FromBody]ObjectAddEditRequest model)
         {
             var result = await _objectService.UpdateAsync(id, model);
             return result;
         }
-        
+
+        [PtmsAuthorizeAdmin]
         [HttpDelete("/object/{id}")]
         public async Task Delete(int id)
         {

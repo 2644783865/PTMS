@@ -9,12 +9,14 @@
       <b>Номер:</b> {{vehicle.name}}
     </div>
     <mat-form-field>
-      <input matInput placeholder="Маршрут"
-             formControlName="newRouteName"
-             autofocus>
-      <app-input-error controlName="newRouteName"></app-input-error>
+      <mat-label>Маршрут </mat-label>
+      <app-autocomplete [options]="routes$"
+                        formControlName="route">
+      </app-autocomplete>
+      <app-input-clear-icon matSuffix controlName="route"></app-input-clear-icon>
+      <app-input-error controlName="route"></app-input-error>
     </mat-form-field>
-    <div class="form-field-static" [class.visibility-hidden]="!modalForm.get('newRouteName').value">
+    <div class="form-field-static" [class.visibility-hidden]="!modalForm.get('route').value">
       <b>Перевозчик: </b> {{projectForSelectedRoute ? projectForSelectedRoute.name : 'Загрузка ...'}}
     </div>
   </div>

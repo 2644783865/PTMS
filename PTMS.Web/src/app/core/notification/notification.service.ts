@@ -49,8 +49,9 @@ export class NotificationService {
     }
     else {
       console.error(exception.message);
-      errorMessage = 'Произошла ошибка. Приносим извинения за неудобства';
     }
+
+    errorMessage = errorMessage || 'Произошла ошибка. Приносим извинения за неудобства';
 
     this.error(errorMessage);
   }

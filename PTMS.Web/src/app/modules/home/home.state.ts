@@ -115,7 +115,7 @@ export class HomeQuery extends AppQueryEntity<HomeState, ObjectDto> {
           hasError: false
         };
 
-        item.hasError = item.onlineNumber != item.factNumber;
+        item.hasError = item.onlineNumber < item.factNumber || item.onlineNumber > item.plannedNumber;
 
         return item;
       });
@@ -175,7 +175,7 @@ export class HomeQuery extends AppQueryEntity<HomeState, ObjectDto> {
           hasError: false
         };
 
-        item.hasError = item.onlineNumber != item.factNumber;
+        item.hasError = item.onlineNumber < item.factNumber || item.onlineNumber > item.plannedNumber;
 
         return item;
       });

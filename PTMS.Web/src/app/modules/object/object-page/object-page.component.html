@@ -36,7 +36,7 @@
         </div>
         <div class="col" *ngIf="!isTransporter">
           <mat-form-field>
-            <input matInput placeholder="Номер Блока" type="text"
+            <input matInput placeholder="Номер Блока / Телефон (IMEI)" type="text"
                    formControlName="blockNumber" />
             <app-input-clear-icon matSuffix controlName="blockNumber"></app-input-clear-icon>
           </mat-form-field>
@@ -200,9 +200,6 @@
             </button>
             <button mat-menu-item *ngIf="vehicle.canChangeRoute" (click)="openChangeRouteDialog(vehicle)">
               Сменить маршрут
-            </button>
-            <button mat-menu-item *ngIf="vehicle.canChangeProvider" (click)="openChangeProviderDialog(vehicle)">
-              Сменить установщика
             </button>
             <button mat-menu-item *ngIf="vehicle.canDisable" (click)="disableVehicle(vehicle)">
               Вывести из эксплуатации

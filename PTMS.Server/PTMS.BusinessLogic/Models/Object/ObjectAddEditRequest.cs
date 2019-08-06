@@ -13,5 +13,6 @@ namespace PTMS.BusinessLogic.Models
         public int? YearRelease { get; set; }
         public int? BlockNumber { get; set; }
         public int? BlockTypeId { get; set; }
+        public int? RouteId { get; set; }
     }
 }

@@ -83,7 +83,7 @@ namespace PTMS.BusinessLogic.Services
 
         public async Task<ObjectModel> GetByIdAsync(int id)
         {
-            var result = await _objectRepository.GetFullByIdAsync(id);
+            var result = await _objectRepository.GetPureByIdAsync(id);
             return MapToModel(result);
         }
         
@@ -115,24 +115,12 @@ namespace PTMS.BusinessLogic.Services
             entity.LastRout = newRouteId;
             entity.ProjId = project.Id;
 
-            var result = await UpdateAsync(entity);
+            var result = await _objectRepository.UpdateAsync(entity);
+            await OnRouteChange(result);
 
-            await _busDataRepository.UpdateBusRoutes(entity);
-
-            return result;
+            return await GetByIdAsync(result.Id);
         }
-
-        public async Task<ObjectModel> ChangeProviderAsync(
-            int id, 
-            int providerId)
-        {
-            var entity = await _objectRepository.GetByIdAsync(id);
-            entity.ProviderId = providerId;
-
-            var result = await UpdateAsync(entity);
-            return result;
-        }
-
+        
         public async Task<ObjectModel> EnableAsync(
             int id,
             int newRouteId)
@@ -150,8 +138,8 @@ namespace PTMS.BusinessLogic.Services
             entity.ProjId = project.Id;
             entity.ObjOutput = false;
 
-            var result = await UpdateAsync(entity);
-            return result;
+            var result = await _objectRepository.UpdateAsync(entity);
+            return await GetByIdAsync(result.Id);
         }
 
         public async Task<ObjectModel> DisableAsync(
@@ -167,8 +155,8 @@ namespace PTMS.BusinessLogic.Services
             entity.ObjOutput = true;
             entity.ObjOutputDate = DateTime.Now;
 
-            var result = await UpdateAsync(entity);
-            return result;
+            var result = await _objectRepository.UpdateAsync(entity);
+            return await GetByIdAsync(result.Id);
         }
 
         public async Task DeleteByIdAsync(int id)
@@ -197,6 +185,13 @@ namespace PTMS.BusinessLogic.Services
 
             await SetNewValues(entity, request);
 
+            var ifAlreadyExist = await _objectRepository.AnyByPlateNumberAsync(entity.Name, null);
+
+            if (ifAlreadyExist)
+            {
+                throw new InvalidOperationException("ТС c таким номером уже существует");
+            }
+
             var result = await _objectRepository.AddAsync(entity);
             await HandleBlock(result.Id, null, request);
 
@@ -209,10 +204,27 @@ namespace PTMS.BusinessLogic.Services
             var block = entity.Block;
             entity.Block = null;
 
+            if (entity.Name != request.Name)
+            {
+                var ifAlreadyExist = await _objectRepository.AnyByPlateNumberAsync(request.Name, entity.Id);
+
+                if (ifAlreadyExist)
+                {
+                    throw new InvalidOperationException("ТС c таким номером уже существует");
+                }
+            }
+
+            var isNewRoute = request.RouteId.HasValue && entity.LastRout != request.RouteId;
+
             await SetNewValues(entity, request);
 
             var result = await _objectRepository.UpdateAsync(entity);
             await HandleBlock(entity.Id, block, request);
+
+            if (isNewRoute)
+            {
+                await OnRouteChange(result);
+            }
 
             return await GetByIdAsync(result.Id);
         }
@@ -255,11 +267,7 @@ namespace PTMS.BusinessLogic.Services
             entity.CarBrandId = request.CarBrandId;
             entity.YearRelease = request.YearRelease;
             entity.Phone = request.Phone;
-
-            if (entity.Id == 0)
-            {
-                entity.ProviderId = request.ProviderId;
-            }
+            entity.ProviderId = request.ProviderId;
 
             if (entity.CarBrandId.HasValue)
             {
@@ -269,12 +277,23 @@ namespace PTMS.BusinessLogic.Services
             {
                 entity.CarTypeId = null;
             }
+
+            entity.LastRout = request.RouteId;
+
+            if (entity.LastRout.HasValue)
+            {
+                var project = await _projectRepository.GetProjectByRouteIdAsync(entity.LastRout.Value);
+                entity.ProjId = project.Id;
+            }
+            else
+            {
+                entity.ProjId = 0;
+            }
         }
 
-        private async Task<ObjectModel> UpdateAsync(Objects entity)
+        private async Task OnRouteChange(Objects entity)
         {
-            var result = await _objectRepository.UpdateAsync(entity);
-            return await GetByIdAsync(result.Id);
+            await _busDataRepository.UpdateBusRoutes(entity);
         }
     }
 }
