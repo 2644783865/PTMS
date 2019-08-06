@@ -30,6 +30,8 @@ namespace PTMS.DataServices.IRepositories
 
         Task<bool> AnyByPlateNumberAsync(string name, int? currentEntityId);
 
+        Task<bool> AnyByPhoneAsync(long phone, int? currentEntityId);
+
         Task<Objects> GetFullByIdAsync(int id);
 
         Task<Objects> GetPureByIdAsync(int id);

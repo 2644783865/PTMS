@@ -176,6 +176,8 @@ namespace PTMS.BusinessLogic.Services
 
         public async Task<ObjectModel> AddAsync(ObjectAddEditRequest request)
         {
+            await Validate(request, null);
+
             var entity = new Objects()
             {
                 ObjOutput = true,
@@ -184,13 +186,6 @@ namespace PTMS.BusinessLogic.Services
             };
 
             await SetNewValues(entity, request);
-
-            var ifAlreadyExist = await _objectRepository.AnyByPlateNumberAsync(entity.Name, null);
-
-            if (ifAlreadyExist)
-            {
-                throw new InvalidOperationException("ТС c таким номером уже существует");
-            }
 
             var result = await _objectRepository.AddAsync(entity);
             await HandleBlock(result.Id, null, request);
@@ -204,15 +199,7 @@ namespace PTMS.BusinessLogic.Services
             var block = entity.Block;
             entity.Block = null;
 
-            if (entity.Name != request.Name)
-            {
-                var ifAlreadyExist = await _objectRepository.AnyByPlateNumberAsync(request.Name, entity.Id);
-
-                if (ifAlreadyExist)
-                {
-                    throw new InvalidOperationException("ТС c таким номером уже существует");
-                }
-            }
+            await Validate(request, entity);
 
             var isNewRoute = request.RouteId.HasValue && entity.LastRout != request.RouteId;
 
@@ -288,6 +275,29 @@ namespace PTMS.BusinessLogic.Services
             else
             {
                 entity.ProjId = 0;
+            }
+        }
+
+        private async Task Validate(ObjectAddEditRequest request, Objects existingEntity)
+        {
+            if (existingEntity == null || existingEntity.Name != request.Name)
+            {
+                var ifAlreadyExist = await _objectRepository.AnyByPlateNumberAsync(request.Name, existingEntity?.Id);
+
+                if (ifAlreadyExist)
+                {
+                    throw new InvalidOperationException("ТС c таким номером уже существует");
+                }
+            }
+
+            if (existingEntity == null || existingEntity.Phone != request.Phone)
+            {
+                var ifAlreadyExist = await _objectRepository.AnyByPhoneAsync(request.Phone, existingEntity?.Id);
+
+                if (ifAlreadyExist)
+                {
+                    throw new InvalidOperationException("ТС c таким номером телефона (IMEI) уже существует");
+                }
             }
         }
 

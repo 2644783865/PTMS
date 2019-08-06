@@ -205,6 +205,14 @@ namespace PTMS.DataServices.Repositories
             return vehicle != null;
         }
 
+        public async Task<bool> AnyByPhoneAsync(long phone, int? currentEntityId)
+        {
+            var vehicle = await GetAsync(x => x.Phone == phone
+                && (!currentEntityId.HasValue || x.Id != currentEntityId));
+
+            return vehicle != null;
+        }
+
         private void PrepareObject(Objects entity)
         {
             entity.Name = entity.Name.ToUpper();
