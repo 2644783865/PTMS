@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidator, ValidationErrors } from '@angular/forms';
-import { Observable, AsyncSubject, of } from 'rxjs';
+import { Observable, AsyncSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { RouteDataService } from '../data-services/route.data.service';
 import { RouteDto } from '../dtos/RouteDto';
@@ -31,9 +31,6 @@ export class RouteHelper implements AsyncValidator {
       this._routes$ = new AsyncSubject<RouteDto[]>();
       this._routes$.next(routes);
       this._routes$.complete();
-    }
-    else {
-      throw new Error("Routes are already initialized");
     }
   }
 
