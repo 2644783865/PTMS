@@ -16,7 +16,8 @@ namespace PTMS.Api.Controllers
         {
             _objectService = objectService;
         }
-        
+
+        [PtmsAuthorize(RoleNames.Dispatcher, RoleNames.Transporter, RoleNames.Mechanic)]
         [HttpGet("/objects")]
         public async Task<ActionResult<PageResult<ObjectModel>>> GetAll(
             string plateNumber = null,
@@ -65,6 +66,7 @@ namespace PTMS.Api.Controllers
             return result;
         }
 
+        [PtmsAuthorize(RoleNames.Dispatcher, RoleNames.Transporter, RoleNames.Mechanic)]
         [HttpGet("/object/{id}")]
         public async Task<ActionResult<ObjectModel>> GetById(int id)
         {
@@ -72,6 +74,7 @@ namespace PTMS.Api.Controllers
             return result;
         }
 
+        [PtmsAuthorize(RoleNames.Dispatcher, RoleNames.Transporter, RoleNames.Mechanic)]
         [HttpPost("/object/{ids}/changeRoute/{newRouteId}")]
         public async Task<ObjectModel> ChangeRoute(int ids, int newRouteId)
         {
@@ -82,8 +85,8 @@ namespace PTMS.Api.Controllers
 
             return result;
         }
-        
-        [PtmsAuthorizeAdmin]
+
+        [PtmsAuthorize(RoleNames.Dispatcher)]
         [HttpPost("/object/{ids}/enable/{newRouteId}")]
         public async Task<ObjectModel> EnableVehicle(int ids, int newRouteId)
         {
@@ -94,7 +97,7 @@ namespace PTMS.Api.Controllers
             return result;
         }
 
-        [PtmsAuthorizeAdmin]
+        [PtmsAuthorize(RoleNames.Dispatcher)]
         [HttpPost("/object/{ids}/disable")]
         public async Task<ObjectModel> DisableVehicle(int ids)
         {
@@ -120,7 +123,7 @@ namespace PTMS.Api.Controllers
             return result;
         }
 
-        [PtmsAuthorizeAdmin]
+        [PtmsAuthorize(RoleNames.Dispatcher)]
         [HttpDelete("/object/{id}")]
         public async Task Delete(int id)
         {

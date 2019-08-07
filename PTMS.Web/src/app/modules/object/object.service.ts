@@ -41,7 +41,7 @@ export class ObjectService {
   }
 
   get canAddVehicle(): boolean {
-    return this.authService.isInRole(RoleEnum.Administrator);
+    return this.authService.isInRole(RoleEnum.Administrator, RoleEnum.Dispatcher);
   }
 
   get routeValidator() {
@@ -225,10 +225,10 @@ export class ObjectService {
   private mapToModel(item: ObjectDto): ObjectUI {
     let vehicle = item as ObjectUI;
 
-    vehicle.canUpdate = this.authService.isInRole(RoleEnum.Administrator);
+    vehicle.canUpdate = this.authService.isInRole(RoleEnum.Administrator, RoleEnum.Dispatcher);
     vehicle.canChangeRoute = !vehicle.objOutput && this.isTransporter;
-    vehicle.canEnable = vehicle.objOutput && this.authService.isInRole(RoleEnum.Administrator);
-    vehicle.canDisable = !vehicle.objOutput && this.authService.isInRole(RoleEnum.Administrator);
+    vehicle.canEnable = vehicle.objOutput && this.authService.isInRole(RoleEnum.Administrator, RoleEnum.Dispatcher);
+    vehicle.canDisable = !vehicle.objOutput && this.authService.isInRole(RoleEnum.Administrator, RoleEnum.Dispatcher);
 
     vehicle.showMenu = vehicle.canChangeRoute
       || vehicle.canUpdate

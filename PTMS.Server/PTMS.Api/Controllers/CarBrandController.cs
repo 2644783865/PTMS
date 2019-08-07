@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PTMS.Api.Attributes;
 using PTMS.BusinessLogic.IServices;
 using PTMS.BusinessLogic.Models;
+using PTMS.Common;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -14,7 +16,7 @@ namespace PTMS.Api.Controllers
         {
             _carBrandService = carBrandService;
         }
-
+        
         [HttpGet("/carBrands")]
         public async Task<ActionResult<List<CarBrandModel>>> GetAll()
         {

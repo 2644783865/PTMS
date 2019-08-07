@@ -42,7 +42,7 @@ namespace PTMS.Api.Controllers
             return result;
         }
 
-        [PtmsAuthorizeAdmin]
+        [PtmsAuthorize(RoleNames.Dispatcher)]
         [HttpPost("/project")]
         public async Task<ProjectModel> Post([FromBody]ProjectModel model)
         {
@@ -50,7 +50,7 @@ namespace PTMS.Api.Controllers
             return result;
         }
 
-        [PtmsAuthorizeAdmin]
+        [PtmsAuthorize(RoleNames.Dispatcher)]
         [HttpPut("/project/{id}")]
         public async Task<ProjectModel> Put(int id, [FromBody]ProjectModel model)
         {
@@ -58,7 +58,7 @@ namespace PTMS.Api.Controllers
             return result;
         }
 
-        [PtmsAuthorizeAdmin]
+        [PtmsAuthorize(RoleNames.Dispatcher)]
         [HttpDelete("/project/{id}")]
         public async Task Delete(int id)
         {

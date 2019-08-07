@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using PTMS.Api.Attributes;
 using PTMS.BusinessLogic.IServices;
 using PTMS.BusinessLogic.Models;
+using PTMS.Common;
 
 namespace PTMS.Api.Controllers
 {    
@@ -32,7 +33,7 @@ namespace PTMS.Api.Controllers
             return result;
         }
 
-        [PtmsAuthorizeAdmin]
+        [PtmsAuthorize(RoleNames.Dispatcher)]
         [HttpPost("/route")]
         public async Task<RouteModel> Post([FromBody]RouteModel model)
         {
@@ -40,7 +41,7 @@ namespace PTMS.Api.Controllers
             return result;
         }
 
-        [PtmsAuthorizeAdmin]
+        [PtmsAuthorize(RoleNames.Dispatcher)]
         [HttpPut("/route/{id}")]
         public async Task<RouteModel> Put(int id, [FromBody]RouteModel model)
         {
@@ -48,7 +49,7 @@ namespace PTMS.Api.Controllers
             return result;
         }
 
-        [PtmsAuthorizeAdmin]
+        [PtmsAuthorize(RoleNames.Dispatcher)]
         [HttpDelete("/route/{id}")]
         public async Task Delete(int id)
         {
