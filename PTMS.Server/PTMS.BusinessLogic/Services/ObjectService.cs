@@ -218,7 +218,7 @@ namespace PTMS.BusinessLogic.Services
 
         private async Task HandleBlock(int objectId, Granit block, ObjectAddEditRequest request)
         {
-            if (request.BlockNumber.HasValue && request.BlockTypeId.HasValue)
+            if (request.BlockTypeId.HasValue)
             {
                 if (block != null)
                 {
@@ -232,7 +232,7 @@ namespace PTMS.BusinessLogic.Services
                     var granit = new Granit
                     {
                         ObjectId = objectId,
-                        BlockNumber = request.BlockNumber.Value,
+                        BlockNumber = request.BlockNumber,
                         BlockTypeId = request.BlockTypeId.Value
                     };
 

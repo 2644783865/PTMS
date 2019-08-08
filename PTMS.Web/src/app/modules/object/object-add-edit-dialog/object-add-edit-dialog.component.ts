@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { ObjectService } from '../object.service';
 import { ObjectQuery, ObjectUI } from '../object.state';
 import { RouteDto } from '@app/core/dtos/RouteDto';
+import { CustomValidators } from '@app/core/validation';
 
 @Component({
   selector: 'app-object-add-edit-dialog',
@@ -48,7 +49,7 @@ export class ObjectAddEditDialogComponent {
       route: [],
       yearRelease: [],
       blockNumber: [],
-      blockTypeId: []
+      blockTypeId: ['', CustomValidators.requiredIf('blockNumber')]
     });
 
     if (!this.isNewVehicle) {
