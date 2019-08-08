@@ -79,7 +79,7 @@ export class HomeStore extends AppEntityStore<HomeState, ObjectDto> {
       routeStatFilters: {
         showOnlyErrors: false,
         projectId: null,
-        intervalId: '10'
+        intervalId: 'today'
       }
     } as HomeState;
 
