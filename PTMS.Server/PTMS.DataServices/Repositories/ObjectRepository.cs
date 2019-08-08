@@ -183,8 +183,6 @@ namespace PTMS.DataServices.Repositories
 
         public override async Task<Objects> AddAsync(Objects entity)
         {
-            var maxObjId = await EntityQuery.MaxAsync(x => x.ObjId);
-            entity.ObjId = (short)(maxObjId + 1);
             PrepareObject(entity);
             return await base.AddAsync(entity);
         }
@@ -211,6 +209,12 @@ namespace PTMS.DataServices.Repositories
                 && (!currentEntityId.HasValue || x.Id != currentEntityId));
 
             return vehicle != null;
+        }
+
+        public async Task<short> GetNextObjectIdAsync()
+        {
+            var maxObjId = await EntityQuery.MaxAsync(x => x.ObjId);
+            return (short)(maxObjId + 1);
         }
 
         private void PrepareObject(Objects entity)

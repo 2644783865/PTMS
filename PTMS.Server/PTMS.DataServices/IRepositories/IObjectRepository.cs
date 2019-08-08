@@ -39,5 +39,7 @@ namespace PTMS.DataServices.IRepositories
         Task<Objects> GetByIdWithBlockAsync(int id);
         
         Task<List<Objects>> FindForReportingAsync(DateTime onlineStartDate, DateTime onlineEndDate);
+
+        Task<short> GetNextObjectIdAsync();
     }
 }

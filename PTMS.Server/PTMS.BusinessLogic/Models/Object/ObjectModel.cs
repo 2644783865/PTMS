@@ -37,7 +37,7 @@ namespace PTMS.BusinessLogic.Models
                 {
                     if (ObjOutputDate.HasValue)
                     {
-                        return $"Выведено {ObjOutputDate.Value.ToDateString()}";
+                        return $"Выведено {ObjOutputDate.Value.ToString("dd.MM.yyyy")}";
                     }
                     else
                     {

@@ -201,14 +201,14 @@ namespace PTMS.BusinessLogic.Services
 
             await Validate(request, entity);
 
-            var isNewRoute = request.RouteId.HasValue && entity.LastRout != request.RouteId;
+            var isRouteUpdated = request.RouteId.HasValue && entity.LastRout != request.RouteId;
 
             await SetNewValues(entity, request);
 
             var result = await _objectRepository.UpdateAsync(entity);
             await HandleBlock(entity.Id, block, request);
 
-            if (isNewRoute)
+            if (isRouteUpdated)
             {
                 await OnRouteChange(result);
             }
@@ -265,16 +265,27 @@ namespace PTMS.BusinessLogic.Services
                 entity.CarTypeId = null;
             }
 
-            entity.LastRout = request.RouteId;
+            var needToUpdateRoute = entity.LastRout != request.RouteId;
+            var needToUpdateObjId = needToUpdateRoute || entity.ObjId == 0;
 
-            if (entity.LastRout.HasValue)
+            if (needToUpdateRoute)
             {
-                var project = await _projectRepository.GetProjectByRouteIdAsync(entity.LastRout.Value);
-                entity.ProjId = project.Id;
+                entity.LastRout = request.RouteId;
+
+                if (entity.LastRout.HasValue)
+                {
+                    var project = await _projectRepository.GetProjectByRouteIdAsync(entity.LastRout.Value);
+                    entity.ProjId = project.Id;
+                }
+                else
+                {
+                    entity.ProjId = 0;
+                }
             }
-            else
+
+            if (needToUpdateObjId)
             {
-                entity.ProjId = 0;
+                entity.ObjId = await _objectRepository.GetNextObjectIdAsync();
             }
         }
 
