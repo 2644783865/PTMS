@@ -32,6 +32,8 @@ namespace PTMS.DataServices.IRepositories
 
         Task<bool> AnyByPhoneAsync(long phone, int? currentEntityId);
 
+        Task<bool> AnyByObjIdProjIdAsync(long objId, long projId, int? currentEntityId);
+
         Task<Objects> GetFullByIdAsync(int id);
 
         Task<Objects> GetPureByIdAsync(int id);

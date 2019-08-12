@@ -211,6 +211,14 @@ namespace PTMS.DataServices.Repositories
             return vehicle != null;
         }
 
+        public async Task<bool> AnyByObjIdProjIdAsync(long objId, long projId, int? currentEntityId)
+        {
+            var vehicle = await GetAsync(x => x.ObjId == objId && x.ProjId == projId
+                && (!currentEntityId.HasValue || x.Id != currentEntityId));
+
+            return vehicle != null;
+        }
+
         public async Task<short> GetNextObjectIdAsync()
         {
             var maxObjId = await EntityQuery.MaxAsync(x => x.ObjId);
