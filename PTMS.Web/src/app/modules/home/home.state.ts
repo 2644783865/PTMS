@@ -27,6 +27,7 @@ export interface ProjectStat {
   plannedNumber: number,
   onlineNumber: number,
   hasError: boolean
+  hasWarning: boolean
 }
 
 export interface RouteStat {
@@ -35,6 +36,7 @@ export interface RouteStat {
   plannedNumber: number,
   onlineNumber: number,
   hasError: boolean
+  hasWarning: boolean
 }
 
 export interface ProviderStat {
@@ -112,16 +114,18 @@ export class HomeQuery extends AppQueryEntity<HomeState, ObjectDto> {
           factNumber: filteredPlans.length > 0 ? factNumber : undefined,
           plannedNumber: filteredPlans.length > 0 ? plannedNumber : undefined,
           onlineNumber: objects.filter(x => x.projId == project.id).length,
-          hasError: false
+          hasError: false,
+          hasWarning: false
         };
 
-        item.hasError = item.onlineNumber < item.factNumber || item.onlineNumber > item.plannedNumber;
+        item.hasError = item.onlineNumber < item.factNumber;
+        item.hasWarning = item.onlineNumber > item.plannedNumber;
 
         return item;
       });
 
       if (routeStatFilters.showOnlyErrors) {
-        result = result.filter(x => x.hasError);
+        result = result.filter(x => x.hasError || x.hasWarning);
       }
 
       if (routeStatFilters.projectId) {
@@ -172,16 +176,18 @@ export class HomeQuery extends AppQueryEntity<HomeState, ObjectDto> {
           factNumber: planByRoute ? planByRoute.factNumber : undefined,
           plannedNumber: planByRoute ? planByRoute.plannedNumber : undefined,
           onlineNumber: objects.filter(x => x.lastRout == route.id).length,
-          hasError: false
+          hasError: false,
+          hasWarning: false
         };
 
-        item.hasError = item.onlineNumber < item.factNumber || item.onlineNumber > item.plannedNumber;
+        item.hasError = item.onlineNumber < item.factNumber;
+        item.hasWarning = item.onlineNumber > item.plannedNumber;
 
         return item;
       });
 
       if (routeStatFilters.showOnlyErrors) {
-        result = result.filter(x => x.hasError);
+        result = result.filter(x => x.hasError || x.hasWarning);
       }
 
       if (routeStatFilters.projectId) {

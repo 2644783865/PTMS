@@ -114,108 +114,110 @@
 
     <app-loading-bar [isLoading]="dataLoading$ | async"></app-loading-bar>
 
-    <mat-table [dataSource]="pageData.data"
-               [trackBy]="trackById"
-               matSort
-               [matSortActive]="filters.get('sortBy').value"
-               [matSortDirection]="filters.get('orderBy').value"
-               [matSortDisableClear]="true"
-               matSortStart="desc"
-               (matSortChange)="sortData($event)">
+    <div class="object-table-container">
+      <mat-table [dataSource]="pageData.data"
+                 [trackBy]="trackById"
+                 matSort
+                 [matSortActive]="filters.get('sortBy').value"
+                 [matSortDirection]="filters.get('orderBy').value"
+                 [matSortDisableClear]="true"
+                 matSortStart="desc"
+                 (matSortChange)="sortData($event)">
 
-      <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Номер </mat-header-cell>
-        <mat-cell *matCellDef="let vehicle" mobile-label="Номер"> {{vehicle.name}} </mat-cell>
-      </ng-container>
+        <ng-container matColumnDef="name" sticky>
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Номер </mat-header-cell>
+          <mat-cell *matCellDef="let vehicle" mobile-label="Номер"> {{vehicle.name}} </mat-cell>
+        </ng-container>
 
-      <ng-container matColumnDef="transporter">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Перевозчик </mat-header-cell>
-        <mat-cell *matCellDef="let vehicle" mobile-label="Перевозчик"> {{vehicle.project ? vehicle.project.name : '-'}} </mat-cell>
-      </ng-container>
+        <ng-container matColumnDef="route" sticky>
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Маршрут </mat-header-cell>
+          <mat-cell *matCellDef="let vehicle" mobile-label="Маршрут"> {{vehicle.route ? vehicle.route.name : '-'}} </mat-cell>
+        </ng-container>
 
-      <ng-container matColumnDef="route">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Маршрут </mat-header-cell>
-        <mat-cell *matCellDef="let vehicle" mobile-label="Маршрут"> {{vehicle.route ? vehicle.route.name : '-'}} </mat-cell>
-      </ng-container>
+        <ng-container matColumnDef="transporter" sticky>
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Перевозчик </mat-header-cell>
+          <mat-cell *matCellDef="let vehicle" mobile-label="Перевозчик"> {{vehicle.project ? vehicle.project.name : '-'}} </mat-cell>
+        </ng-container>
 
-      <ng-container matColumnDef="carBrand">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Марка ТС </mat-header-cell>
-        <mat-cell *matCellDef="let vehicle" mobile-label="Марка ТС"> {{vehicle.carBrand ? vehicle.carBrand.name : '-'}} </mat-cell>
-      </ng-container>
+        <ng-container matColumnDef="provider">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Установщик </mat-header-cell>
+          <mat-cell *matCellDef="let vehicle" mobile-label="Установщик"> {{vehicle.provider ? vehicle.provider.name : '-'}} </mat-cell>
+        </ng-container>
 
-      <ng-container matColumnDef="carType">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Тип ТС </mat-header-cell>
-        <mat-cell *matCellDef="let vehicle" mobile-label="Тип ТС"> {{vehicle.carBrand ? vehicle.carBrand.carType.name : '-'}} </mat-cell>
-      </ng-container>
+        <ng-container matColumnDef="lastTime">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Время посл. отклика </mat-header-cell>
+          <mat-cell *matCellDef="let vehicle" mobile-label="Время последнего отклика"> {{vehicle.lastTime | RusDateTime}} </mat-cell>
+        </ng-container>
 
-      <ng-container matColumnDef="yearRelease">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Год выпуска </mat-header-cell>
-        <mat-cell *matCellDef="let vehicle" mobile-label="Год выпуска"> {{vehicle.yearRelease || '-'}} </mat-cell>
-      </ng-container>
+        <ng-container matColumnDef="lastStationTime">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Время посл. остановки </mat-header-cell>
+          <mat-cell *matCellDef="let vehicle" mobile-label="Время последней остановки"> {{vehicle.lastStationTime | RusDateTime}} </mat-cell>
+        </ng-container>
 
-      <ng-container matColumnDef="phone">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Телефон (IMEI) </mat-header-cell>
-        <mat-cell *matCellDef="let vehicle" mobile-label="Телефон (IMEI)"> {{vehicle.phone || '-'}} </mat-cell>
-      </ng-container>
+        <ng-container matColumnDef="carBrand">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Марка ТС </mat-header-cell>
+          <mat-cell *matCellDef="let vehicle" mobile-label="Марка ТС"> {{vehicle.carBrand ? vehicle.carBrand.name : '-'}} </mat-cell>
+        </ng-container>
 
-      <ng-container matColumnDef="block">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Блок </mat-header-cell>
-        <mat-cell *matCellDef="let vehicle" mobile-label="Блок">
-          <span *ngIf="vehicle.block">{{vehicle.block.blockType.name}}<br />{{vehicle.block.blockNumber}}</span>
-          <span *ngIf="!vehicle.block">-</span>
-        </mat-cell>
-      </ng-container>
+        <ng-container matColumnDef="carType">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Тип ТС </mat-header-cell>
+          <mat-cell *matCellDef="let vehicle" mobile-label="Тип ТС"> {{vehicle.carBrand ? vehicle.carBrand.carType.name : '-'}} </mat-cell>
+        </ng-container>
 
-      <ng-container matColumnDef="status">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Статус </mat-header-cell>
-        <mat-cell *matCellDef="let vehicle" mobile-label="Статус">
-          <span class="label-pill label-pill-full-width"
-                [ngClass]="vehicle.objOutput ? 'label-pill-error' : 'label-pill-success'">
-            {{vehicle.statusName}}
-          </span>
-        </mat-cell>
-      </ng-container>
+        <ng-container matColumnDef="yearRelease">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Год выпуска </mat-header-cell>
+          <mat-cell *matCellDef="let vehicle" mobile-label="Год выпуска"> {{vehicle.yearRelease || '-'}} </mat-cell>
+        </ng-container>
 
-      <ng-container matColumnDef="provider">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Установщик </mat-header-cell>
-        <mat-cell *matCellDef="let vehicle" mobile-label="Установщик"> {{vehicle.provider ? vehicle.provider.name : '-'}} </mat-cell>
-      </ng-container>
+        <ng-container matColumnDef="phone">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Телефон (IMEI) </mat-header-cell>
+          <mat-cell *matCellDef="let vehicle" mobile-label="Телефон (IMEI)"> {{vehicle.phone || '-'}} </mat-cell>
+        </ng-container>
 
-      <ng-container matColumnDef="lastTime">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Время посл. отклика </mat-header-cell>
-        <mat-cell *matCellDef="let vehicle" mobile-label="Время последнего отклика"> {{vehicle.lastTime | RusDateTime}} </mat-cell>
-      </ng-container>
+        <ng-container matColumnDef="block">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Блок </mat-header-cell>
+          <mat-cell *matCellDef="let vehicle" mobile-label="Блок">
+            <span *ngIf="vehicle.block">{{vehicle.block.blockType.name}}<br />{{vehicle.block.blockNumber}}</span>
+            <span *ngIf="!vehicle.block">-</span>
+          </mat-cell>
+        </ng-container>
 
-      <ng-container matColumnDef="lastStationTime">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Время посл. остановки </mat-header-cell>
-        <mat-cell *matCellDef="let vehicle" mobile-label="Время последней остановки"> {{vehicle.lastStationTime | RusDateTime}} </mat-cell>
-      </ng-container>
+        <ng-container matColumnDef="status" stickyEnd>
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Статус </mat-header-cell>
+          <mat-cell *matCellDef="let vehicle" mobile-label="Статус">
+            <span class="label-pill label-pill-full-width"
+                  [ngClass]="vehicle.objOutput ? 'label-pill-error' : 'label-pill-success'">
+              {{vehicle.statusName}}
+            </span>
+          </mat-cell>
+        </ng-container>
 
-      <ng-container matColumnDef="controls">
-        <mat-header-cell *matHeaderCellDef></mat-header-cell>
-        <mat-cell *matCellDef="let vehicle" class="table-controls">
-          <app-menu-icon-dropdown *ngIf="vehicle.showMenu">
-            <button mat-menu-item *ngIf="vehicle.canUpdate" (click)="openAddEditDialog(vehicle)">
-              Редактировать
-            </button>
-            <button mat-menu-item *ngIf="vehicle.canChangeRoute" (click)="openChangeRouteDialog(vehicle)">
-              Сменить маршрут
-            </button>
-            <button mat-menu-item *ngIf="vehicle.canDisable" (click)="disableVehicle(vehicle)">
-              Вывести из эксплуатации
-            </button>
-            <button mat-menu-item *ngIf="vehicle.canEnable" (click)="openEnableDialog(vehicle)">
-              Ввести в эксплуатацию
-            </button>
-          </app-menu-icon-dropdown>
-        </mat-cell>
-      </ng-container>
+        <ng-container matColumnDef="controls" stickyEnd>
+          <mat-header-cell *matHeaderCellDef></mat-header-cell>
+          <mat-cell *matCellDef="let vehicle" class="table-controls">
+            <app-menu-icon-dropdown *ngIf="vehicle.showMenu">
+              <button mat-menu-item *ngIf="vehicle.canUpdate" (click)="openAddEditDialog(vehicle)">
+                Редактировать
+              </button>
+              <button mat-menu-item *ngIf="vehicle.canChangeRoute" (click)="openChangeRouteDialog(vehicle)">
+                Сменить маршрут
+              </button>
+              <button mat-menu-item *ngIf="vehicle.canDisable" (click)="disableVehicle(vehicle)">
+                Вывести из эксплуатации
+              </button>
+              <button mat-menu-item *ngIf="vehicle.canEnable" (click)="openEnableDialog(vehicle)">
+                Ввести в эксплуатацию
+              </button>
+            </app-menu-icon-dropdown>
+          </mat-cell>
+        </ng-container>
 
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"
-               [appUpdatedRow]="row.id">
-      </mat-row>
-    </mat-table>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"
+                 [appUpdatedRow]="row.id">
+        </mat-row>
+      </mat-table>
+    </div>
     <app-paginator [totalCount]="pageData.total"
                    [currentPage]="pageData.currentPage"
                    [pageSize]="pageData.perPage"

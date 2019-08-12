@@ -34,7 +34,11 @@ export class ObjectService {
     private authService: AuthService,
     private confirmDialogService: ConfirmDialogService)
   {
-  }  
+  }
+
+  get isDispatcher(): boolean {
+    return this.authService.isInRole(RoleEnum.Dispatcher);
+  }
 
   get isTransporter(): boolean {
     return this.authService.isInRole(RoleEnum.Transporter, RoleEnum.Mechanic);

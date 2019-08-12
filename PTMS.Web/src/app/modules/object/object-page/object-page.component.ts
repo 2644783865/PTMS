@@ -22,7 +22,7 @@ import { ObjectAddEditDialogComponent } from '../object-add-edit-dialog/object-a
   styleUrls: ['./object-page.component.scss']
 })
 export class ObjectPageComponent implements OnInit {
-  private readonly allColumns = ['name', 'route', 'transporter', 'carBrand', 'carType', 'provider', 'lastTime', 'lastStationTime', 'yearRelease', 'phone', 'block', 'status', 'controls'];
+  private readonly allColumns = ['name', 'route', 'transporter', 'provider', 'lastTime', 'lastStationTime', 'phone', 'block', 'carBrand', 'carType', 'yearRelease', 'status', 'controls'];
   private _updateInterval: number = 1000 * 10; //10 секунд
   private _intervalId;
 
@@ -63,6 +63,10 @@ export class ObjectPageComponent implements OnInit {
 
     if (this.isTransporter) {
       let columnsToHide = ['transporter', 'provider', 'phone', 'block'];
+      this.displayedColumns = this.allColumns.filter(x => !columnsToHide.includes(x));
+    }
+    else if (this.objectService.isDispatcher) {
+      let columnsToHide = ['phone', 'block'];
       this.displayedColumns = this.allColumns.filter(x => !columnsToHide.includes(x));
     }
     else {

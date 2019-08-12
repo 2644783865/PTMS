@@ -1,3 +1,5 @@
+@import "~variables.scss";
+
 .mat-column-lastStationTime,
 .mat-column-lastTime,
 .mat-column-transporter {
@@ -10,4 +12,20 @@
 
 .mat-column-yearRelease, .mat-column-name {
   flex: 0.7;
+}
+
+@media #{$app-md} {
+  .object-table-container {
+    width: 100%;
+    overflow: auto;
+    transform: rotateX(180deg);
+    -ms-transform: rotateX(180deg); /* IE 9 */
+    -webkit-transform: rotateX(180deg); /* Safari and Chrome */
+    mat-table {
+      min-width: 1300px;
+      transform: rotateX(180deg);
+      -ms-transform: rotateX(180deg); /* IE 9 */
+      -webkit-transform: rotateX(180deg); /* Safari and Chrome */
+    }
+  }
 }

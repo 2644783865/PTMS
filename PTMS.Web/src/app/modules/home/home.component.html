@@ -71,7 +71,8 @@
 
               <mat-header-row *matHeaderRowDef="displayedColumnsProject"></mat-header-row>
               <mat-row *matRowDef="let stat; columns: displayedColumnsProject;"
-                       [class.bg-error]="stat.hasError">
+                       [class.bg-error]="stat.hasError"
+                       [class.bg-warning]="stat.hasWarning">
               </mat-row>
             </mat-table>
           </div>
@@ -91,7 +92,8 @@
 
               <mat-header-row *matHeaderRowDef="displayedColumnsRoute"></mat-header-row>
               <mat-row *matRowDef="let stat; columns: displayedColumnsRoute;"
-                       [class.bg-error]="stat.hasError">
+                       [class.bg-error]="stat.hasError"
+                       [class.bg-warning]="stat.hasWarning">
               </mat-row>
             </mat-table>
           </div>
