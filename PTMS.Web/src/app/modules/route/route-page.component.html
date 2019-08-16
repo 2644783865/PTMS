@@ -7,17 +7,33 @@
     <button mat-raised-button color="primary">Добавить новый маршрут</button>
   </div>
 
-  <div class="table-wrapper table-editable mat-elevation-z8">
+  <div class="table-wrapper table-editable table-mobile mat-elevation-z8">
     <mat-table [dataSource]="routes">
       <ng-container matColumnDef="name">
         <mat-header-cell *matHeaderCellDef> Название </mat-header-cell>
-        <mat-cell *matCellDef="let route"> {{route.name}} </mat-cell>
+        <mat-cell *matCellDef="let route" mobile-label="Название"> {{route.name}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="project">
+        <mat-header-cell *matHeaderCellDef> Перевозчик </mat-header-cell>
+        <mat-cell *matCellDef="let route" mobile-label="Перевозчик"> {{route.project ? route.project.name : '-'}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="status">
+        <mat-header-cell *matHeaderCellDef> Статус </mat-header-cell>
+        <mat-cell *matCellDef="let route" mobile-label="Статус">
+          <span class="label-pill label-pill-full-width"
+                [ngClass]="route.routeActive ? 'label-pill-success' : 'label-pill-error'">
+            {{route.routeActive ? 'Активен' : 'Не активен'}}
+          </span>
+        </mat-cell>
       </ng-container>
       <ng-container matColumnDef="controls">
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
         <mat-cell *matCellDef="let route" class="table-controls">
-          <app-edit-icon></app-edit-icon>
-          <app-delete-icon></app-delete-icon>
+          <app-menu-icon-dropdown>
+            <button mat-menu-item (click)="openAddEditDialog(route)">
+              Редактировать
+            </button>
+          </app-menu-icon-dropdown>
         </mat-cell>
       </ng-container>
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

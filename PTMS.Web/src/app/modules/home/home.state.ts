@@ -87,8 +87,6 @@ export class HomeStore extends AppEntityStore<HomeState, ObjectDto> {
 
 @Injectable()
 export class HomeQuery extends AppQueryEntity<HomeState, ObjectDto> {
-  private list$: Observable<ObjectDto[]> = this.selectAll();
-
   projects$ = this.select(s => s.projects);
   providers$ = this.select(s => s.providers);
   routes$ = this.select(s => s.routes);

@@ -43,8 +43,7 @@ namespace PTMS.DataServices.Repositories
         {
             var includes = new[]
             {
-                nameof(Route.ProjectRoutes),
-                nameof(ProjectRoute.Project)
+                nameof(Route.ProjectRoutes)
             };
 
             var result = await base.GetAllAsync(includes);
@@ -56,8 +55,7 @@ namespace PTMS.DataServices.Repositories
             var includes = new[]
             {
                 nameof(Route.BusStationRoutes),
-                nameof(Route.ProjectRoutes),
-                nameof(ProjectRoute.Project)
+                nameof(Route.ProjectRoutes)
             };
 
             return GetByIdAsync(id, includes);

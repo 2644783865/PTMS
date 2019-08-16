@@ -82,9 +82,9 @@ namespace PTMS.BusinessLogic.Services
             {
                 var projRoute = route.ProjectRoutes.FirstOrDefault();
 
-                if (projRoute != null && projRoute.Project != null)
+                if (projRoute != null)
                 {
-                    result.Project = _mapper.Map<ProjectModel>(projRoute.Project);
+                    result.ProjectId = projRoute.ProjId;
                 }
             }
 

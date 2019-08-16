@@ -1,41 +1,38 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { RouteDto } from '@app/core/dtos';
+import { RouteFullDto } from '@app/core/dtos';
 import { RouteService } from './route.service';
-import { AuthService } from '@app/core/auth';
-import { RoleEnum } from '@app/core/enums';
+import { RouteQuery } from './route.state';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-route-page',
   templateUrl: './route-page.component.html'
 })
 export class RoutePageComponent implements OnInit {
-  list$: Observable<RouteDto[]>;
+  list$: Observable<RouteFullDto[]>;
   dataLoading$: Observable<boolean>;
-  private readonly allColumns = ['name', 'controls'];
-  displayedColumns: string[];
-  canAdd: boolean;
+  displayedColumns = ['name', 'project', 'status', 'controls'];
 
   constructor(
-    private routeService: RouteService,
-    private authService: AuthService) { }
+    private router: Router,
+    private routeQuery: RouteQuery,
+    private routeService: RouteService) { }
 
   ngOnInit() {
-    this.list$ = this.routeService.list$;
-    this.dataLoading$ = this.routeService.isLoading$;
-
-    let isAdmin = this.authService.isInRole(RoleEnum.Administrator);
-
-    if (isAdmin) {
-      this.displayedColumns = this.allColumns;
-      this.canAdd = true;
-    }
-    else {
-      this.displayedColumns = this.allColumns.filter(x => x != 'controls');
-      this.canAdd = false;
-    }
+    this.list$ = this.routeQuery.list$;
+    this.dataLoading$ = this.routeQuery.dataLoading$;
 
     this.routeService.loadData();
+  }
+
+  openAddEditDialog(route: RouteFullDto){
+    if (route != null){
+      this.router.navigateByUrl(`routes/${route.id}`);
+    }
+    else {
+      this.router.navigateByUrl(`routes/add`);
+    }
   }
   
   ngOnDestroy() {

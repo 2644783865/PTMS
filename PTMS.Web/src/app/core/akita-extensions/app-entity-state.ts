@@ -40,6 +40,10 @@ export class AppEntityStore<S extends AppEntityState<E>, E, EntityID = ID>
 export class AppQueryEntity<S extends AppEntityState<E>, E, EntityID = ID>
   extends QueryEntity<S, E, EntityID> {
 
+  get list$() {
+    return this.selectAll();
+  }
+
   get dataLoading$() {
     return this.selectLoading();
   }
