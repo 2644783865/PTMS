@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace PTMS.Domain.Entities
+﻿namespace PTMS.BusinessLogic.Models
 {
-    public class Bs
+    public class BusStationModel
     {
         public int Id { get; set; }
         public string Name { get; set; }

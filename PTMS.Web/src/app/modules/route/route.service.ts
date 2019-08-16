@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { RouteDto } from '@app/core/dtos/RouteDto';
-import { RouteDataService } from '@app/core/data-services/route.data.service';
 import { RouteQuery, RouteStore } from './route.state';
+import { RouteDto } from '@app/core/dtos';
+import { RouteDataService } from '@app/core/data-services';
 
 @Injectable()
 export class RouteService {

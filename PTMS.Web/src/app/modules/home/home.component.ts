@@ -5,8 +5,8 @@ import { HomeService } from './home.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { formatDate } from '@angular/common';
-import { ProjectDto } from '@app/core/dtos/ProjectDto';
-import { KeyValuePair } from '@app/core/helpers/utils';
+import { ProjectDto } from '@app/core/dtos';
+import { KeyValuePair } from '@app/core/helpers';
 
 @Component({
   selector: 'app-home',

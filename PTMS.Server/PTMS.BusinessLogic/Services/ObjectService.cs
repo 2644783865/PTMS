@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace PTMS.BusinessLogic.Services
 {
-    public class ObjectService : BusinessServiceAsync<Objects, ObjectModel>, IObjectService
+    public class ObjectService : BusinessServiceAsync<Objects>, IObjectService
     {
         private readonly AppUserManager _userManager;
         private readonly IObjectRepository _objectRepository;
@@ -78,13 +78,13 @@ namespace PTMS.BusinessLogic.Services
                 page,
                 pageSize);
 
-            return MapToModel(result);
+            return MapToModel<ObjectModel>(result);
         }
 
         public async Task<ObjectModel> GetByIdAsync(int id)
         {
             var result = await _objectRepository.GetPureByIdAsync(id);
-            return MapToModel(result);
+            return MapToModel<ObjectModel>(result);
         }
         
         public async Task<ObjectModel> ChangeRouteAsync(
@@ -175,7 +175,7 @@ namespace PTMS.BusinessLogic.Services
             var endDate = DateTime.Now.AddMinutes(1);
 
             var objects = await _objectRepository.FindForReportingAsync(startDate, endDate);
-            var result = MapToModel(objects);
+            var result = MapToModel<ObjectModel>(objects);
             return result;
         }
 

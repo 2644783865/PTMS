@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { RouteDto } from '@app/core/dtos/RouteDto';
+import { RouteDto } from '@app/core/dtos';
 import { RouteService } from './route.service';
-import { AuthService } from '@app/core/auth/auth.service';
-import { RoleEnum } from '@app/core/enums/role.enum';
+import { AuthService } from '@app/core/auth';
+import { RoleEnum } from '@app/core/enums';
 
 @Component({
   selector: 'app-route-page',

@@ -10,7 +10,7 @@
       <mat-nav-list>
         <a mat-list-item
            [routerLink]="[item.link]"
-           *ngFor="let item of navigation"
+           *ngFor="let item of allNavigation"
            (click)="sidenav.close()">
           {{item.label}}
         </a>
@@ -42,16 +42,20 @@
               </button>
             </span>
 
-            <!--<span class="toolbar-nav-button" *ngIf="(isAuthenticated$ | async)">
-    <button mat-button [matMenuTriggerFor]="menu">
-      <span>Отчёты</span>
-      <mat-icon style="margin: 0 0 0 4px">arrow_drop_down</mat-icon>
-    </button>
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item>Отчёт 1</button>
-      <button mat-menu-item>Отчёт 2</button>
-    </mat-menu>
-  </span>-->
+            <span class="toolbar-nav-button" *ngIf="dictionariesNavigation.length > 0">
+              <button mat-button [matMenuTriggerFor]="dictionariesMenu">
+                <span>Справочники</span>
+                <mat-icon style="margin: 0 0 0 4px">arrow_drop_down</mat-icon>
+              </button>
+              <mat-menu #dictionariesMenu="matMenu">
+                <button *ngFor="let item of dictionariesNavigation"
+                        mat-menu-item
+                        [routerLink]="[item.link]"
+                        routerLinkActive="active">
+                    {{item.label}}
+                </button>
+              </mat-menu>
+            </span>
             <!--<span class="toolbar-right-button profile-button" *ngIf="(isAuthenticated$ | async)">
     <button mat-button>
       <mat-icon>perm_identity</mat-icon>

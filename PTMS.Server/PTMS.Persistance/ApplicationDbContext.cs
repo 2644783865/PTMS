@@ -12,8 +12,8 @@ namespace PTMS.Persistance
     {
         public virtual DbSet<ArmUsers> ArmUsers { get; set; }
         public virtual DbSet<BlockType> BlockTypes { get; set; }
-        public virtual DbSet<Bs> Bs { get; set; }
-        public virtual DbSet<BsRoute> BsRoute { get; set; }
+        public virtual DbSet<BusStation> Bs { get; set; }
+        public virtual DbSet<BusStationRoute> BsRoute { get; set; }
         public virtual DbSet<CarBrand> CarBrand { get; set; }
         public virtual DbSet<CarType> CarType { get; set; }
         public virtual DbSet<Changed> Changed { get; set; }
@@ -29,7 +29,7 @@ namespace PTMS.Persistance
         public virtual DbSet<Provider> Providers { get; set; }
         public virtual DbSet<Reports> Reports { get; set; }
         public virtual DbSet<ReportsControl> ReportsControl { get; set; }
-        public virtual DbSet<Routs> Routs { get; set; }
+        public virtual DbSet<Route> Routs { get; set; }
         public virtual DbSet<Sim> Sim { get; set; }
         public virtual DbSet<WebMapUser> WebMapUsers { get; set; }
         public virtual DbSet<UserProject> UsersProjs { get; set; }
@@ -103,7 +103,7 @@ namespace PTMS.Persistance
                     .HasAnnotation("Description", "Тип блока");
             });
 
-            builder.Entity<Bs>(entity =>
+            builder.Entity<BusStation>(entity =>
             {
                 entity.ToTable("BS                             ");
 
@@ -124,7 +124,7 @@ namespace PTMS.Persistance
                     .HasMaxLength(110);
             });
 
-            builder.Entity<BsRoute>(entity =>
+            builder.Entity<BusStationRoute>(entity =>
             {
                 entity.ToTable("BS_ROUTE                       ");
 
@@ -137,7 +137,7 @@ namespace PTMS.Persistance
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
-                entity.Property(e => e.BsId).HasColumnName("BS_ID");
+                entity.Property(e => e.BusStationId).HasColumnName("BS_ID");
 
                 entity.Property(e => e.Num).HasColumnName("NUM");
 

@@ -5,9 +5,8 @@ using PTMS.Common;
 
 namespace PTMS.BusinessLogic.Infrastructure
 {
-    public abstract class BusinessServiceAsync<TEntity, TModel>
+    public abstract class BusinessServiceAsync<TEntity>
         where TEntity: class, new ()
-        where TModel : class, new()
     {
         protected readonly IMapper _mapper;
 
@@ -16,23 +15,23 @@ namespace PTMS.BusinessLogic.Infrastructure
             _mapper = mapper;
         }
 
-        protected TModel MapToModel(TEntity entity)
+        protected TModel MapToModel<TModel>(TEntity entity)
         {
             return _mapper.Map<TEntity, TModel>(entity);
         }
 
-        protected List<TModel> MapToModel(System.Collections.Generic.List<TEntity> entities)
+        protected List<TModel> MapToModel<TModel>(List<TEntity> entities)
         {
-            return entities.Select(MapToModel).ToList();
+            return entities.Select(MapToModel<TModel>).ToList();
         }
 
-        protected PageResult<TModel> MapToModel(PageResult<TEntity> pageResult)
+        protected PageResult<TModel> MapToModel<TModel>(PageResult<TEntity> pageResult)
         {
-            var list = MapToModel(pageResult.Page);
+            var list = MapToModel<TModel>(pageResult.Page);
             return new PageResult<TModel>(list, pageResult.TotalCount);
         }
 
-        protected TEntity MapFromModel(TModel model)
+        protected TEntity MapFromModel<TModel>(TModel model)
         {
             return _mapper.Map<TModel, TEntity>(model);
         }

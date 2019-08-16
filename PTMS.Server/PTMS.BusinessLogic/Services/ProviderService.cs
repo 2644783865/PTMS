@@ -9,7 +9,7 @@ using PTMS.Domain.Entities;
 
 namespace PTMS.BusinessLogic.Services
 {
-    public class ProviderService : BusinessServiceAsync<Provider, ProviderModel>, IProviderService
+    public class ProviderService : BusinessServiceAsync<Provider>, IProviderService
     {
         private readonly IProviderRepository _providerRepository;
 
@@ -24,7 +24,7 @@ namespace PTMS.BusinessLogic.Services
         public async Task<List<ProviderModel>> GetAllAsync()
         {
             var result = await _providerRepository.GetAllAsync();
-            return MapToModel(result);
+            return MapToModel<ProviderModel>(result);
         }
     }
 }

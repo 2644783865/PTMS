@@ -11,9 +11,13 @@ namespace PTMS.BusinessLogic.IServices
 
         Task<RouteModel> GetByIdAsync(int id);
 
-        Task<RouteModel> AddAsync(RouteModel model);
+        Task<List<RouteFullModel>> GetAllForPageAsync();
 
-        Task<RouteModel> UpdateAsync(RouteModel model);
+        Task<RouteFullModel> GetForEditByIdAsync(int id);
+
+        Task<RouteModel> AddAsync(RouteFullModel model);
+
+        Task<RouteModel> UpdateAsync(RouteFullModel model);
 
         Task DeleteByIdAsync(int id);
     }

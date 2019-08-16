@@ -9,7 +9,7 @@ using PTMS.Domain.Entities;
 
 namespace PTMS.BusinessLogic.Services
 {
-    public class ProjectService : BusinessServiceAsync<Project, ProjectModel>, IProjectService
+    public class ProjectService : BusinessServiceAsync<Project>, IProjectService
     {
         private readonly IProjectRepository _projectRepository;
 
@@ -24,33 +24,33 @@ namespace PTMS.BusinessLogic.Services
         public async Task<List<ProjectModel>> GetAllAsync(bool? active)
         {
             var result = await _projectRepository.GetAllAsync(active);
-            return MapToModel(result);
+            return MapToModel<ProjectModel>(result);
         }
 
         public async Task<ProjectModel> GetByRouteIdAsync(int routeId)
         {
             var result = await _projectRepository.GetProjectByRouteIdAsync(routeId);
-            return MapToModel(result);
+            return MapToModel<ProjectModel>(result);
         }
 
         public async Task<ProjectModel> GetByIdAsync(int id)
         {
             var result = await _projectRepository.GetByIdAsync(id);
-            return MapToModel(result);
+            return MapToModel<ProjectModel>(result);
         }
 
         public async Task<ProjectModel> AddAsync(ProjectModel model)
         {
             var entity = MapFromModel(model);
             var result = await _projectRepository.AddAsync(entity);
-            return MapToModel(result);
+            return MapToModel<ProjectModel>(result);
         }
 
         public async Task<ProjectModel> UpdateAsync(ProjectModel model)
         {
             var entity = MapFromModel(model);
             var result = await _projectRepository.UpdateAsync(entity);
-            return MapToModel(result);
+            return MapToModel<ProjectModel>(result);
         }
 
         public async Task DeleteByIdAsync(int id)

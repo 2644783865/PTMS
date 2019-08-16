@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ObjectDto } from '@app/core/dtos/ObjectDto';
+import { ObjectDto } from '@app/core/dtos';
 import { EntityState, EntityStore, QueryEntity, StoreConfig } from '@datorama/akita';
 
 export interface ObjectState extends EntityState<ObjectDto> { }

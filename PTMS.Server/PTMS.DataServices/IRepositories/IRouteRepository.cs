@@ -6,11 +6,15 @@ using PTMS.Domain.Entities;
 
 namespace PTMS.DataServices.IRepositories
 {
-    public interface IRouteRepository : IDataServiceAsync<Routs>
+    public interface IRouteRepository : IDataServiceAsync<Route>
     {
-        Task<List<Routs>> GetAllAsync(
+        Task<List<Route>> GetAllAsync(
             UserAvailableRoutes userRoutesModel,
             int? projectId,
             bool? active);
+
+        Task<Route> GetForEditByIdAsync(int id);
+
+        Task<List<Route>> GetAllForPageAsync();
     }
 }

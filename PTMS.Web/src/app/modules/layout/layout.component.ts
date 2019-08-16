@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AuthService } from '@app/core/auth/auth.service';
+import { AuthService } from '@app/core/auth';
 import { Router } from '@angular/router';
-import { RoleEnum } from '@app/core/enums/role.enum';
+import { RoleEnum } from '@app/core/enums';
 
 declare function require(name: string);
 
@@ -13,7 +13,7 @@ declare function require(name: string);
 })
 export class LayoutComponent implements OnInit {
   logo = require('../../../assets/logo.png');
-  navigation = [];
+  allNavigation = [];
   isAuthenticated$: Observable<boolean>;
   isStateLoading$: Observable<boolean>;
 
@@ -30,17 +30,29 @@ export class LayoutComponent implements OnInit {
         let routes = [
           { link: 'home', label: 'Главная', visible: this.authService.isInRole(RoleEnum.Administrator, RoleEnum.Dispatcher) },
           { link: 'objects', label: 'Транспорт', visible: true },
-          { link: 'routes', label: 'Маршруты', visible: false },
+          { link: 'routes', label: 'Маршруты', visible: this.authService.isInRole(RoleEnum.Administrator, RoleEnum.Dispatcher) },
           { link: 'change-route', label: 'Сменить Маршрут ТС', visible: this.authService.isInRole(RoleEnum.Transporter) },
           { link: 'users', label: 'Пользователи', visible: this.authService.isInRole(RoleEnum.Administrator) }
         ];
 
-        this.navigation = routes.filter(x => x.visible);
+        this.allNavigation = routes.filter(x => x.visible);
       }
       else {
-        this.navigation = [];
+        this.allNavigation = [];
       }
     });
+  }
+
+  get navigation() {
+    let dropdownNavigationItems = this.dictionariesNavigation;
+
+    return this.allNavigation.filter(x => {
+      return !dropdownNavigationItems.some(d => d.link == x.link);
+    });
+  }
+
+  get dictionariesNavigation() {
+    return this.allNavigation.filter(x => ['routes'].includes(x.link));
   }
 
   onLogoutClick() {

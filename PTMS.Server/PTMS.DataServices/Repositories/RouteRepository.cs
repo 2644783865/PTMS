@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace PTMS.DataServices.Repositories
 {
-    public class RouteRepository : DataServiceAsync<Routs>, IRouteRepository
+    public class RouteRepository : DataServiceAsync<Route>, IRouteRepository
     {
         public RouteRepository(ApplicationDbContext context)
             : base(context)
@@ -19,7 +19,7 @@ namespace PTMS.DataServices.Repositories
 
         }
 
-        public async Task<List<Routs>> GetAllAsync(
+        public async Task<List<Route>> GetAllAsync(
             UserAvailableRoutes userRoutesModel,
             int? projectId,
             bool? active)
@@ -29,7 +29,7 @@ namespace PTMS.DataServices.Repositories
                 projectId = userRoutesModel.ProjectId;
             }
 
-            Expression<Func<Routs, bool>> filter = x =>
+            Expression<Func<Route, bool>> filter = x =>
                 (!active.HasValue || x.RouteActive == active.Value)
                 && (!projectId.HasValue || x.ProjectRoutes.Any(p => p.ProjId == projectId.Value))
                 && (userRoutesModel.RouteIds == null || userRoutesModel.RouteIds.Contains(x.Id));
@@ -37,6 +37,30 @@ namespace PTMS.DataServices.Repositories
             var result = await FindAsync(filter);
 
             return result.OrderBy(x => x.Name).ToList();
+        }
+
+        public async Task<List<Route>> GetAllForPageAsync()
+        {
+            var includes = new[]
+            {
+                nameof(Route.ProjectRoutes),
+                nameof(ProjectRoute.Project)
+            };
+
+            var result = await base.GetAllAsync(includes);
+            return result.OrderBy(x => x.Name).ToList();
+        }
+
+        public Task<Route> GetForEditByIdAsync(int id)
+        {
+            var includes = new[]
+            {
+                nameof(Route.BusStationRoutes),
+                nameof(Route.ProjectRoutes),
+                nameof(ProjectRoute.Project)
+            };
+
+            return GetByIdAsync(id, includes);
         }
     }
 }

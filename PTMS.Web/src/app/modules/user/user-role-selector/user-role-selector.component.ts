@@ -3,7 +3,7 @@ import { ControlContainer, FormGroup, Validators } from '@angular/forms';
 import { ProjectDto } from '@app/core/dtos/ProjectDto';
 import { RoleDto } from '@app/core/dtos/RoleDto';
 import { RoleEnum } from '@app/core/enums/role.enum';
-import { CustomValidators } from '@app/core/validation';
+import { requiredIf } from '@app/core/validation';
 import { Observable } from 'rxjs';
 import { UserQuery } from '../user.state';
 import { RouteDto } from '@app/core/dtos/RouteDto';
@@ -38,8 +38,8 @@ export class UserRoleSelectorComponent {
   
   ngAfterViewInit() {
     this.roleSelectorForm.get("roleId").setValidators(Validators.required);
-    this.roleSelectorForm.get("project").setValidators(CustomValidators.requiredIf('roleId', this.isProjectRequired.bind(this)));
-    this.roleSelectorForm.get("routeIds").setValidators(CustomValidators.requiredIf('roleId', this.isRoutesRequired.bind(this)));
+    this.roleSelectorForm.get("project").setValidators(requiredIf('roleId', this.isProjectRequired.bind(this)));
+    this.roleSelectorForm.get("routeIds").setValidators(requiredIf('roleId', this.isRoutesRequired.bind(this)));
 
     this.roleSelectorForm.get('roleId').valueChanges.subscribe(this.onRoleSelect.bind(this));
     this.roleSelectorForm.get('project').valueChanges.subscribe(this.onProjectSelect.bind(this));

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormGroupDirective } from '@angular/forms';
-import { ObjectDto } from '@app/core/dtos/ObjectDto';
+import { ObjectDto } from '@app/core/dtos';
 import { Observable } from 'rxjs';
 import { ChangeRouteService } from './change-route.service';
 import { ChangeRouteQuery } from './change-route.state';

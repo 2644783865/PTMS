@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
-import { CustomValidators } from '@app/core/validation';
+import { matchOther } from '@app/core/validation';
 import { Observable } from 'rxjs';
 import { UserService } from '../user.service';
 import { UserQuery } from '../user.state';
@@ -31,7 +31,7 @@ export class UserCreateDialogComponent {
       phoneNumber: ['', [Validators.required, Validators.maxLength(15)]],
       description: ['', [Validators.required, Validators.maxLength(256)]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      comparePassword: ['', [Validators.required, CustomValidators.matchOther('password')]],
+      comparePassword: ['', [Validators.required, matchOther('password')]],
       roleId: [''],
       project: [''],
       routeIds: ['']

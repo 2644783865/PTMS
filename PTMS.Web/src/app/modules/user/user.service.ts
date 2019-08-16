@@ -1,15 +1,10 @@
 import { Injectable } from '@angular/core';
-import { ProjectDataService } from '@app/core/data-services/project.data.service';
-import { UserDataService } from '@app/core/data-services/user.data.service';
-import { ChangePasswordDto } from '@app/core/dtos/ChangePasswordDto';
-import { ConfirmUserDto } from '@app/core/dtos/ConfirmUserDto';
-import { UserDto } from '@app/core/dtos/UserDto';
-import { UserStatusEnum } from '@app/core/enums/user-status.enum';
-import { NotificationService } from '@app/core/notification/notification.service';
 import { UserStore, UserUI } from './user.state';
-import { AuthService } from '@app/core/auth/auth.service';
-import { NewUserDto } from '@app/core/dtos/NewUserDto';
-import { RouteDataService } from '@app/core/data-services/route.data.service';
+import { UserDataService, ProjectDataService, RouteDataService } from '@app/core/data-services';
+import { NotificationService } from '@app/core/notification';
+import { AuthService } from '@app/core/auth';
+import { NewUserDto, ConfirmUserDto, ChangePasswordDto, UserDto } from '@app/core/dtos';
+import { UserStatusEnum } from '@app/core/enums';
 
 @Injectable()
 export class UserService {

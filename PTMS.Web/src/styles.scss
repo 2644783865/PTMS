@@ -99,53 +99,55 @@ html, body {
   }
 
   @include media-breakpoint-down(sm) {
-    mat-table {
-      border: 0;
-      vertical-align: middle
-    }
-
-    mat-header-row {
-      display: none;
-    }
-
-    mat-row {
-      border-bottom: 5px solid #ddd;
-      display: block;
-
-      &:after {
-        content: none;
-      }
-    }
-
-    mat-cell {
-      border-bottom: 1px solid #ddd;
-      display: block;
-      font-size: 1em;
-      text-align: right;
-      padding: 10px 24px;
-
-      &:last-child {
-        border-bottom: 0;
+    &.table-mobile {
+      mat-table {
+        border: 0;
+        vertical-align: middle
       }
 
-      &:before {
-        content: attr(mobile-label);
-        float: left;
-        font-weight: bold;
-        min-width: 90px;
-        text-align: left;
-        max-width: 60%;
-        padding-right: 5px;
+      mat-header-row {
+        display: none;
       }
-    }
 
-    &.table-editable {
-      .mat-row .mat-cell:last-child {
-        max-width: none;
+      mat-row {
+        border-bottom: 5px solid #ddd;
+        display: block;
 
-        .mat-mini-fab {
-          width: 100%;
-          border-radius: unset;
+        &:after {
+          content: none;
+        }
+      }
+
+      mat-cell {
+        border-bottom: 1px solid #ddd;
+        display: block;
+        font-size: 1em;
+        text-align: right;
+        padding: 10px 24px;
+
+        &:last-child {
+          border-bottom: 0;
+        }
+
+        &:before {
+          content: attr(mobile-label);
+          float: left;
+          font-weight: bold;
+          min-width: 90px;
+          text-align: left;
+          max-width: 60%;
+          padding-right: 5px;
+        }
+      }
+
+      &.table-editable {
+        .mat-row .mat-cell:last-child {
+          max-width: none;
+
+          .mat-mini-fab {
+            width: 100%;
+            border-radius: unset;
+          }
         }
       }
     }

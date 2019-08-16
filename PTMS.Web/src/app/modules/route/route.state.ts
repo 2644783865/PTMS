@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { EntityState, EntityStore, StoreConfig, QueryEntity } from '@datorama/akita';
-import { RouteDto } from '@app/core/dtos/RouteDto';
+import { RouteDto } from '@app/core/dtos';
 
 export interface RouteState extends EntityState<RouteDto> { }
 

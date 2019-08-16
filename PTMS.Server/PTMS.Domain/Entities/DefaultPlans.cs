@@ -29,6 +29,6 @@ namespace PTMS.Domain.Entities
         public int? RaceCount { get; set; }
         public int? RaceCountHol { get; set; }
 
-        public virtual Routs Route { get; set; }
+        public virtual Route Route { get; set; }
     }
 }

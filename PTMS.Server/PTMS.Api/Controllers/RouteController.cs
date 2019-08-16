@@ -34,8 +34,24 @@ namespace PTMS.Api.Controllers
         }
 
         [PtmsAuthorize(RoleNames.Dispatcher)]
+        [HttpGet("/routes/forPage")]
+        public async Task<ActionResult<List<RouteFullModel>>> GetForPage()
+        {
+            var result = await _routeService.GetAllForPageAsync();
+            return result;
+        }
+
+        [PtmsAuthorize(RoleNames.Dispatcher)]
+        [HttpGet("/route/forEdit/{id}")]
+        public async Task<ActionResult<RouteFullModel>> GetForEditById(int id)
+        {
+            var result = await _routeService.GetForEditByIdAsync(id);
+            return result;
+        }
+
+        [PtmsAuthorize(RoleNames.Dispatcher)]
         [HttpPost("/route")]
-        public async Task<RouteModel> Post([FromBody]RouteModel model)
+        public async Task<RouteModel> Post([FromBody]RouteFullModel model)
         {
             var result = await _routeService.AddAsync(model);
             return result;
@@ -43,7 +59,7 @@ namespace PTMS.Api.Controllers
 
         [PtmsAuthorize(RoleNames.Dispatcher)]
         [HttpPut("/route/{id}")]
-        public async Task<RouteModel> Put(int id, [FromBody]RouteModel model)
+        public async Task<RouteModel> Put(int id, [FromBody]RouteFullModel model)
         {
             var result = await _routeService.UpdateAsync(model);
             return result;

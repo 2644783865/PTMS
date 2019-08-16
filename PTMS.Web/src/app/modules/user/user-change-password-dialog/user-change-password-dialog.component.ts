@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { CustomValidators } from '@app/core/validation';
+import { matchOther } from '@app/core/validation';
 import { Observable } from 'rxjs';
 import { UserService } from '../user.service';
 import { UserQuery, UserUI } from '../user.state';
@@ -26,7 +26,7 @@ export class UserChangePasswordDialogComponent {
 
     this.modalForm = this.fb.group({
       password: ['', [Validators.required, Validators.minLength(6)]],
-      comparePassword: ['', [Validators.required, CustomValidators.matchOther('password')]]
+      comparePassword: ['', [Validators.required, matchOther('password')]]
     });
   }
 

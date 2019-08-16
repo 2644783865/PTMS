@@ -1,13 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AppPagedEntityState, AppPagedEntityStore, AppPagedQueryEntity } from '@app/core/akita-extensions/app-paged-entity-state';
-import { ObjectDto } from '@app/core/dtos/ObjectDto';
-import { ProjectDto } from '@app/core/dtos/ProjectDto';
+import { ObjectDto, ProjectDto, ProviderDto, CarBrandDto, CarTypeDto, BlockTypeDto, RouteDto } from '@app/core/dtos';
 import { StoreConfig } from '@datorama/akita';
-import { ProviderDto } from '@app/core/dtos/ProviderDto';
-import { CarBrandDto } from '@app/core/dtos/CarBrandDto';
-import { CarTypeDto } from '@app/core/dtos/CarTypeDto';
-import { BlockTypeDto } from '@app/core/dtos/BlockTypeDto';
-import { RouteDto } from '@app/core/dtos/RouteDto';
+
 
 export interface ObjectUI extends ObjectDto {
   canUpdate: boolean;

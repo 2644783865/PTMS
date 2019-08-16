@@ -1,13 +1,9 @@
 import { Injectable } from '@angular/core';
-import { ObjectDto } from '@app/core/dtos/ObjectDto';
-import { ProjectDto } from '@app/core/dtos/ProjectDto';
 import { StoreConfig } from '@datorama/akita';
-import { ProviderDto } from '@app/core/dtos/ProviderDto';
 import { AppEntityState, AppEntityStore, AppQueryEntity } from '@app/core/akita-extensions/app-entity-state';
-import { RouteDto } from '@app/core/dtos/RouteDto';
 import { switchMap } from 'rxjs/operators';
 import { of, combineLatest, Observable } from 'rxjs';
-import { PlanByRouteDto } from '@app/core/dtos/PlanByRouteDto';
+import { ObjectDto, ProjectDto, ProviderDto, RouteDto, PlanByRouteDto } from '@app/core/dtos';
 
 export interface HomeState extends AppEntityState<ObjectDto> {
   projects: ProjectDto[];

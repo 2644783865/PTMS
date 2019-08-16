@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ObjectDataService } from '@app/core/data-services/object.data.service';
-import { ObjectDto } from '@app/core/dtos/ObjectDto';
+import { ObjectDto } from '@app/core/dtos';
 import { RouteHelper } from '@app/core/helpers/route.helper';
 import { NotificationService } from '@app/core/notification/notification.service';
 import { ChangeRouteStore } from './change-route.state';

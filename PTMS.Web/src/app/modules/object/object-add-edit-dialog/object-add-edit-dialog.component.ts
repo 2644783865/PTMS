@@ -1,14 +1,11 @@
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { BlockTypeDto } from '@app/core/dtos/BlockTypeDto';
-import { CarBrandDto } from '@app/core/dtos/CarBrandDto';
-import { ProviderDto } from '@app/core/dtos/ProviderDto';
 import { Observable } from 'rxjs';
-import { ObjectService } from '../object.service';
+import { ProviderDto, CarBrandDto, BlockTypeDto, RouteDto } from '@app/core/dtos';
 import { ObjectQuery, ObjectUI } from '../object.state';
-import { RouteDto } from '@app/core/dtos/RouteDto';
-import { CustomValidators } from '@app/core/validation';
+import { ObjectService } from '../object.service';
+import { requiredIf } from '@app/core/validation';
 
 @Component({
   selector: 'app-object-add-edit-dialog',
@@ -49,7 +46,7 @@ export class ObjectAddEditDialogComponent {
       route: [],
       yearRelease: [],
       blockNumber: [],
-      blockTypeId: ['', CustomValidators.requiredIf('blockNumber')]
+      blockTypeId: ['', requiredIf('blockNumber')]
     });
 
     if (!this.isNewVehicle) {

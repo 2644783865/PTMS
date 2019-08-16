@@ -12,7 +12,7 @@ using PTMS.Domain.Entities;
 
 namespace PTMS.BusinessLogic.Services
 {
-    public class PlanService : BusinessServiceAsync<Plans, CarTypeModel>, IPlanService
+    public class PlanService : BusinessServiceAsync<Plans>, IPlanService
     {
         private readonly IPlanRepository _planRepository;
         private readonly IProjectRouteRepository _projectRouteRepository;

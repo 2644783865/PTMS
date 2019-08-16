@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace PTMS.BusinessLogic.Services
 {
-    public class UserService : BusinessServiceAsync<AppUser, UserModel>, IUserService
+    public class UserService : BusinessServiceAsync<AppUser>, IUserService
     {
         private readonly IUserRepository _userRepository;
         private readonly IRoleRepository _roleRepository;
@@ -221,7 +221,7 @@ namespace PTMS.BusinessLogic.Services
 
         private UserModel MapToUserModel(AppUser user)
         {
-            var userModel = MapToModel(user);
+            var userModel = MapToModel<UserModel>(user);
 
             var role = user.UserRoles.FirstOrDefault()?.Role;
 

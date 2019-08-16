@@ -12,8 +12,8 @@ namespace PTMS.DI
         {
             public MappingProfile()
             {
-                CreateMap<Routs, RouteModel>();
-                CreateMap<RouteModel, Routs>();
+                CreateMap<Route, RouteModel>();
+                CreateMap<Route, RouteFullModel>();
 
                 CreateMap<Objects, ObjectModel>();
                 CreateMap<ObjectModel, Objects>()
@@ -45,6 +45,12 @@ namespace PTMS.DI
 
                 CreateMap<Granit, GranitModel>();
                 CreateMap<GranitModel, Granit>();
+
+                CreateMap<BusStation, BusStationModel>();
+                CreateMap<BusStationModel, BusStation>();
+
+                CreateMap<BusStationRoute, BusStationRouteModel>();
+                CreateMap<BusStationRouteModel, BusStationRoute>();
             }
         }
 

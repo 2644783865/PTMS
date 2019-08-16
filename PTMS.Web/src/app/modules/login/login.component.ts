@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { AuthService } from '@app/core/auth/auth.service';
-import { Router, ActivatedRoute } from '@angular/router';
-import { LoginDto } from '@app/core/dtos/LoginDto';
-import { NotificationService } from '@app/core/notification/notification.service';
-import { RegisterDto } from '@app/core/dtos/RegisterDto';
-import { AccountDataService } from '@app/core/data-services/account.data.service';
-import { CustomValidators } from '@app/core/validation';
 import { BehaviorSubject } from 'rxjs';
+import { AuthService } from '@app/core/auth';
+import { Router, ActivatedRoute } from '@angular/router';
+import { NotificationService } from '@app/core/notification';
+import { AccountDataService } from '@app/core/data-services';
+import { matchOther } from '@app/core/validation';
+import { LoginDto, RegisterDto } from '@app/core/dtos';
 
 declare function require(name: string);
 
@@ -51,7 +50,7 @@ export class LoginComponent implements OnInit {
       phoneNumber: ['', [Validators.required, Validators.maxLength(15)]],
       description: ['', [Validators.required, Validators.maxLength(256)]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      comparePassword: ['', [Validators.required, CustomValidators.matchOther('password')]],
+      comparePassword: ['', [Validators.required, matchOther('password')]],
     });
   }
 

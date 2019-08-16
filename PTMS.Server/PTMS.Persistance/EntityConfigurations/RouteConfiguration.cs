@@ -8,7 +8,7 @@ namespace PTMS.Persistance.EntityConfigurations
     {
         public static void ConfigureRoutes(this ModelBuilder builder)
         {
-            builder.Entity<Routs>(entity =>
+            builder.Entity<Route>(entity =>
             {
                 entity.ToTable("ROUTS                          ");
 

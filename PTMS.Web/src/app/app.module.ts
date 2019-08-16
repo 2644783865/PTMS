@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CoreModule } from '@app/core';
 import { SharedModule } from '@app/shared';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -12,6 +11,7 @@ import { RouteModule } from './modules/route/route.module';
 import { UserModule } from './modules/user/user.module';
 import { ObjectModule } from './modules/object/object.module';
 import { ChangeRouteModule } from './modules/change-route/change-route.module';
+import { CoreModule } from './core/core.module';
 
 @NgModule({
   declarations: [

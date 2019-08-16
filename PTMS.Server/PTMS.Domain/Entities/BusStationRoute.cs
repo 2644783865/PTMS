@@ -1,0 +1,10 @@
+﻿namespace PTMS.Domain.Entities
+{
+    public class BusStationRoute
+    {
+        public int Id { get; set; }
+        public int? BusStationId { get; set; }
+        public int? RouteId { get; set; }
+        public int? Num { get; set; }
+    }
+}

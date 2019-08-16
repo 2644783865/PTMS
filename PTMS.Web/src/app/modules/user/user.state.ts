@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { EntityState, EntityStore, StoreConfig, QueryEntity } from '@datorama/akita';
+import { StoreConfig } from '@datorama/akita';
 import { UserDto } from '@app/core/dtos/UserDto';
 import { ProjectDto } from '@app/core/dtos/ProjectDto';
 import { RoleDto } from '@app/core/dtos/RoleDto';

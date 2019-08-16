@@ -9,7 +9,7 @@ using PTMS.Domain.Entities;
 
 namespace PTMS.BusinessLogic.Services
 {
-    public class CarTypeService : BusinessServiceAsync<CarType, CarTypeModel>, ICarTypeService
+    public class CarTypeService : BusinessServiceAsync<CarType>, ICarTypeService
     {
         private readonly ICarTypeRepository _carTypeRepository;
 
@@ -24,7 +24,7 @@ namespace PTMS.BusinessLogic.Services
         public async Task<List<CarTypeModel>> GetAllAsync()
         {
             var result = await _carTypeRepository.GetAllAsync();
-            return MapToModel(result);
+            return MapToModel<CarTypeModel>(result);
         }
     }
 }

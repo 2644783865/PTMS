@@ -9,7 +9,7 @@ using PTMS.Domain.Entities;
 
 namespace PTMS.BusinessLogic.Services
 {
-    public class BlockTypeService : BusinessServiceAsync<BlockType, BlockTypeModel>, IBlockTypeService
+    public class BlockTypeService : BusinessServiceAsync<BlockType>, IBlockTypeService
     {
         private readonly IBlockTypeRepository _blockTypeRepository;
 
@@ -24,7 +24,7 @@ namespace PTMS.BusinessLogic.Services
         public async Task<List<BlockTypeModel>> GetAllAsync()
         {
             var result = await _blockTypeRepository.GetAllAsync();
-            return MapToModel(result);
+            return MapToModel<BlockTypeModel>(result);
         }
     }
 }

@@ -32,7 +32,7 @@ namespace PTMS.Domain.Entities
         public CarBrand CarBrand { get; set; }
         public Provider Provider { get; set; }
         public Project Project { get; set; }
-        public Routs Route { get; set; }
+        public Route Route { get; set; }
         public Granit Block { get; set; }
     }
 }
