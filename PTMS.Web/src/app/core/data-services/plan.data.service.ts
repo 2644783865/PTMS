@@ -11,7 +11,7 @@ export class PlanDataService {
   constructor(private http: PtmsHttpClient) {
   }
 
-  getPlansByRoute(date: string): Observable<PlanByRouteDto[]> {
+  getPlansByRoute(date: string): Promise<PlanByRouteDto[]> {
     return this.http.get<PlanByRouteDto[]>('plans/byroute', { date: date });
   }
 }

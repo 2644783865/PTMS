@@ -22,7 +22,7 @@ export class PtmsHttpClient {
     relativeUrl: string,
     page: number = 1,
     pageSize: number = 10,
-    params: object = null): Observable<AppPaginationResponse<T>> {
+    params: object = null): Promise<AppPaginationResponse<T>> {
 
     page = page || 1;
     pageSize = pageSize || 10;
@@ -34,8 +34,8 @@ export class PtmsHttpClient {
     const options = { params: httpParams };
 
     return this.http.get<PageResult<T>>(this.getFullUrl(relativeUrl), options)
-      .pipe(
-        map(response => {
+      .toPromise()
+      .then(response => {
           let result = {
             currentPage: page,
             perPage: pageSize,
@@ -44,21 +44,24 @@ export class PtmsHttpClient {
           } as AppPaginationResponse<T>;
 
           return result;
-        })
-      );
+      });
   }
 
-  get<T>(relativeUrl: string, params: object = null): Observable<T> {
+  get<T>(relativeUrl: string, params: object = null): Promise<T> {
     const options = { params: this.convertToHttpParams(params) };
-    return this.http.get<T>(this.getFullUrl(relativeUrl), options);
+    return this.http.get<T>(this.getFullUrl(relativeUrl), options).toPromise();
   }
 
-  post<T>(relativeUrl: string, dto: any = null): Observable<T> {
-    return this.http.post<T>(this.getFullUrl(relativeUrl), dto);
+  post<T>(relativeUrl: string, dto: any = null): Promise<T> {
+    return this.http.post<T>(this.getFullUrl(relativeUrl), dto).toPromise();
   }
 
-  put<T>(relativeUrl: string, dto: any): Observable<T> {
-    return this.http.put<T>(this.getFullUrl(relativeUrl), dto);
+  put<T>(relativeUrl: string, dto: any): Promise<T> {
+    return this.http.put<T>(this.getFullUrl(relativeUrl), dto).toPromise();
+  }
+
+  delete(relativeUrl: string): Promise<{}> {
+    return this.http.delete(this.getFullUrl(relativeUrl)).toPromise();
   }
 
   private convertToHttpParams(params: object): HttpParams {

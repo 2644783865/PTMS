@@ -1,0 +1,114 @@
+<app-page-header>
+    {{header}}
+</app-page-header>
+
+<app-loading-bar [isLoading]="modalLoading$ | async"></app-loading-bar>
+
+<mat-card *ngIf="editForm">
+    <form class="form-full-container"
+        [formGroup]="editForm"
+        (appSubmit)="onSubmit()">
+        <div class="row">
+            <div class="col-xl-4 col-lg-5 col-12">
+                <div style="margin-bottom: 1.5em; display: flex; justify-content: space-between;">
+                    <button mat-raised-button
+                        type="button"
+                        (click)="onClose()">
+                    Вернуться к списку маршрутов
+                    </button>
+                    <app-loading-button color="primary"
+                        type="submit"
+                        [isLoading]="modalLoading$ | async">
+                        Сохранить всё
+                    </app-loading-button>
+                </div>
+                <mat-form-field>
+                    <input matInput placeholder="Название *" type="text"
+                            formControlName="name">
+                    <app-input-error controlName="name"></app-input-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-select formControlName="projectId" placeholder="Перевозчик *">
+                        <mat-option *ngFor="let project of projects$ | async" 
+                                    [value]="project.id">
+                            {{project.name}}
+                        </mat-option>
+                    </mat-select>
+                    <app-input-clear-icon matSuffix controlName="projectId"></app-input-clear-icon>
+                    <app-input-error controlName="projectId"></app-input-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-select formControlName="routeActive" placeholder="Статус *">
+                        <mat-option *ngFor="let status of statuses" 
+                                    [value]="status.value">
+                            {{status.key}}
+                        </mat-option>
+                    </mat-select>
+                    <app-input-error controlName="routeActive"></app-input-error>
+                </mat-form-field>
+            </div>
+            <div class="col-xl-1 d-xl-block d-none"></div>
+            <div class="col-xl-7 col-lg-7 col-12" formArrayName="busStationRoutes">
+                <div class="text-center form-field-static">
+                    <button mat-raised-button color="primary" type="button"
+                            (click)="addNewStation()"
+                            [disabled]="isEditingInProgress">
+                        Добавить новую остановку
+                    </button>
+                    <app-input-error controlName="busStationRoutes"
+                                    [customErrors]="{'inlineFormAtLeastOne': 'Необходимо добавить хотя бы одну остановку'}">
+                    </app-input-error>
+                </div>
+                <div class="inline-form">
+                    <div *ngFor="let fGroup of editForm.get('busStationRoutes').controls; let i=index" 
+                        [formGroup]="fGroup"
+                        class="inline-form-item">
+                        
+                        <div class="row" *ngIf="fGroup.controls.isEdit.value">
+                            <div class="col-7">
+                                <mat-form-field>
+                                    <mat-label>Остановка</mat-label>
+                                    <app-autocomplete [options]="busStations$"
+                                                      formControlName="busStation"
+                                                      (search)="searchBusStation($event)">
+                                    </app-autocomplete>
+                                    <app-input-clear-icon matSuffix controlName="busStation"></app-input-clear-icon>
+                                    <app-input-error controlName="busStation"></app-input-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-2">
+                                <mat-form-field>
+                                    <input matInput placeholder="Порядок *" type="number"
+                                            formControlName="num">
+                                    <app-input-error controlName="num"></app-input-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-3 text-right align-self-center">
+                                <button mat-mini-fab color="primary" type="submit"
+                                    (inlineFormSubmit)="saveStation(fGroup)">
+                                    <app-save-icon></app-save-icon>
+                                </button>
+                                <button mat-mini-fab type="button"
+                                    (click)="cancelStation(fGroup)">
+                                    <app-cancel-icon></app-cancel-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="!fGroup.controls.isEdit.value">
+                            <div class="col-7">
+                                {{fGroup.controls.busStation.value.name}}
+                            </div>
+                            <div class="col-2">
+                                {{fGroup.controls.num.value}}
+                            </div>
+                            <div class="col-3 text-right" [ngShow]="!isEditingInProgress">
+                                <app-edit-icon (click)="editStation(fGroup)"></app-edit-icon>
+                                <app-delete-icon (click)="deleteStation(fGroup)"></app-delete-icon>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</mat-card>

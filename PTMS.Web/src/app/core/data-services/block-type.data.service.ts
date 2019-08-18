@@ -11,7 +11,7 @@ export class BlockTypeDataService {
   constructor(private http: PtmsHttpClient) {
   }
 
-  getAll(): Observable<BlockTypeDto[]> {
+  getAll(): Promise<BlockTypeDto[]> {
     return this.http.get<BlockTypeDto[]>('blockTypes');
   }
 }

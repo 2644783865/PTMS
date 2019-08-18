@@ -17,7 +17,7 @@ export class RouteHelper implements AsyncValidator {
 
       this.routeService
         .getAll()
-        .subscribe(res => {
+        .then(res => {
           this._routes$.next(res);
           this._routes$.complete();
         });

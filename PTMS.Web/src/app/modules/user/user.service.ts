@@ -21,8 +21,8 @@ export class UserService {
 
   async loadData() {
     let [roles, data] = await Promise.all([
-      this.userDataService.getRoles().toPromise(),
-      this.userDataService.getAll().toPromise()
+      this.userDataService.getRoles(),
+      this.userDataService.getAll()
     ]);
 
     let loggedUserId = this.authService.userId;
@@ -43,7 +43,7 @@ export class UserService {
         projectId: formData.project ? formData.project.id : null
       } as NewUserDto;
 
-      let userDto = await this.userDataService.create(dto).toPromise();
+      let userDto = await this.userDataService.create(dto);
       let userUi = this.mapToModel(userDto, this.authService.userId);
 
       this.userStore.add(userUi);
@@ -66,7 +66,7 @@ export class UserService {
         projectId: formData.project ? formData.project.id : null
       } as ConfirmUserDto;
 
-      let userDto = await this.userDataService.confirmUser(userId, dto).toPromise();
+      let userDto = await this.userDataService.confirmUser(userId, dto);
       let userUi = this.mapToModel(userDto, this.authService.userId);
 
       this.userStore.update(userUi.id, userUi);
@@ -83,7 +83,7 @@ export class UserService {
   async toggleAccount(user: UserUI) {
     try {
       this.userStore.setLoading(true);
-      let userDto = await this.userDataService.toggleUser(user.id).toPromise();
+      let userDto = await this.userDataService.toggleUser(user.id);
       let userUi = this.mapToModel(userDto, this.authService.userId);
 
       this.userStore.update(userUi.id, userUi);
@@ -99,7 +99,7 @@ export class UserService {
   }
 
   async loadProjects() {
-    let projects = await this.projectDataService.getAll({ active: true }).toPromise();
+    let projects = await this.projectDataService.getAll({ active: true });
     this.userStore.setProjects(projects);
   }
 
@@ -109,7 +109,7 @@ export class UserService {
       active: true
     };
 
-    let routes = await this.routeDataService.getAll(dto).toPromise();
+    let routes = await this.routeDataService.getAll(dto);
     this.userStore.setRoutes(routes);
   }
 
@@ -121,7 +121,7 @@ export class UserService {
         password
       } as ChangePasswordDto;
 
-      await this.userDataService.changePassword(userUi.id, dto).toPromise();
+      await this.userDataService.changePassword(userUi.id, dto);
       this.notificationService.success(`Пароль для пользователя ${userUi.fullName} успешно изменён. Письмо с новым паролем было отправлено.`, userUi.id);
     }
     catch (exc) {

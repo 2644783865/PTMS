@@ -14,15 +14,15 @@ export class AccountDataService {
   constructor(private http: PtmsHttpClient) {
   }
 
-  login(dto: LoginDto): Observable<AuthTokenDto> {
+  login(dto: LoginDto): Promise<AuthTokenDto> {
     return this.http.post<AuthTokenDto>('account/login', dto);
   }
 
-  getIdentity(): Observable<AccountIdentityDto> {
+  getIdentity(): Promise<AccountIdentityDto> {
     return this.http.get<AccountIdentityDto>('account/identity');
   }
 
-  register(dto: RegisterDto): Observable<object> {
+  register(dto: RegisterDto): Promise<object> {
     return this.http.post<object>('account/register', dto);
   }
 }

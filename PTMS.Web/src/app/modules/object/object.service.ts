@@ -57,7 +57,7 @@ export class ObjectService {
     };
 
     this.objectStore.setLoading(true);
-    let response = await this.objectDataService.getAll(page, pageSize, dto).toPromise();
+    let response = await this.objectDataService.getAll(page, pageSize, dto);
 
     let result = response as AppPaginationResponse<ObjectUI>;
     result.data = response.data.map(item => this.mapToModel(item));
@@ -70,12 +70,12 @@ export class ObjectService {
     let isTransporter = this.isTransporter;
 
     let [projects, providers, carBrands, carTypes, blockTypes, routes ] = await Promise.all([
-      !isTransporter ? this.projectDataService.getAll().toPromise() : Promise.resolve([]),
-      !isTransporter ? this.providerDataService.getAll().toPromise() : Promise.resolve([]),
-      this.carBrandDataService.getAll().toPromise(),
-      this.carTypeDataService.getAll().toPromise(),
-      !isTransporter ? this.blockTypeDataService.getAll().toPromise() : Promise.resolve([]),
-      this.routeDataService.getAll({ active: true }).toPromise()
+      !isTransporter ? this.projectDataService.getAll() : Promise.resolve([]),
+      !isTransporter ? this.providerDataService.getAll() : Promise.resolve([]),
+      this.carBrandDataService.getAll(),
+      this.carTypeDataService.getAll(),
+      !isTransporter ? this.blockTypeDataService.getAll() : Promise.resolve([]),
+      this.routeDataService.getAll({ active: true })
     ]);
 
     carBrands.forEach(x => {
@@ -99,7 +99,7 @@ export class ObjectService {
       .toPromise();
 
     if (route) {
-      let result = await this.projectDataService.getByRouteId(route.id).toPromise();
+      let result = await this.projectDataService.getByRouteId(route.id);
       return result;
     }
     else {
@@ -115,7 +115,7 @@ export class ObjectService {
         .getRouteByName(newRouteName)
         .toPromise()
             
-      let updateItem = await this.objectDataService.changeRoute(vehicle.id, newRoute.id).toPromise();
+      let updateItem = await this.objectDataService.changeRoute(vehicle.id, newRoute.id);
 
       this.objectStore.update(updateItem.id, this.mapToModel(updateItem));
 
@@ -135,7 +135,7 @@ export class ObjectService {
     try {
       this.objectStore.setModalLoading(true);
 
-      let updateItem = await this.objectDataService.enable(vehicle.id, newRoute.id).toPromise();
+      let updateItem = await this.objectDataService.enable(vehicle.id, newRoute.id);
 
       this.objectStore.update(updateItem.id, this.mapToModel(updateItem));
 
@@ -160,7 +160,7 @@ export class ObjectService {
     try {
       this.objectStore.setLoading(true);
 
-      let updateItem = await this.objectDataService.disable(vehicle.id).toPromise();
+      let updateItem = await this.objectDataService.disable(vehicle.id);
 
       this.objectStore.update(updateItem.id, this.mapToModel(updateItem));
 
@@ -185,8 +185,8 @@ export class ObjectService {
       dto.routeId = formValue.route ? formValue.route.id : null;
 
       let updateItem = vehicleId > 0
-        ? await this.objectDataService.update(vehicleId, dto).toPromise()
-        : await this.objectDataService.add(dto).toPromise();
+        ? await this.objectDataService.update(vehicleId, dto)
+        : await this.objectDataService.add(dto);
 
       this.objectStore.addOrUpdate(updateItem.id, this.mapToModel(updateItem));
 

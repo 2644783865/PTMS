@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of, from } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { AccountDataService } from '../data-services/account.data.service';
 import { AccountIdentityDto } from '../dtos/AccountIdentityDto';
@@ -40,12 +40,12 @@ export class AuthService {
     return this.authQuery.select(s => s.identity);
   }
 
-  login(dto: LoginDto): Observable<AuthTokenDto> {
+  login(dto: LoginDto): Promise<AuthTokenDto> {
     return this.accountDataService.login(dto)
-      .pipe(
-        tap(tokenResult => {
-          this.authStore.update({ token: tokenResult.token });
-        }));
+      .then(tokenResult => {
+        this.authStore.update({ token: tokenResult.token });
+        return tokenResult;
+      });
   }
 
   getState(): Observable<AuthState> {
@@ -61,7 +61,7 @@ export class AuthService {
       isAuthInProcess$.next(true);
     }, 300)
 
-    return this.accountDataService.getIdentity()
+    return from(this.accountDataService.getIdentity())
       .pipe(
         tap(_ => {
           clearTimeout(timeoutId);

@@ -29,7 +29,7 @@ export class AppInputErrorComponent {
   }
 
   onStatusChange() {
-    if (this.control.invalid) {
+    if (this.control.invalid && this.control.errors) {
       let errorName = Object.keys(this.control.errors)[0];
 
       this.errorMessage = this.customErrors && this.customErrors[errorName];

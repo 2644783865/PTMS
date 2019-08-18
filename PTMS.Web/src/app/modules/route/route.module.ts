@@ -4,6 +4,7 @@ import { RoutePageComponent } from './route-page.component';
 import { RouteStore, RouteQuery } from './route.state';
 import { RouteService } from './route.service';
 import { RouteRoutingModule } from './route-routing.module';
+import { RouteAddEditComponent } from './route-add-edit/route-add-edit.component';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { RouteRoutingModule } from './route-routing.module';
     RouteService
   ],
   declarations: [
-    RoutePageComponent
+    RoutePageComponent,
+    RouteAddEditComponent
   ],
   exports: [
     RoutePageComponent

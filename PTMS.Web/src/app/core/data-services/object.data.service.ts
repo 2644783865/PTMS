@@ -13,11 +13,11 @@ export class ObjectDataService {
   constructor(private http: PtmsHttpClient) {
   }
 
-  getAll(page: number, pageSize: number, params: object = null): Observable<AppPaginationResponse<ObjectDto>> {
+  getAll(page: number, pageSize: number, params: object = null): Promise<AppPaginationResponse<ObjectDto>> {
     return this.http.getPage<ObjectDto>('objects', page, pageSize, params);
   }
 
-  getForReporting(minutes: number): Observable<ObjectDto[]> {
+  getForReporting(minutes: number): Promise<ObjectDto[]> {
     return this.http.get<ObjectDto[]>(`objects/reporting`, { minutes });
   }
 

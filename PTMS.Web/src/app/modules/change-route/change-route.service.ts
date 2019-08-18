@@ -16,7 +16,7 @@ export class ChangeRouteService {
 
   search(plateNumber: string) {
     this.objectDataService.getAll(1, 10, { plateNumber, format: 'light', active: true })
-      .subscribe((vehicles) => {
+      .then((vehicles) => {
         this.changeRouteStore.set(vehicles.data);
       });
   }
@@ -31,10 +31,10 @@ export class ChangeRouteService {
 
       let newRoute = await this.routeHelper
         .getRouteByName(newRouteName)
-        .toPromise()
+        .toPromise();        
 
       if (newRoute) {
-        let updateItem = await this.objectDataService.changeRoute(vehicle.id, newRoute.id).toPromise();
+        let updateItem = await this.objectDataService.changeRoute(vehicle.id, newRoute.id);
 
         this.changeRouteStore.update(updateItem.id, updateItem);
 

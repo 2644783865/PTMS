@@ -20,6 +20,8 @@ namespace PTMS.DI
             services.AddScoped<ICarTypeService, CarTypeService>();
             services.AddScoped<IPlanService, PlanService>();
             services.AddScoped<IBlockTypeService, BlockTypeService>();
+            services.AddScoped<IBusStationService, BusStationService>();
+            services.AddScoped<IBusStationRouteService, BusStationRouteService>();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using PTMS.DataServices.Infrastructure;
 using PTMS.DataServices.IRepositories;
 using PTMS.DataServices.Models;
+using PTMS.DataServices.SyncServices;
 using PTMS.Domain.Entities;
 using PTMS.Persistance;
 using System;
@@ -13,8 +14,10 @@ namespace PTMS.DataServices.Repositories
 {
     public class RouteRepository : DataServiceAsync<Route>, IRouteRepository
     {
-        public RouteRepository(ApplicationDbContext context)
-            : base(context)
+        public RouteRepository(
+            ApplicationDbContext context,
+            RouteSyncService syncService)
+            : base(context, syncService)
         {
 
         }

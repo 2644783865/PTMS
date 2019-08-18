@@ -1,14 +1,17 @@
 <app-page-header>Маршруты</app-page-header>
 
-<mat-progress-bar mode="indeterminate" [class.visibility-hidden]="!(dataLoading$ | async)"></mat-progress-bar>
+<app-loading-bar [isLoading]="dataLoading$ | async"></app-loading-bar>
 
-<div *ngIf="(list$ | async) as routes">
-  <div class="add-button" *ngIf="canAdd">
-    <button mat-raised-button color="primary">Добавить новый маршрут</button>
+<div *ngIf="(list$ | async).length > 0">
+  <div class="add-button">
+    <button mat-raised-button color="primary"
+            (click)="openAddEditDialog()">
+      Добавить новый маршрут
+    </button>
   </div>
 
   <div class="table-wrapper table-editable table-mobile mat-elevation-z8">
-    <mat-table [dataSource]="routes">
+    <mat-table [dataSource]="list$ | async">
       <ng-container matColumnDef="name">
         <mat-header-cell *matHeaderCellDef> Название </mat-header-cell>
         <mat-cell *matCellDef="let route" mobile-label="Название"> {{route.name}} </mat-cell>

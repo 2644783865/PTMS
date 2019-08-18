@@ -20,10 +20,10 @@ export class HomeService {
     this.homeStore.setLoading(true);
 
     let [ projects, providers, routes, plansByRoutes ] = await Promise.all([
-      this.projectDataService.getAll({ active: true }).toPromise(),
-      this.providerDataService.getAll().toPromise(),
-      this.routeDataService.getAll({ active: true }).toPromise(),
-      this.planDataService.getPlansByRoute(toDate(new Date())).toPromise()
+      this.projectDataService.getAll({ active: true }),
+      this.providerDataService.getAll(),
+      this.routeDataService.getAll({ active: true }),
+      this.planDataService.getPlansByRoute(toDate(new Date()))
     ]);
 
     this.homeStore.setRelatedData(
@@ -40,7 +40,7 @@ export class HomeService {
 
     this.homeStore.setLoading(true);
 
-    let result = await this.objectDataService.getForReporting(minutes).toPromise();
+    let result = await this.objectDataService.getForReporting(minutes);
     this.homeStore.set(result);
     this.homeStore.setLoading(true);
 

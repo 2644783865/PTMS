@@ -15,27 +15,27 @@ export class UserDataService {
   constructor(private http: PtmsHttpClient) {
   }
 
-  getAll(): Observable<UserDto[]> {
+  getAll(): Promise<UserDto[]> {
     return this.http.get<UserDto[]>(`users`);
   }
 
-  getRoles(): Observable<RoleDto[]> {
+  getRoles(): Promise<RoleDto[]> {
     return this.http.get<RoleDto[]>(`roles`);
   }
 
-  create(dto: NewUserDto): Observable<UserDto> {
+  create(dto: NewUserDto): Promise<UserDto> {
     return this.http.post<UserDto>(`user`, dto);
   }
 
-  confirmUser(userId: number, dto: ConfirmUserDto): Observable<UserDto> {
+  confirmUser(userId: number, dto: ConfirmUserDto): Promise<UserDto> {
     return this.http.post<UserDto>(`user/${userId}/confirm`, dto);
   }
 
-  changePassword(userId: number, dto: ChangePasswordDto): Observable<any> {
+  changePassword(userId: number, dto: ChangePasswordDto): Promise<any> {
     return this.http.post<any>(`user/${userId}/changePassword`, dto);
   }
 
-  toggleUser(userId: number): Observable<UserDto> {
+  toggleUser(userId: number): Promise<UserDto> {
     return this.http.post<UserDto>(`user/${userId}/toggle`);
   }
 }

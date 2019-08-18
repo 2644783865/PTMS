@@ -11,15 +11,31 @@ export class RouteDataService {
   constructor(private http: PtmsHttpClient) {
   }
 
-  getAll(params: object = null): Observable<RouteDto[]> {
+  getAll(params: object = null): Promise<RouteDto[]> {
     return this.http.get<RouteDto[]>(`routes`, params);
   }
 
-  getAllForPage(): Observable<RouteFullDto[]> {
+  getAllForPage(): Promise<RouteFullDto[]> {
     return this.http.get<RouteFullDto[]>(`routes/forPage`);
   }
 
-  getByIdForEdit(id: number): Observable<RouteFullDto[]> {
+  getByIdForEdit(id: number): Promise<RouteFullDto[]> {
     return this.http.get<RouteFullDto[]>(`route/forEdit/${id}`);
+  }
+
+  add(item: RouteFullDto): Promise<RouteDto> {
+    return this.http.post<RouteDto>(`route`, item);
+  }
+
+  update(item: RouteFullDto): Promise<RouteDto> {
+    return this.http.put<RouteFullDto>(`route/${item.id}`, item);
+  }
+
+  addOrUpdate(item: RouteFullDto): Promise<RouteDto> {
+    return item.id ? this.update(item) : this.add(item);
+  }
+
+  delete(id: number) {
+    return this.http.delete(`route/${id}`);
   }
 }

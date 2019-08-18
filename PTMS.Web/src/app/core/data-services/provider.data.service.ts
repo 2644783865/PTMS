@@ -11,7 +11,7 @@ export class ProviderDataService {
   constructor(private http: PtmsHttpClient) {
   }
 
-  getAll(): Observable<ProviderDto[]> {
+  getAll(): Promise<ProviderDto[]> {
     return this.http.get<ProviderDto[]>('providers');
   }
 }

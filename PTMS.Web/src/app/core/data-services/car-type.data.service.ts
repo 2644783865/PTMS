@@ -11,7 +11,7 @@ export class CarTypeDataService {
   constructor(private http: PtmsHttpClient) {
   }
 
-  getAll(): Observable<CarTypeDto[]> {
+  getAll(): Promise<CarTypeDto[]> {
     return this.http.get<CarTypeDto[]>('carTypes');
   }
 }

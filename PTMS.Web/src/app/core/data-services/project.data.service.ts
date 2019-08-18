@@ -11,11 +11,11 @@ export class ProjectDataService {
   constructor(private http: PtmsHttpClient) {
   }
 
-  getAll(params: object = null): Observable<ProjectDto[]> {
+  getAll(params: object = null): Promise<ProjectDto[]> {
     return this.http.get<ProjectDto[]>('projects', params);
   }
 
-  getByRouteId(routeId: number): Observable<ProjectDto> {
+  getByRouteId(routeId: number): Promise<ProjectDto> {
     return this.http.get<ProjectDto>(`project/byroute/${routeId}`);
   }
 }
