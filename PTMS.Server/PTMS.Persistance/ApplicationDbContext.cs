@@ -525,32 +525,32 @@ namespace PTMS.Persistance
 
             builder.Entity<ProjectRoute>(entity =>
             {
-                entity.HasKey(e => e.Ids)
+                entity.HasKey(e => e.Id)
                     .HasName("PK_PROJ_ROUTS_1");
 
                 entity.ToTable("PROJ_ROUTS                     ");
 
-                entity.HasIndex(e => e.Ids)
+                entity.HasIndex(e => e.Id)
                     .HasName("PK_PROJ_ROUTS_1");
 
-                entity.HasIndex(e => e.ProjId)
+                entity.HasIndex(e => e.ProjectId)
                     .HasName("FK_PROJ_ROUTS_2")
                     .IsUnique();
 
-                entity.HasIndex(e => e.RoutId)
+                entity.HasIndex(e => e.RouteId)
                     .HasName("FK_PROJ_ROUTS_1")
                     .IsUnique();
 
-                entity.HasIndex(e => new { e.ProjId, e.RoutId })
+                entity.HasIndex(e => new { e.ProjectId, e.RouteId })
                     .HasName("UNQ_PROJ_ROUTS_2");
 
-                entity.Property(e => e.Ids).HasColumnName("IDS_");
+                entity.Property(e => e.Id).HasColumnName("IDS_");
 
-                entity.Property(e => e.ProjId)
+                entity.Property(e => e.ProjectId)
                     .HasColumnName("PROJ_ID_")
                     .HasAnnotation("Description", "Маршрут");
 
-                entity.Property(e => e.RoutId)
+                entity.Property(e => e.RouteId)
                     .HasColumnName("ROUT_ID_")
                     .HasAnnotation("Description", "Перевозчик");
             });

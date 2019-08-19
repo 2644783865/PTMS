@@ -37,17 +37,17 @@ namespace PTMS.BusinessLogic.Services
             var projectRoutes = await _projectRouteRepository.GetAllActiveAsync();
 
             var result = projectRoutes
-                .Select(x => x.RoutId)
+                .Select(x => x.RouteId)
                 .Distinct()
                 .Select(routeId => {
                     var plan = plans.FirstOrDefault(pl => pl.RoutId == routeId);
                     var fact = factObjects.FirstOrDefault(f => f.RouteId == routeId);
-                    var projectRoute = projectRoutes.FirstOrDefault(pr => pr.RoutId == routeId);
+                    var projectRoute = projectRoutes.FirstOrDefault(pr => pr.RouteId == routeId);
 
                     var item = new PlanByRouteModel
                     {
                         RouteId = routeId,
-                        ProjectId = projectRoute != null ? projectRoute.ProjId : 0,
+                        ProjectId = projectRoute != null ? projectRoute.ProjectId : 0,
                         FactNumber = fact != null ? fact.CountObjects : 0,
                         PlannedNumber = plan != null ? plan.TypePlannedTotal : 0
                     };

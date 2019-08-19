@@ -33,5 +33,10 @@ namespace PTMS.BusinessLogic.Services
             var result = await _busStationRouteRepository.UpdateAsync(entity);
             return MapToModel<BusStationRouteModel>(result);
         }
+
+        public async Task DeleteByIdAsync(int id)
+        {
+            await _busStationRouteRepository.DeleteByIdAsync(id);
+        }
     }
 }

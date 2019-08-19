@@ -15,6 +15,9 @@ namespace PTMS.DI
                 CreateMap<Route, RouteModel>();
                 CreateMap<Route, RouteFullModel>();
 
+                CreateMap<RouteFullModel, Route>()
+                    .ForMember(m => m.BusStationRoutes, options => options.Ignore());
+
                 CreateMap<Objects, ObjectModel>();
                 CreateMap<ObjectModel, Objects>()
                     .ForMember(m => m.CarBrand, options => options.Ignore())

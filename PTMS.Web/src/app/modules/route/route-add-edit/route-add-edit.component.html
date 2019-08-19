@@ -8,20 +8,21 @@
     <form class="form-full-container"
         [formGroup]="editForm"
         (appSubmit)="onSubmit()">
-        <div class="row">
+        <div style="margin-bottom: 16px; text-align: center">
+            <button mat-raised-button
+                type="button"
+                (click)="onClose()">
+            Вернуться к списку маршрутов
+            </button>
+            <app-loading-button color="primary"
+                type="submit"
+                [isLoading]="modalLoading$ | async">
+                Сохранить всё
+            </app-loading-button>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="row" style="padding-top: 16px;">
             <div class="col-xl-4 col-lg-5 col-12">
-                <div style="margin-bottom: 1.5em; display: flex; justify-content: space-between;">
-                    <button mat-raised-button
-                        type="button"
-                        (click)="onClose()">
-                    Вернуться к списку маршрутов
-                    </button>
-                    <app-loading-button color="primary"
-                        type="submit"
-                        [isLoading]="modalLoading$ | async">
-                        Сохранить всё
-                    </app-loading-button>
-                </div>
                 <mat-form-field>
                     <input matInput placeholder="Название *" type="text"
                             formControlName="name">
@@ -49,7 +50,7 @@
             </div>
             <div class="col-xl-1 d-xl-block d-none"></div>
             <div class="col-xl-7 col-lg-7 col-12" formArrayName="busStationRoutes">
-                <div class="text-center form-field-static">
+                <div class="text-right form-field-static">
                     <button mat-raised-button color="primary" type="button"
                             (click)="addNewStation()"
                             [disabled]="isEditingInProgress">
@@ -64,7 +65,7 @@
                         [formGroup]="fGroup"
                         class="inline-form-item">
                         
-                        <div class="row" *ngIf="fGroup.controls.isEdit.value">
+                        <div class="row" *ngIf="isItemEditingInProgress(fGroup)">
                             <div class="col-7">
                                 <mat-form-field>
                                     <mat-label>Остановка</mat-label>
@@ -94,7 +95,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="row" *ngIf="!fGroup.controls.isEdit.value">
+                        <div class="row" *ngIf="!isItemEditingInProgress(fGroup)">
                             <div class="col-7">
                                 {{fGroup.controls.busStation.value.name}}
                             </div>

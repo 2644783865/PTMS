@@ -31,7 +31,7 @@ namespace PTMS.Persistance.EntityConfigurations
 
                 entity.HasMany(e => e.ProjectRoutes)
                     .WithOne(e => e.Project)
-                    .HasForeignKey(e => e.ProjId);
+                    .HasForeignKey(e => e.ProjectId);
             });
         }
     }

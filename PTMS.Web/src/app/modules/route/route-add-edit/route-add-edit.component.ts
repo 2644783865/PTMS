@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, BehaviorSubject, combineLatest, of } from 'rxjs';
 import { RouteFullDto, ProjectDto, BusStationDto, BusStationRouteDto } from '@app/core/dtos';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { RouteQuery } from '../route.state';
 import { RouteService } from '../route.service';
 import { FormGroup, Validators, FormArray, FormBuilder } from '@angular/forms';
@@ -31,7 +31,7 @@ export class RouteAddEditComponent implements OnInit {
     private routeService: RouteService,
     private fb: FormBuilder) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.busStations$ = combineLatest(
       this.routeQuery.busStations$, 
       this._stationSearchString)
@@ -48,7 +48,6 @@ export class RouteAddEditComponent implements OnInit {
         return of(result);
       }));
     
-    
     this.projects$ = this.routeQuery.projects$;
     this.modalLoading$ = this.routeQuery.modalLoading$;
 
@@ -58,12 +57,8 @@ export class RouteAddEditComponent implements OnInit {
     ];
 
     let routeId = this.activatedRoute.snapshot.params.id;
-
-    this.routeService.loadDataForEdit(routeId)
-        .then(route => {
-          this._routeFull = route;
-          this.mapToForm(route);
-        });
+    this._routeFull = await this.routeService.loadDataForEdit(routeId);
+    this.mapToForm(this._routeFull);
   }
 
   get header(): string {
@@ -84,6 +79,10 @@ export class RouteAddEditComponent implements OnInit {
     return this._inlineFormHelper.isEditingInProgress;
   }
   
+  isItemEditingInProgress(formGroup: FormGroup): boolean {
+    return this._inlineFormHelper.isItemEditingInProgress(formGroup);
+  }
+
   searchBusStation(stationSearchString: string){
     this._stationSearchString.next(stationSearchString);
   }
@@ -116,8 +115,22 @@ export class RouteAddEditComponent implements OnInit {
 
   async onSubmit() {
     let busStationRoutesResult = this._inlineFormHelper.getValuesToSave(this._routeFull.busStationRoutes);
-    await this.routeService.save(this.editForm.value, busStationRoutesResult);
-    this.onClose();
+    let saveResult = await this.routeService.save(this.editForm.value, busStationRoutesResult);
+    
+    if (saveResult.success) {
+      if (this._routeFull.id) {
+        await this.ngOnInit();
+      }
+      else {
+        this.router.navigateByUrl(`routes/${saveResult.route.id}`);
+      }
+    }
+    else if (saveResult.route) {
+      this.editForm.get('id').setValue(saveResult.route.id);
+      saveResult.busStationRoutes.forEach(x => this._inlineFormHelper.update(x));
+
+      this._routeFull = await this.routeService.loadDataForEdit(saveResult.route.id);
+    }
   }
 
   onClose() {
@@ -134,26 +147,30 @@ export class RouteAddEditComponent implements OnInit {
 
     if (updatedFormGroup) {
       //update sort order on add/edit
+      let oldSortOrder = formArray.controls.indexOf(updatedFormGroup) + 1;
       let newSortOrder = updatedFormGroup.get('num').value;
-      formArray.controls.forEach(formGroup => {
-        let oldSortOrder = formGroup.get('num').value;
-        if (oldSortOrder >= newSortOrder && formGroup != updatedFormGroup){
-          formGroup.get('num').setValue(oldSortOrder+1);
-        }
-      });
+
+      if (oldSortOrder > newSortOrder) {
+        updatedFormGroup.get('num').setValue(newSortOrder-0.5);
+      }
+      else if (oldSortOrder < newSortOrder) {
+        updatedFormGroup.get('num').setValue(newSortOrder+0.5);
+      }
+      else {
+        return;
+      }
 
       //order by num
       let array = formArray.value;
       array.sort((a, b) => a.num - b.num)
       formArray.patchValue(array);
     }
-    else {
-      //update sort order on delete
-      formArray.controls.forEach((formGroup, index) => {
-        let sortOrder = index+1;
-        formGroup.get('num').setValue(sortOrder);
-      });
-    }
+    
+    //update sort order - set equal to index
+    formArray.controls.forEach((formGroup, index) => {
+      let sortOrder = index+1;
+      formGroup.get('num').setValue(sortOrder);
+    });
   }
 
   private mapToForm(route: RouteFullDto){

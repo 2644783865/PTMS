@@ -16,15 +16,18 @@ namespace PTMS.BusinessLogic.Services
     {
         private readonly AppUserManager _userManager;
         private readonly IRouteRepository _routeRepository;
+        private readonly IProjectRouteRepository _projectRouteRepository;
 
         public RouteService(
             AppUserManager userManager,
             IRouteRepository routeRepository,
+            IProjectRouteRepository projectRouteRepository,
             IMapper mapper)
             : base(mapper)
         {
             _routeRepository = routeRepository;
             _userManager = userManager;
+            _projectRouteRepository = projectRouteRepository;
         }
 
         public async Task<List<RouteModel>> GetAllAsync(
@@ -59,6 +62,8 @@ namespace PTMS.BusinessLogic.Services
         {
             var entity = MapFromModel(model);
             var result = await _routeRepository.AddAsync(entity);
+
+            await SetProjectRoute(result.Id, model.ProjectId, null);
             return MapToModel<RouteModel>(result);
         }
 
@@ -66,6 +71,10 @@ namespace PTMS.BusinessLogic.Services
         {
             var entity = MapFromModel(model);
             var result = await _routeRepository.UpdateAsync(entity);
+
+            var projectRoute = await _projectRouteRepository.GetByRouteIdAsync(result.Id);
+            await SetProjectRoute(result.Id, model.ProjectId, projectRoute);
+
             return MapToModel<RouteModel>(result);
         }
 
@@ -84,11 +93,40 @@ namespace PTMS.BusinessLogic.Services
 
                 if (projRoute != null)
                 {
-                    result.ProjectId = projRoute.ProjId;
+                    result.ProjectId = projRoute.ProjectId;
                 }
             }
 
             return result;
+        }
+
+        private async Task SetProjectRoute(int routeId, int? projectId, ProjectRoute existingProjectRoute)
+        {
+            if (existingProjectRoute != null)
+            {
+                if (projectId.HasValue)
+                {
+                    if (existingProjectRoute.ProjectId != projectId)
+                    {
+                        existingProjectRoute.ProjectId = projectId.Value;
+                        await _projectRouteRepository.UpdateAsync(existingProjectRoute);
+                    }
+                }
+                else
+                {
+                    await _projectRouteRepository.DeleteByIdAsync(existingProjectRoute.Id);
+                }
+            }
+            else if (projectId.HasValue)
+            {
+                var projectRoute = new ProjectRoute
+                {
+                    RouteId = routeId,
+                    ProjectId = projectId.Value
+                };
+
+                await _projectRouteRepository.AddAsync(projectRoute);
+            }
         }
     }
 }

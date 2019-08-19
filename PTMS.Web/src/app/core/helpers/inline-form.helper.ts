@@ -1,4 +1,5 @@
 import { FormArray, FormGroup, FormControl, ValidatorFn } from '@angular/forms';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 export interface InlineFormResult {
     toDelete: any[]
@@ -9,7 +10,7 @@ export interface InlineFormResult {
 export class InlineFormHelper<T> {
     private _isEditingInProgress = false;
     private _previousFormGroupValue = null;
-    private _isEditKey = "isEdit";
+    private _isEditKey = "_isEdit";
     private _isAddKey = "_isAdd";
 
     constructor(
@@ -19,6 +20,10 @@ export class InlineFormHelper<T> {
         private idKey: string = 'id'
     ) {
 
+    }
+
+    isItemEditingInProgress(formGroup: FormGroup): boolean {
+        return formGroup.get([this._isEditKey]).value;
     }
 
     get isEditingInProgress(): boolean {
@@ -68,7 +73,7 @@ export class InlineFormHelper<T> {
 
     prepareOnSave(formGroup: FormGroup): Object {
         formGroup.get(this._isEditKey).setValue(false);
-        formGroup.get(this._isAddKey).setValue(false);
+        formGroup.get(this._isAddKey).setValue(true);
         
         this._isEditingInProgress = false;
 

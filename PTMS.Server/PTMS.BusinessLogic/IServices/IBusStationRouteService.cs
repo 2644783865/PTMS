@@ -7,5 +7,6 @@ namespace PTMS.BusinessLogic.IServices
     {
         Task<BusStationRouteModel> AddAsync(BusStationRouteModel model);
         Task<BusStationRouteModel> UpdateAsync(int id, BusStationRouteModel model);
+        Task DeleteByIdAsync(int id);
     }
 }

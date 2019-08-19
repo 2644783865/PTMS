@@ -41,7 +41,7 @@ namespace PTMS.DataServices.Repositories
 
         public Task<Project> GetProjectByRouteIdAsync(int routeId)
         {
-            return GetAsync(x => x.ProjectRoutes.Any(y => y.RoutId == routeId));
+            return GetAsync(x => x.ProjectRoutes.Any(y => y.RouteId == routeId));
         }
     }
 }

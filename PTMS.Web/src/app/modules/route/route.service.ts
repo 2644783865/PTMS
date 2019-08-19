@@ -2,9 +2,15 @@ import { Injectable } from '@angular/core';
 import { RouteStore } from './route.state';
 import { RouteDataService, ProjectDataService, BusStationDataService, BusStationRouteDataService } from '@app/core/data-services';
 import { applyTransaction } from '@datorama/akita';
-import { RouteFullDto, BusStationRouteDto } from '@app/core/dtos';
-import { InlineFormResult } from '@app/core/helpers';
+import { RouteFullDto, BusStationRouteDto, RouteDto } from '@app/core/dtos';
+import { InlineFormResult, PromiseChainHelper } from '@app/core/helpers';
 import { NotificationService } from '@app/core/notification';
+
+export interface RouteSaveResult {
+  success: boolean
+  route: RouteDto
+  busStationRoutes: BusStationRouteDto[]
+}
 
 @Injectable()
 export class RouteService {
@@ -64,40 +70,52 @@ export class RouteService {
     return route;
   }
 
-  async save(routeFormValue: any, busStationRoutesResult: InlineFormResult) {
+  async save(routeFormValue: any, busStationRoutesResult: InlineFormResult): Promise<RouteSaveResult> {
+    let result = {success: true, busStationRoutes: []} as RouteSaveResult;
+
     try {
       this.routeStore.setModalLoading(true);
 
       let dto = {
-        id: routeFormValue.id,
+        id: routeFormValue.id || 0,
+        name: routeFormValue.name,
         projectId: routeFormValue.projectId,
         routeActive: routeFormValue.routeActive
       } as RouteFullDto;
 
-      let route = await this.routeDataService.addOrUpdate(dto);
+      result.route = await this.routeDataService.addOrUpdate(dto);
 
-      await this.saveBusStations(route.id, busStationRoutesResult);
+      await this.saveBusStations(result, busStationRoutesResult);
 
-      this.notificationService.success(`Маршрут ${route.name} был успешно ${dto.id > 0 ? 'отредактирован' : 'добавлен'}`, route.id);
+      this.notificationService.success(`Маршрут ${result.route.name} был успешно ${dto.id > 0 ? 'отредактирован' : 'добавлен'}`, result.route.id);
     }
     catch (exc) {
       this.notificationService.exception(exc);
+      result.success = false;
     }
     finally {
       this.routeStore.setModalLoading(false);
     }
+
+    return result;
   }
 
   onDestroy() {
     this.routeStore.reset();
   }
 
-  private async saveBusStations(routeId: number, busStationRoute: InlineFormResult) {
-    await Promise.all(busStationRoute.toDelete.map(formValue => {
-      return this.busStationRouteDataService.delete(formValue.id as number);
-    }));
+  private async saveBusStations(result: RouteSaveResult, busStationRoute: InlineFormResult) {
+    let routeId = result.route.id;
 
-    await Promise.all(busStationRoute.toUpdate.map(formValue => {
+    let promiseChainer = new PromiseChainHelper();
+
+    busStationRoute.toDelete.map(formValue => {
+      promiseChainer.add(() => {
+        return this.busStationRouteDataService.delete(formValue.id as number)
+      });
+    });
+
+    busStationRoute.toUpdate.map(formValue => {
       let dto = {
         id: formValue.id,
         busStationId: formValue.busStation.id,
@@ -105,17 +123,29 @@ export class RouteService {
         num: formValue.num
       } as BusStationRouteDto;
 
-      return this.busStationRouteDataService.update(dto);
-    }));
+      promiseChainer.add(() => {
+        return this.busStationRouteDataService.update(dto)
+      })
+    });
 
-    await Promise.all(busStationRoute.toAdd.map(formValue => {
+    busStationRoute.toAdd.map(formValue => {
       let dto = {
         busStationId: formValue.busStation.id,
         routeId: routeId,
         num: formValue.num
       } as BusStationRouteDto;
 
-      return this.busStationRouteDataService.add(dto);
-    }));
+      promiseChainer.add(() => {
+        return this.busStationRouteDataService.add(dto);
+      })
+    });
+
+    let stationsResult = await promiseChainer.run();
+
+    result.busStationRoutes.push(...stationsResult.successResponses.filter(x => !!x));
+
+    if (stationsResult.errors.length > 0){
+      throw stationsResult.errors[0];
+    }
   }
 }

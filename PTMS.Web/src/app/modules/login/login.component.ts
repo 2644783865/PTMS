@@ -65,15 +65,14 @@ export class LoginComponent implements OnInit {
       var dto = this.loginForm.value as LoginDto;
 
       this.authService.login(dto)
-        .subscribe(
-          () => {
+        .then(() => {
             let url = this.route.snapshot.queryParams.returnUrl || '/';
             this.router.navigateByUrl(url);
-          },
-          errorResponse => {
+        })
+        .catch(errorResponse => {
             this.loading$.next(false);
             this.notificationService.exception(errorResponse);
-          })
+        });
     }
   }
 
@@ -83,17 +82,16 @@ export class LoginComponent implements OnInit {
       var dto = this.registerForm.value as RegisterDto;
 
       this.accountDataService.register(dto)
-        .subscribe(
-          () => {
+        .then(() => {
             this.notificationService.success("Регистрация прошла успешно. Письмо с инструкциями выслано на вашу почту");
             this.showRegisterButton = false;
             this.togglePage();
             this.loading$.next(false);
-          },
-          errorResponse => {
-            this.notificationService.error(errorResponse.error.message);
-            this.loading$.next(false);
-          });
+        })
+        .catch(errorResponse => {
+          this.notificationService.error(errorResponse.error.message);
+          this.loading$.next(false);
+        });
     }
   }
 }

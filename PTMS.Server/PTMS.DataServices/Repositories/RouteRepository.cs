@@ -34,7 +34,7 @@ namespace PTMS.DataServices.Repositories
 
             Expression<Func<Route, bool>> filter = x =>
                 (!active.HasValue || x.RouteActive == active.Value)
-                && (!projectId.HasValue || x.ProjectRoutes.Any(p => p.ProjId == projectId.Value))
+                && (!projectId.HasValue || x.ProjectRoutes.Any(p => p.ProjectId == projectId.Value))
                 && (userRoutesModel.RouteIds == null || userRoutesModel.RouteIds.Contains(x.Id));
 
             var result = await FindAsync(filter);

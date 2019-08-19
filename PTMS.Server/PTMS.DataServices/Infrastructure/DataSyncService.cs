@@ -225,15 +225,26 @@ END
         {
             using (var connection = new FbConnection(_dataConnection.ConnectionString))
             {
-                connection.Open();
-                using (var transaction = connection.BeginTransaction())
+                try
                 {
-                    using (var command = new FbCommand(sql, connection, transaction))
+                    connection.Open();
+
+                    using (var transaction = connection.BeginTransaction())
                     {
-                        using (var reader = command.ExecuteReader())
+                        using (var command = new FbCommand(sql, connection, transaction))
                         {
-                            transaction.Commit();
+                            using (var reader = command.ExecuteReader())
+                            {
+                                transaction.Commit();
+                            }
                         }
+                    }
+                }
+                finally
+                {
+                    if (connection != null)
+                    {
+                        connection.Close();
                     }
                 }
             }
