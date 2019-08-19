@@ -3,6 +3,7 @@ using PTMS.BusinessLogic.Helpers;
 using PTMS.BusinessLogic.Infrastructure;
 using PTMS.BusinessLogic.IServices;
 using PTMS.BusinessLogic.Models;
+using PTMS.Common;
 using PTMS.DataServices.IRepositories;
 using PTMS.Domain.Entities;
 using System.Collections.Generic;
@@ -61,6 +62,7 @@ namespace PTMS.BusinessLogic.Services
         public async Task<RouteModel> AddAsync(RouteFullModel model)
         {
             var entity = MapFromModel(model);
+            entity.Name = entity.Name.PrepareRouteName();
             var result = await _routeRepository.AddAsync(entity);
 
             await SetProjectRoute(result.Id, model.ProjectId, null);
@@ -70,6 +72,7 @@ namespace PTMS.BusinessLogic.Services
         public async Task<RouteModel> UpdateAsync(RouteFullModel model)
         {
             var entity = MapFromModel(model);
+            entity.Name = entity.Name.PrepareRouteName();
             var result = await _routeRepository.UpdateAsync(entity);
 
             var projectRoute = await _projectRouteRepository.GetByRouteIdAsync(result.Id);

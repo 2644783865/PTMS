@@ -80,7 +80,7 @@ namespace PTMS.DataServices.Repositories
 
             if (!string.IsNullOrEmpty(routeName))
             {
-                routeName = routeName.ToUpper();
+                routeName = routeName.PrepareRouteName();
             }
 
             Expression<Func<Objects, bool>> filter = x => (string.IsNullOrEmpty(plateNumber) || x.Name.Contains(plateNumber))
