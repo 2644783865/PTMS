@@ -35,18 +35,27 @@ export class HomeService {
     this.homeStore.setLoading(false);
   }
 
-  async loadObjectsForReporting(intervalId: string) {
-    let minutes = this.minutesDictionary[intervalId]();
+  async loadObjectsForReporting(intervalId: string): Promise<boolean> {
+    try {
+      let minutes = this.minutesDictionary[intervalId]();
 
-    this.homeStore.setLoading(true);
+      this.homeStore.setLoading(true);
+  
+      let result = await this.objectDataService.getForReporting(minutes);
+      this.homeStore.set(result);
+      this.homeStore.setLoading(true);
+  
+      setTimeout(_ => {
+        this.homeStore.setLoading(false);
+      }, 1000)
 
-    let result = await this.objectDataService.getForReporting(minutes);
-    this.homeStore.set(result);
-    this.homeStore.setLoading(true);
+      return true;
+    }
+    catch (err) {
+      console.error(err);
 
-    setTimeout(_ => {
-      this.homeStore.setLoading(false);
-    }, 1000)
+      return false;
+    }
   }
 
   setRouteStatFilters(filters): void {
@@ -84,13 +93,6 @@ export class HomeService {
     let difference = endDate.getTime() - startDate.getTime();
     let minutes = difference / 1000 / 60;
 
-    return minutes;
-  }
-
-  private mapToModel(vehicle: ObjectDto): void {
-    let state = this.homeStore.getValue();
-    vehicle.provider = state.providers.find(x => x.id == vehicle.providerId);
-    vehicle.route = state.routes.find(x => x.id == vehicle.lastRout);
-    vehicle.project = state.projects.find(x => x.id == vehicle.projId);
+    return Math.ceil(minutes);
   }
 }

@@ -60,10 +60,11 @@
                                     [customErrors]="{'inlineFormAtLeastOne': 'Необходимо добавить хотя бы одну остановку'}">
                     </app-input-error>
                 </div>
-                <div class="inline-form">
+                <div class="inline-form" cdkDropList (cdkDropListDropped)="onDragDrop($event)" [cdkDropListDisabled]="isEditingInProgress">
                     <div *ngFor="let fGroup of editForm.get('busStationRoutes').controls; let i=index" 
                         [formGroup]="fGroup"
-                        class="inline-form-item">
+                        class="inline-form-item"
+                        cdkDrag>
                         
                         <div class="row" *ngIf="isItemEditingInProgress(fGroup)">
                             <div class="col-7">
@@ -84,7 +85,7 @@
                                     <app-input-error controlName="num"></app-input-error>
                                 </mat-form-field>
                             </div>
-                            <div class="col-3 text-right align-self-center">
+                            <div class="col-3 text-right">
                                 <button mat-mini-fab color="primary" type="submit"
                                     (inlineFormSubmit)="saveStation(fGroup)">
                                     <app-save-icon></app-save-icon>

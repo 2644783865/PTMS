@@ -8,6 +8,7 @@ import { FormGroup, Validators, FormArray, FormBuilder } from '@angular/forms';
 import { switchMap } from 'rxjs/operators';
 import { InlineFormHelper } from '@app/core/helpers';
 import { KeyValuePair } from '@app/core/helpers';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-route-add-edit',
@@ -111,6 +112,13 @@ export class RouteAddEditComponent implements OnInit {
   deleteStation(formGroup: FormGroup){
     this._inlineFormHelper.delete(formGroup);
     this.checkSortOrder();
+  }
+
+  onDragDrop(event: CdkDragDrop<FormGroup[]>) {
+    let formArray = this.editForm.controls.busStationRoutes as FormArray;
+    let updatedFormGroup = formArray.controls[event.previousIndex] as FormGroup;
+    updatedFormGroup.get('num').setValue(event.currentIndex + 1);
+    this.checkSortOrder(updatedFormGroup);
   }
 
   async onSubmit() {

@@ -111,9 +111,11 @@ export class HomeComponent implements OnInit {
   private async loadReports() {
     let intervalId = this.routeStatFilters.get('intervalId').value;
 
-    await this.homeService.loadObjectsForReporting(intervalId);
+    let isSuccess = await this.homeService.loadObjectsForReporting(intervalId);
 
-    this.updateAt = `Обновлено в ${formatDate(new Date(), "HH:mm:ss", "ru")}`;
+    if (isSuccess) {
+      this.updateAt = `Обновлено в ${formatDate(new Date(), "HH:mm:ss", "ru")}`;
+    }
   }
 
   private startUpdateInterval() {
@@ -122,7 +124,7 @@ export class HomeComponent implements OnInit {
     this.clearInterval();
 
     this._intervalId = setInterval(async _ => {
-      that.loadReports();
+      await that.loadReports();
     }, this._updateInterval);
   }
 
