@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace PTMS.DataServices.Repositories
@@ -39,7 +40,8 @@ namespace PTMS.DataServices.Repositories
 
             var result = await FindAsync(filter);
 
-            return result.OrderBy(x => x.Name).ToList();
+            SortRoutes(result);
+            return result;
         }
 
         public async Task<List<Route>> GetAllForPageAsync()
@@ -50,7 +52,9 @@ namespace PTMS.DataServices.Repositories
             };
 
             var result = await base.GetAllAsync(includes);
-            return result.OrderBy(x => x.Name).ToList();
+
+            SortRoutes(result);
+            return result;
         }
 
         public Task<Route> GetForEditByIdAsync(int id)
@@ -62,6 +66,46 @@ namespace PTMS.DataServices.Repositories
             };
 
             return GetByIdAsync(id, includes);
+        }
+
+        private void SortRoutes(List<Route> routes)
+        {
+            routes.Sort((first, second) =>
+            {
+                var compareResult = -first.RouteActive.CompareTo(second.RouteActive);
+
+                if (compareResult == 0)
+                {
+                    var firstLetters = Regex.Replace(first.Name, @"[\d-]", string.Empty);
+                    var secondLetters = Regex.Replace(second.Name, @"[\d-]", string.Empty);
+
+                    var isFirstTroll = firstLetters.Contains("тр", StringComparison.InvariantCultureIgnoreCase);
+                    var isSecondTroll = secondLetters.Contains("тр", StringComparison.InvariantCultureIgnoreCase);
+
+                    compareResult = isFirstTroll.CompareTo(isSecondTroll);
+
+                    if (compareResult == 0)
+                    {
+                        int firstNumber, secondNumber;
+                        var firstParseResult = int.TryParse(Regex.Match(first.Name, @"\d+").Value, out firstNumber);
+                        var secondParseResult = int.TryParse(Regex.Match(second.Name, @"\d+").Value, out secondNumber);
+
+                        compareResult = -firstParseResult.CompareTo(secondParseResult);
+
+                        if (compareResult == 0)
+                        {
+                            compareResult = firstNumber.CompareTo(secondNumber);
+
+                            if (compareResult == 0)
+                            {
+                                compareResult = firstLetters.CompareTo(secondLetters);
+                            }
+                        }
+                    }
+                }
+
+                return compareResult;
+            });
         }
     }
 }
