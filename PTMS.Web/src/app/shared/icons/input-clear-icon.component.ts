@@ -11,7 +11,8 @@ import { FormGroupDirective, AbstractControl } from '@angular/forms';
           (click)="onClick($event)"
           matTooltip="Очистить поле"
           matTooltipPosition="above"
-          type="button">
+          type="button"
+          tabindex="-1">
     <mat-icon>close</mat-icon>
   </button>
 `

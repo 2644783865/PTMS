@@ -3,7 +3,7 @@
        matInput
        [formControl]="autocompleteControl"
        [matAutocomplete]="autoElement"
-       (blur)="onTouch()">
+       (blur)="onBlur($event)">
 
 <mat-spinner diameter="19"
              style="position: absolute; top: 0px; right: 0;"
@@ -11,7 +11,7 @@
 </mat-spinner>
 
 <mat-autocomplete #autoElement="matAutocomplete" [displayWith]="displayFn">
-  <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+  <mat-option *ngFor="let option of filteredOptions" [value]="option">
     {{displayFn(option)}}
   </mat-option>
 </mat-autocomplete>

@@ -1,10 +1,10 @@
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Optional, Output, Self } from '@angular/core';
-import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Optional, Output, Self, HostListener } from '@angular/core';
+import { ControlValueAccessor, FormControl, NgControl, FormControlName } from '@angular/forms';
 import { MatFormFieldControl } from '@angular/material';
 import { combineLatest, Observable, of, Subject, BehaviorSubject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, startWith, switchMap, map, skip } from 'rxjs/operators';
+import { debounceTime, startWith, switchMap, map, skip } from 'rxjs/operators';
 
 @Component({
   selector: 'app-autocomplete',
@@ -29,7 +29,7 @@ export class AutocompleteComponent implements ControlValueAccessor, OnInit, OnDe
   id = `app-autocomplete-${AutocompleteComponent.nextId++}`;
   describedBy = '';
 
-  filteredOptions: Observable<Object[]>
+  filteredOptions: Object[]
   displayFn: Function;
   onChange: Function;
   showSpinner: boolean;
@@ -47,8 +47,16 @@ export class AutocompleteComponent implements ControlValueAccessor, OnInit, OnDe
     }
   }
 
-  get errorState() {
-    return this.ngControl!.errors != null && this.ngControl!.touched;
+  get errorState(): boolean {
+    if (this.ngControl) {
+      let ngControl = this.ngControl as FormControlName;
+
+      return ngControl.errors != null 
+        && (ngControl.touched || ngControl.formDirective.submitted);
+    }
+    else {
+      return false;
+    }
   }
 
   get empty() {
@@ -141,14 +149,14 @@ export class AutocompleteComponent implements ControlValueAccessor, OnInit, OnDe
           }
         });
 
-      this.options.subscribe((x) => {
+      this.options.subscribe((options) => {
+        this.filteredOptions = options;
         this.showSpinner = false;
       });
-      this.filteredOptions = this.options;
     }
     else {
       //Sync search - filter prepaid list
-      this.filteredOptions = combineLatest(
+      combineLatest(
         this.autocompleteControl.valueChanges.pipe(startWith(null)),
         this.options)
         .pipe(
@@ -156,10 +164,17 @@ export class AutocompleteComponent implements ControlValueAccessor, OnInit, OnDe
             let filteredOptions = this._filter(inputValue, options);
             return of(filteredOptions);
           })
-        );
+        )
+        .subscribe(val => {
+          this.filteredOptions = val;
+        });
     }
 
     let input = this.elRef.nativeElement.querySelector('input');
+
+    if (this.elRef.nativeElement.hasAttribute('cdkFocusInitial')) {
+      input.focus();
+    }
 
     this.focusMonitor.monitor(input)
       .subscribe(origin => {
@@ -178,7 +193,21 @@ export class AutocompleteComponent implements ControlValueAccessor, OnInit, OnDe
       });
   }
 
-  onTouch() {
+  @HostListener('document:click', ['$event.target'])
+  public onOutsideClick(targetElement) {
+      const clickedInside = this.elRef.nativeElement.contains(targetElement);
+      if (!clickedInside) {
+        //Check value on outside click
+        if (!this.value && this.autocompleteControl.value && this.filteredOptions){
+          let selectedValue = this.filteredOptions.find(option => 
+            this.displayFn(option).toLowerCase() == this.autocompleteControl.value.toLowerCase());
+    
+          this.autocompleteControl.setValue(selectedValue);
+        }
+      }
+  }
+
+  onBlur() {
     setTimeout(() => {
       try {
         let formControl = this.ngControl.control as FormControl;
@@ -192,6 +221,7 @@ export class AutocompleteComponent implements ControlValueAccessor, OnInit, OnDe
 
   writeValue(delta: Object | null): void {
     this.autocompleteControl.setValue(delta);
+    this.valueChanges.next(delta);
   }
 
   registerOnChange(fn: (v: any) => void): void {

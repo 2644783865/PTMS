@@ -3,19 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { LayoutModule } from '@angular/cdk/layout';
-import { MatButtonModule } from '@angular/material/button';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatSelectModule } from '@angular/material/select';
-import { MatInputModule } from '@angular/material/input';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatTableModule, MatDialogModule, MatListModule, MatSortModule } from '@angular/material/';
+import { MatTableModule, MatDialogModule, MatListModule, MatSortModule, MatButtonModule, MatToolbarModule, MatSelectModule, MatInputModule, MatProgressBarModule, MatProgressSpinnerModule, MatCardModule, MatSidenavModule, MatCheckboxModule, MatMenuModule, MatIconModule, MatSnackBarModule, MatTooltipModule } from '@angular/material/';
 
 import { PaginatorModule } from './paginator/paginator.module';
 import { PageHeaderModule } from './page-header/page-header.module';
@@ -52,6 +40,7 @@ let modules = [
   MatDialogModule,
   MatListModule,
   MatSortModule,
+  MatTooltipModule,
 
   //app
   PaginatorModule,

@@ -1,5 +1,4 @@
 import { FormArray, FormGroup, FormControl, ValidatorFn } from '@angular/forms';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 export interface InlineFormResult {
     toDelete: any[]
@@ -30,7 +29,7 @@ export class InlineFormHelper<T> {
         return this._isEditingInProgress;
     }
 
-    addNew(initalFormGroupValue: Object = null) {
+    addNew(initalFormGroupValue: Object = null, index: number = 0) {
         let formGroup = this.getEmptyFormGroupWithMarkers();
 
         if (initalFormGroupValue) {
@@ -39,7 +38,7 @@ export class InlineFormHelper<T> {
 
         formGroup.get(this._isEditKey).setValue(true);
 
-        this.formArray.insert(0, formGroup);
+        this.formArray.insert(index, formGroup);
         
         this._isEditingInProgress = true;
     }

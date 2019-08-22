@@ -52,7 +52,7 @@
             <div class="col-xl-7 col-lg-7 col-12" formArrayName="busStationRoutes">
                 <div class="text-right form-field-static">
                     <button mat-raised-button color="primary" type="button"
-                            (click)="addNewStation()"
+                            (click)="addNewStation(0)"
                             [disabled]="isEditingInProgress">
                         Добавить новую остановку
                     </button>
@@ -72,7 +72,8 @@
                                     <mat-label>Остановка</mat-label>
                                     <app-autocomplete [options]="busStations$"
                                                       formControlName="busStation"
-                                                      (search)="searchBusStation($event)">
+                                                      (search)="searchBusStation($event)"
+                                                      cdkFocusInitial>
                                     </app-autocomplete>
                                     <app-input-clear-icon matSuffix controlName="busStation"></app-input-clear-icon>
                                     <app-input-error controlName="busStation"></app-input-error>
@@ -106,6 +107,11 @@
                             <div class="col-3 text-right" [ngShow]="!isEditingInProgress">
                                 <app-edit-icon (click)="editStation(fGroup)"></app-edit-icon>
                                 <app-delete-icon (click)="deleteStation(fGroup)"></app-delete-icon>
+                                <mat-icon (click)="addNewStation(i+1)"
+                                          class="icon-button icon-button-primary"
+                                          matTooltip="Добавить остановку после этой" matTooltipPosition="above">
+                                    add
+                                </mat-icon>
                             </div>
                         </div>
                     </div>

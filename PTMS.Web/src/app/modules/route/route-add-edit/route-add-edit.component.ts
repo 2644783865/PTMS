@@ -88,11 +88,13 @@ export class RouteAddEditComponent implements OnInit {
     this._stationSearchString.next(stationSearchString);
   }
 
-  addNewStation() {
-    let initialValue = {
-      num: (this.editForm.controls.busStationRoutes as FormArray).length + 1
-    };
-    this._inlineFormHelper.addNew(initialValue);
+  addNewStation(index: number) {
+    let num = index == 0 
+      ? (this.editForm.controls.busStationRoutes as FormArray).length + 1
+      : index + 1;
+
+    let initialValue = { num };
+    this._inlineFormHelper.addNew(initialValue, index);
   }
 
   editStation(formGroup: FormGroup) {
@@ -158,14 +160,11 @@ export class RouteAddEditComponent implements OnInit {
       let oldSortOrder = formArray.controls.indexOf(updatedFormGroup) + 1;
       let newSortOrder = updatedFormGroup.get('num').value;
 
-      if (oldSortOrder > newSortOrder) {
+      if (oldSortOrder >= newSortOrder) {
         updatedFormGroup.get('num').setValue(newSortOrder-0.5);
       }
       else if (oldSortOrder < newSortOrder) {
         updatedFormGroup.get('num').setValue(newSortOrder+0.5);
-      }
-      else {
-        return;
       }
 
       //order by num
