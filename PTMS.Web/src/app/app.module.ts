@@ -12,6 +12,7 @@ import { UserModule } from './modules/user/user.module';
 import { ObjectModule } from './modules/object/object.module';
 import { ChangeRouteModule } from './modules/change-route/change-route.module';
 import { CoreModule } from './core/core.module';
+import { BusStationModule } from './modules/bus-station/bus-station.module';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { CoreModule } from './core/core.module';
     RouteModule,
     UserModule,
     ChangeRouteModule,
+    BusStationModule,
 
     //app
     AppRoutingModule

@@ -53,6 +53,10 @@ namespace PTMS.Api
                 options.Filters.Add(typeof(NotFoundResultFilter));
                 options.Filters.Add(new CorsAuthorizationFilterFactory("CorsPolicy"));
             })
+            .AddJsonOptions(options =>
+            {
+                options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+            })
             .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);            
         }
 

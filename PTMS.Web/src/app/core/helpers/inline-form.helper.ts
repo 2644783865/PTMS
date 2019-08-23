@@ -151,7 +151,7 @@ export class InlineFormHelper<T> {
     }
 
     private mapToFormGroupValueWithId(entity: T): Object {
-        let value = this.mapToFormGroupValue(entity);
+        let value = {... this.mapToFormGroupValue(entity) };
         value[this.idKey] = entity[this.idKey];
         return value;
     }

@@ -27,7 +27,7 @@ export class BusStationDataService {
     return item.id ? this.update(item) : this.add(item);
   }
 
-  delete(id: number) {
+  delete(id: number): Promise<Object> {
     return this.http.delete(`busStation/${id}`);
   }
 }

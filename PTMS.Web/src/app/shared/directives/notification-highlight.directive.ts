@@ -10,6 +10,7 @@ export class UpdatedRowDirective {
 
   private subscription: Subscription;
   private entityId: string | number;
+  private hasClass: boolean = false;
 
   constructor(
     private el: ElementRef,
@@ -31,9 +32,11 @@ export class UpdatedRowDirective {
   private onUpdate() {
     if (this.rowId == this.entityId) {
       this.el.nativeElement.classList.add("table-row-updated");
+      this.hasClass = true;
     }
-    else {
+    else if (this.hasClass) {
       this.el.nativeElement.classList.remove("table-row-updated");
+      this.hasClass = false;
     }
   }
 

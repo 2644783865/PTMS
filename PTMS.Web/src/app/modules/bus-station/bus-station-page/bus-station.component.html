@@ -1,0 +1,50 @@
+<app-page-header>Остановки</app-page-header>
+
+<app-loading-bar [isLoading]="dataLoading$ | async"></app-loading-bar>
+
+<div *ngIf="(list$ | async).length > 0">
+  <div class="add-button">
+      <button mat-raised-button color="primary" type="button"
+              (click)="openAddEditDialog(null)">
+          Добавить новую остановку
+      </button>
+  </div>
+
+  <div class="table-wrapper table-editable table-mobile mat-elevation-z8">
+    <mat-table [dataSource]="list$ | async" [trackBy]="trackByFunc">
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef> Название </mat-header-cell>
+        <mat-cell *matCellDef="let row" mobile-label="Название">
+            {{row.name}}
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="lat">
+        <mat-header-cell *matHeaderCellDef> Широта </mat-header-cell>
+        <mat-cell *matCellDef="let row" mobile-label="Широта">
+            {{row.lat}}
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="lon">
+        <mat-header-cell *matHeaderCellDef> Долгота </mat-header-cell>
+        <mat-cell *matCellDef="let row" mobile-label="Долгота">
+            {{row.lon}}
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="azmth">
+        <mat-header-cell *matHeaderCellDef> Азимут </mat-header-cell>
+        <mat-cell *matCellDef="let row" mobile-label="Азимут">
+            {{row.azmth}}
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="controls">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let row" class="table-controls">
+            <app-edit-icon (click)="openAddEditDialog(row)"></app-edit-icon>
+            <app-delete-icon (click)="deleteStation(row)"></app-delete-icon>
+        </mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;" [appUpdatedRow]="row.id"></mat-row>
+    </mat-table>
+  </div>
+</div>

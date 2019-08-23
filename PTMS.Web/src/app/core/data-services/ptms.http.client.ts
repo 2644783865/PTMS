@@ -60,7 +60,7 @@ export class PtmsHttpClient {
     return this.http.put<T>(this.getFullUrl(relativeUrl), dto).toPromise();
   }
 
-  delete(relativeUrl: string): Promise<{}> {
+  delete(relativeUrl: string): Promise<Object> {
     return this.http.delete(this.getFullUrl(relativeUrl)).toPromise();
   }
 

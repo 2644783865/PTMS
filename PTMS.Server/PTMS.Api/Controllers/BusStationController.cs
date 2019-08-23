@@ -24,5 +24,28 @@ namespace PTMS.Api.Controllers
             var result = await _busStationService.GetAllAsync();
             return result;
         }
+
+        [PtmsAuthorize(RoleNames.Dispatcher)]
+        [HttpPost("/busStation")]
+        public async Task<BusStationModel> Post([FromBody]BusStationModel model)
+        {
+            var result = await _busStationService.AddAsync(model);
+            return result;
+        }
+
+        [PtmsAuthorize(RoleNames.Dispatcher)]
+        [HttpPut("/busStation/{id}")]
+        public async Task<BusStationModel> Put(int id, [FromBody]BusStationModel model)
+        {
+            var result = await _busStationService.UpdateAsync(model);
+            return result;
+        }
+
+        [PtmsAuthorize(RoleNames.Dispatcher)]
+        [HttpDelete("/busStation/{id}")]
+        public async Task Delete(int id)
+        {
+            await _busStationService.DeleteByIdAsync(id);
+        }
     }
 }

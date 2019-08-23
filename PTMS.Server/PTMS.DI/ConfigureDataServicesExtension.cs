@@ -30,6 +30,7 @@ namespace PTMS.DI
             services.AddScoped<BusStationRouteSyncService>();
             services.AddScoped<RouteSyncService>();
             services.AddScoped<ProjectRouteSyncService>();
+            services.AddScoped<BusStationSyncService>();
         }
     }
 }

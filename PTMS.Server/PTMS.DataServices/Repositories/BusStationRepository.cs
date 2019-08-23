@@ -1,5 +1,6 @@
 ﻿using PTMS.DataServices.Infrastructure;
 using PTMS.DataServices.IRepositories;
+using PTMS.DataServices.SyncServices;
 using PTMS.Domain.Entities;
 using PTMS.Persistance;
 using System.Collections.Generic;
@@ -10,8 +11,8 @@ namespace PTMS.DataServices.Repositories
 {
     public class BusStationRepository : DataServiceAsync<BusStation>, IBusStationRepository
     {
-        public BusStationRepository(ApplicationDbContext context)
-            : base(context)
+        public BusStationRepository(ApplicationDbContext context, BusStationSyncService syncService)
+            : base(context, syncService)
         {
 
         }

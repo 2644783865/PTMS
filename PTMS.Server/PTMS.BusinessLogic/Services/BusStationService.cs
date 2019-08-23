@@ -26,5 +26,24 @@ namespace PTMS.BusinessLogic.Services
             var result = await _busStationRepository.GetAllAsync();
             return MapToModel<BusStationModel>(result);
         }
+
+        public async Task<BusStationModel> AddAsync(BusStationModel model)
+        {
+            var entity = MapFromModel(model);
+            var result = await _busStationRepository.AddAsync(entity);
+            return MapToModel<BusStationModel>(result);
+        }
+
+        public async Task<BusStationModel> UpdateAsync(BusStationModel model)
+        {
+            var entity = MapFromModel(model);
+            var result = await _busStationRepository.UpdateAsync(entity);
+            return MapToModel<BusStationModel>(result);
+        }
+
+        public async Task DeleteByIdAsync(int id)
+        {
+            await _busStationRepository.DeleteByIdAsync(id);
+        }
     }
 }
