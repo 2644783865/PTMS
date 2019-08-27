@@ -39,7 +39,6 @@ export class UserService {
 
       let dto = {
         ...formData,
-        roleId: formData.roleId,
         projectId: formData.project ? formData.project.id : null
       } as NewUserDto;
 
@@ -62,7 +61,7 @@ export class UserService {
       this.userStore.setModalLoading(true);
 
       let dto = {
-        roleId: formData.roleId,
+        ...formData,
         projectId: formData.project ? formData.project.id : null
       } as ConfirmUserDto;
 

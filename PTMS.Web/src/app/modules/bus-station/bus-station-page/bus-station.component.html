@@ -11,7 +11,7 @@
   </div>
 
   <div class="table-wrapper table-editable table-mobile mat-elevation-z8">
-    <mat-table [dataSource]="list$ | async" [trackBy]="trackByFunc">
+    <mat-table [dataSource]="list$" [trackBy]="trackByFunc">
       <ng-container matColumnDef="name">
         <mat-header-cell *matHeaderCellDef> Название </mat-header-cell>
         <mat-cell *matCellDef="let row" mobile-label="Название">
