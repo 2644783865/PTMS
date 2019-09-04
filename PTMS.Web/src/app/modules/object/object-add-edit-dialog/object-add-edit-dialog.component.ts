@@ -54,11 +54,11 @@ export class ObjectAddEditDialogComponent {
 
       this.modalForm.setValue({
         name: vehicle.name,
-        providerId: vehicle.providerId,
-        phone: vehicle.phone,
+        providerId: vehicle.providerId || null,
+        phone: vehicle.phone || null,
         route: vehicle.route || null,
         carBrand: vehicle.carBrand || null,
-        yearRelease: vehicle.yearRelease,
+        yearRelease: vehicle.yearRelease || null,
         blockNumber: vehicle.block ? vehicle.block.blockNumber : null,
         blockTypeId: vehicle.block ? vehicle.block.blockTypeId : null
       });
