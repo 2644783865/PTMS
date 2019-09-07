@@ -1,11 +1,11 @@
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { ProjectDto } from '@app/core/dtos';
 import { Observable } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
 import { ObjectService } from '../object.service';
 import { ObjectQuery, ObjectUI } from '../object.state';
+import { RouteDto } from '@app/core/dtos';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-object-change-route-dialog',
@@ -14,7 +14,7 @@ import { ObjectQuery, ObjectUI } from '../object.state';
 export class ObjectChangeRouteDialogComponent {
   modalLoading$: Observable<boolean>;
   modalForm: FormGroup;
-  projectForSelectedRoute: ProjectDto;
+  routes$: Observable<RouteDto[]>;
   showProjects: boolean;
 
   constructor(
@@ -26,43 +26,23 @@ export class ObjectChangeRouteDialogComponent {
 
   ngOnInit() {
     this.modalLoading$ = this.objectQuery.modalLoading$;
+    this.routes$ = this.objectQuery.routes$
+      .pipe(map(array => {
+        return array ? array.filter(x => x.routeActive) : null;
+      }));
 
     this.modalForm = this.fb.group({
-      newRouteName: ['', Validators.required, this.objectService.routeValidator]
+      newRoute: ['', Validators.required]
     });
-
-    this.showProjects = !this.objectService.isTransporter;
-
-    if (this.showProjects) {
-      this.modalForm.get('newRouteName')
-        .valueChanges
-        .pipe(debounceTime(200))
-        .subscribe(this.onRouteChange.bind(this));
-    }
   }
 
   async onSubmit() {
-    if (this.modalForm.valid) {
-      let newRouteName = this.modalForm.get('newRouteName').value as string;
-      await this.objectService.changeRoute(this.vehicle, newRouteName);
-      this.onClose();
-    }    
+    let newRoute = this.modalForm.get('newRoute').value as RouteDto;
+    await this.objectService.changeRoute(this.vehicle, newRoute);
+    this.onClose();   
   }
 
   onClose(): void {
     this.dialogRef.close();
-  }
-
-  private onRouteChange(routeName: string) {
-    this.projectForSelectedRoute = null;
-
-    if (this.modalForm.get('newRouteName').invalid) {
-      return;
-    }
-
-    this.objectService.getProjectByRouteName(routeName)
-      .then(project => {
-        this.projectForSelectedRoute = project;
-      });
   }
 }

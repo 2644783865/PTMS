@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ObjectStore, ObjectUI } from './object.state';
 import { ObjectDataService, ProjectDataService, ProviderDataService, CarBrandDataService, CarTypeDataService, BlockTypeDataService, RouteDataService } from '@app/core/data-services';
-import { RouteHelper } from '@app/core/helpers';
 import { NotificationService } from '@app/core/notification';
 import { AuthService } from '@app/core/auth';
 import { ConfirmDialogService } from '@app/shared/confirm-dialog/confirm-dialog.service';
@@ -21,7 +20,6 @@ export class ObjectService {
     private carTypeDataService: CarTypeDataService,
     private blockTypeDataService: BlockTypeDataService,
     private routeDataService: RouteDataService,
-    private routeHelper: RouteHelper,
     private notificationService: NotificationService,
     private authService: AuthService,
     private confirmDialogService: ConfirmDialogService)
@@ -38,10 +36,6 @@ export class ObjectService {
 
   get canAddVehicle(): boolean {
     return this.authService.isInRole(RoleEnum.Administrator, RoleEnum.Dispatcher);
-  }
-
-  get routeValidator() {
-    return this.routeHelper.validate.bind(this.routeHelper);
   }
 
   async loadPage(event: PaginatorEvent, searchParams: any) {
@@ -75,7 +69,7 @@ export class ObjectService {
       this.carBrandDataService.getAll(),
       this.carTypeDataService.getAll(),
       !isTransporter ? this.blockTypeDataService.getAll() : Promise.resolve([]),
-      this.routeDataService.getAll({ active: true })
+      this.routeDataService.getAll()
     ]);
 
     carBrands.forEach(x => {
@@ -89,15 +83,9 @@ export class ObjectService {
       carTypes,
       blockTypes,
       routes);
-
-    this.routeHelper.setRoutes(routes);
   }
 
-  async getProjectByRouteName(routeName: string) {
-    let route = await this.routeHelper
-      .getRouteByName(routeName)
-      .toPromise();
-
+  async getProjectByRouteName(route: RouteDto) {
     if (route) {
       let result = await this.projectDataService.getByRouteId(route.id);
       return result;
@@ -107,14 +95,10 @@ export class ObjectService {
     }
   }
 
-  async changeRoute(vehicle: ObjectUI, newRouteName: string) {
+  async changeRoute(vehicle: ObjectUI, newRoute: RouteDto) {
     try {
       this.objectStore.setModalLoading(true);
 
-      let newRoute = await this.routeHelper
-        .getRouteByName(newRouteName)
-        .toPromise()
-            
       let updateItem = await this.objectDataService.changeRoute(vehicle.id, newRoute.id);
 
       this.objectStore.update(updateItem.id, this.mapToModel(updateItem));

@@ -8,7 +8,7 @@
 
 <app-loading-overlay [isLoading]="dataLoading$ | async">
   <div *ngIf="(list$ | async) as users">
-    <div class="table-wrapper table-editable mat-elevation-z8">
+    <div class="table-wrapper table-editable table-mobile mat-elevation-z8">
       <mat-table [dataSource]="users">
         <ng-container matColumnDef="name">
           <mat-header-cell *matHeaderCellDef> ФИО </mat-header-cell>

@@ -1,53 +1,51 @@
 import { Injectable } from '@angular/core';
 import { ObjectDataService } from '@app/core/data-services/object.data.service';
-import { ObjectDto } from '@app/core/dtos';
-import { RouteHelper } from '@app/core/helpers/route.helper';
+import { ObjectDto, RouteDto } from '@app/core/dtos';
 import { NotificationService } from '@app/core/notification/notification.service';
 import { ChangeRouteStore } from './change-route.state';
+import { RouteDataService } from '@app/core/data-services';
+import { isNotNullOrEmpty } from '@app/core/helpers';
 
 @Injectable()
 export class ChangeRouteService {
   constructor(
     private changeRouteStore: ChangeRouteStore,
     private objectDataService: ObjectDataService,
-    private routeHelper: RouteHelper,
+    private routeDataService: RouteDataService,
     private notificationService: NotificationService) {
   }
 
+  async loadRelatedData() {
+    let routes = await this.routeDataService.getAll({active: true});
+    this.changeRouteStore.setRelatedData(routes);
+  }
+
   search(plateNumber: string) {
-    this.objectDataService.getAll(1, 10, { plateNumber, format: 'light', active: true })
+    if (isNotNullOrEmpty(plateNumber)){
+      this.objectDataService.getAll(1, 10, { plateNumber, format: 'light', active: true })
       .then((vehicles) => {
         this.changeRouteStore.set(vehicles.data);
       });
+    }
+    else {
+      this.changeRouteStore.set([]);
+    }
   }
 
-  get routeValidator() {
-    return this.routeHelper.validate.bind(this.routeHelper);
-  }
-
-  async save(vehicle: ObjectDto, newRouteName: string) {
+  async save(vehicle: ObjectDto, newRoute: RouteDto) {
     try {
       this.changeRouteStore.setLoading(true);
 
-      let newRoute = await this.routeHelper
-        .getRouteByName(newRouteName)
-        .toPromise();        
+      let updateItem = await this.objectDataService.changeRoute(vehicle.id, newRoute.id);
+      this.changeRouteStore.set([]);
 
-      if (newRoute) {
-        let updateItem = await this.objectDataService.changeRoute(vehicle.id, newRoute.id);
+      this.notificationService.success(`Маршрут автобуса номер ${updateItem.name} был успешно изменён`);
 
-        this.changeRouteStore.update(updateItem.id, updateItem);
-
-        this.notificationService.success(`Маршрут автобуса номер ${updateItem.name} был успешно изменён`);
-
-        return updateItem;
-      }
-      else {
-        this.notificationService.error(`Невозможно изменить маршрут на ${newRouteName}`);
-      }
+      return updateItem;
     }
     catch (exc) {
-      this.notificationService.error(exc.error.message);
+      this.notificationService.exception(exc);
+      throw exc;
     }
     finally {
       this.changeRouteStore.setLoading(false);
@@ -55,6 +53,6 @@ export class ChangeRouteService {
   }
 
   onDestroy() {
-    this.routeHelper.onDestroy();
+    this.changeRouteStore.destroy();
   }
 }

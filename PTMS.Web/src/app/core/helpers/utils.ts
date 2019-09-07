@@ -8,3 +8,7 @@ export interface KeyValuePair<T> {
 export function toDate(date: Date) {
   return formatDate(date, "yyyy-MM-dd", "en")
 }
+
+export function isNotNullOrEmpty(value: any) {
+  return value !== undefined && value !== null && value !== '';
+}

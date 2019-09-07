@@ -2,22 +2,24 @@
   Сменить маршрут
 </h1>
 <form [formGroup]="modalForm"
-      (ngSubmit)="onSubmit()">
+      (appSubmit)="onSubmit()">
   <div mat-dialog-content>
     <div class="form-field-static">
       <b>Маршрут:</b> {{vehicle.name}} - {{vehicle.route.name}}
     </div>
     <mat-form-field>
-      <input matInput placeholder="Новый маршрут"
-             formControlName="newRouteName"
-             autofocus>
-      <app-input-error controlName="newRouteName"></app-input-error>
+      <mat-label>Новый Маршрут </mat-label>
+      <app-autocomplete [options]="routes$"
+                        formControlName="newRoute">
+      </app-autocomplete>
+      <app-input-clear-icon matSuffix controlName="newRoute"></app-input-clear-icon>
+      <app-input-error controlName="newRoute"></app-input-error>
     </mat-form-field>
     <div *ngIf="showProjects">
       <div class="form-field-static">
         <b>Текущий Перевозчик: </b> {{vehicle.project.name}}
       </div>
-      <div class="form-field-static" [class.visibility-hidden]="!modalForm.get('newRouteName').value">
+      <div class="form-field-static" [class.visibility-hidden]="!modalForm.get('newRoute').value">
         <b>Новый Перевозчик: </b> {{projectForSelectedRoute ? projectForSelectedRoute.name : 'Загрузка ...'}}
       </div>
     </div>

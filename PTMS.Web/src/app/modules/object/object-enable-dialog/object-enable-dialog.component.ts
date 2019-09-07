@@ -64,7 +64,7 @@ export class ObjectEnableDialogComponent {
       return;
     }
 
-    this.objectService.getProjectByRouteName(route.name)
+    this.objectService.getProjectByRouteName(route)
       .then(project => {
         this.projectForSelectedRoute = project;
       });

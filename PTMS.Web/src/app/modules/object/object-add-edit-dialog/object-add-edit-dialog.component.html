@@ -66,6 +66,12 @@
           <app-input-error controlName="yearRelease"></app-input-error>
         </mat-form-field>
       </div>
+    </div>    
+    <div *ngIf="!isNewVehicle">
+      <mat-checkbox color="primary" formControlName="updateBusRoutes">
+        Обновить маршрут для ГЛОНАСС
+      </mat-checkbox>
+      <app-hint-icon hint="Нужно ли изменить маршрут за сегодняшний день для ГЛОНАСС точек, передаваемых ТС"></app-hint-icon>
     </div>
   </div>
   <div mat-dialog-actions>

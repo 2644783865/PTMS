@@ -11,6 +11,7 @@ import { ObjectQuery, ObjectUI } from '../object.state';
 import { ObjectAddEditDialogComponent } from '../object-add-edit-dialog/object-add-edit-dialog.component';
 import { AppPaginationResponse } from '@app/core/akita-extensions';
 import { ProjectDto, ProviderDto, CarTypeDto, CarBrandDto, BlockTypeDto } from '@app/core/dtos';
+import { IntervalHelper } from '@app/core/helpers';
 
 @Component({
   selector: 'app-object-page',
@@ -19,8 +20,7 @@ import { ProjectDto, ProviderDto, CarTypeDto, CarBrandDto, BlockTypeDto } from '
 })
 export class ObjectPageComponent implements OnInit {
   private readonly allColumns = ['name', 'route', 'transporter', 'provider', 'lastTime', 'lastStationTime', 'phone', 'block', 'carBrand', 'carType', 'yearRelease', 'status', 'controls'];
-  private _updateInterval: number = 1000 * 10; //10 секунд
-  private _intervalId;
+  private _intervalHelper: IntervalHelper;
 
   pagination$: Observable<AppPaginationResponse<ObjectUI>>;
   dataLoading$: Observable<boolean>;  
@@ -128,7 +128,7 @@ export class ObjectPageComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.clearInterval();
+    this._intervalHelper.onComponentDestroy();
     this.objectService.onDestroy();
   }
 
@@ -169,17 +169,22 @@ export class ObjectPageComponent implements OnInit {
 
   private initUpdateInterval() {
     this.updatePerInterval = new FormControl([true]);
+
+    this._intervalHelper = new IntervalHelper(_ => {
+      this.reloadCurrentPage();
+    },  1000 * 10); //10 секунд
+
     this.updatePerInterval.valueChanges.subscribe(val => {
       if (val) {
         this.reloadCurrentPage();
-        this.startUpdateInterval();
+        this._intervalHelper.startInterval();
       }
       else {
-        this.clearInterval();
+        this._intervalHelper.clearInterval();
       }
     });
 
-    this.startUpdateInterval();
+    this._intervalHelper.startInterval();
   }
 
   private reloadCurrentPage() {
@@ -190,21 +195,5 @@ export class ObjectPageComponent implements OnInit {
     } as PaginatorEvent;
 
     this.search(pageEvent);
-  }
-
-  private startUpdateInterval() {
-    let that = this;
-
-    this.clearInterval();
-
-    this._intervalId = setInterval(_ => {
-      that.reloadCurrentPage();
-    }, this._updateInterval);
-  }
-
-  private clearInterval() {
-    if (this._intervalId) {
-      clearInterval(this._intervalId);
-    }
   }
 }

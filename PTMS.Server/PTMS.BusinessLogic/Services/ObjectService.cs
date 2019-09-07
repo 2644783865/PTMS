@@ -115,10 +115,10 @@ namespace PTMS.BusinessLogic.Services
             entity.LastRout = newRouteId;
             entity.ProjId = project.Id;
 
-            var result = await _objectRepository.UpdateAsync(entity);
-            await OnRouteChange(result);
+            var updatedEntity = await _objectRepository.UpdateAsync(entity);
 
-            return await GetByIdAsync(result.Id);
+            var result = await _objectRepository.GetFullByIdAsync(updatedEntity.Id);
+            return MapToModel<ObjectModel>(result);
         }
         
         public async Task<ObjectModel> EnableAsync(
@@ -206,16 +206,14 @@ namespace PTMS.BusinessLogic.Services
 
             await Validate(request, entity);
 
-            var isRouteUpdated = request.RouteId.HasValue && entity.LastRout != request.RouteId;
-
             await SetNewValues(entity, request);
 
             var result = await _objectRepository.UpdateAsync(entity);
             await HandleBlock(entity.Id, block, request);
 
-            if (isRouteUpdated)
+            if (request.UpdateBusRoutes)
             {
-                await OnRouteChange(result);
+                await _busDataRepository.UpdateBusRoutes(result);
             }
 
             return await GetByIdAsync(result.Id);
@@ -322,11 +320,6 @@ namespace PTMS.BusinessLogic.Services
                     throw new InvalidOperationException("ТС c таким номером телефона (IMEI) уже существует");
                 }
             }
-        }
-
-        private async Task OnRouteChange(Objects entity)
-        {
-            await _busDataRepository.UpdateBusRoutes(entity);
         }
     }
 }

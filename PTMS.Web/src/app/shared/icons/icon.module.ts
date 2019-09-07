@@ -9,6 +9,7 @@ import { CancelIconComponent } from './cancel-icon.component';
 import { MenuIconDropdownComponent } from './menu-icon-dropdown.component';
 import { InputClearIconComponent } from './input-clear-icon.component';
 import { MatTooltipModule } from '@angular/material';
+import { HintIconComponent } from './hint-icon.component';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import { MatTooltipModule } from '@angular/material';
     SaveIconComponent,
     CancelIconComponent,
     MenuIconDropdownComponent,
-    InputClearIconComponent
+    InputClearIconComponent,
+    HintIconComponent
   ],
   exports: [
     EditIconComponent,
@@ -31,7 +33,8 @@ import { MatTooltipModule } from '@angular/material';
     SaveIconComponent,
     CancelIconComponent,
     MenuIconDropdownComponent,
-    InputClearIconComponent
+    InputClearIconComponent,
+    HintIconComponent
   ]
 })
 export class IconModule { }

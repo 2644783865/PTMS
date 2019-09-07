@@ -14,5 +14,6 @@ namespace PTMS.BusinessLogic.Models
         public int? BlockNumber { get; set; }
         public int? BlockTypeId { get; set; }
         public int? RouteId { get; set; }
+        public bool UpdateBusRoutes { get; set; }
     }
 }

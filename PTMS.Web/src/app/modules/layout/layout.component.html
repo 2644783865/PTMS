@@ -56,6 +56,22 @@
                 </button>
               </mat-menu>
             </span>
+
+            <span class="toolbar-nav-button" *ngIf="adminNavigation.length > 0">
+              <button mat-button [matMenuTriggerFor]="adminMenu">
+                <span>Администрирование</span>
+                <mat-icon style="margin: 0 0 0 4px">arrow_drop_down</mat-icon>
+              </button>
+              <mat-menu #adminMenu="matMenu">
+                <button *ngFor="let item of adminNavigation"
+                        mat-menu-item
+                        [routerLink]="[item.link]"
+                        routerLinkActive="active">
+                    {{item.label}}
+                </button>
+              </mat-menu>
+            </span>
+
             <!--<span class="toolbar-right-button profile-button" *ngIf="(isAuthenticated$ | async)">
     <button mat-button>
       <mat-icon>perm_identity</mat-icon>

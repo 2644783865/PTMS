@@ -16,6 +16,7 @@ export class ObjectAddEditDialogComponent {
   modalForm: FormGroup;
   isNewVehicle: boolean;
   showRouteRequired: boolean = false;
+  showUpdateBusRoutesFlag: boolean;
 
   providers$: Observable<ProviderDto[]>;
   carBrands$: Observable<CarBrandDto[]>;
@@ -46,7 +47,8 @@ export class ObjectAddEditDialogComponent {
       route: [],
       yearRelease: [],
       blockNumber: [],
-      blockTypeId: ['', requiredIf('blockNumber')]
+      blockTypeId: ['', requiredIf('blockNumber')],
+      updateBusRoutes: []
     });
 
     if (!this.isNewVehicle) {
@@ -60,7 +62,8 @@ export class ObjectAddEditDialogComponent {
         carBrand: vehicle.carBrand || null,
         yearRelease: vehicle.yearRelease || null,
         blockNumber: vehicle.block ? vehicle.block.blockNumber : null,
-        blockTypeId: vehicle.block ? vehicle.block.blockTypeId : null
+        blockTypeId: vehicle.block ? vehicle.block.blockTypeId : null,
+        updateBusRoutes: false
       });
 
       if (!vehicle.objOutput) {

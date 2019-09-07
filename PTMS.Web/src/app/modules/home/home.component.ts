@@ -6,7 +6,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { formatDate } from '@angular/common';
 import { ProjectDto } from '@app/core/dtos';
-import { KeyValuePair } from '@app/core/helpers';
+import { KeyValuePair, IntervalHelper } from '@app/core/helpers';
 
 @Component({
   selector: 'app-home',
@@ -14,8 +14,7 @@ import { KeyValuePair } from '@app/core/helpers';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  private _updateInterval: number = 1000 * 10; //10 секунд
-  private _intervalId;
+  private _intervalHelper: IntervalHelper;
 
   dataLoading$: Observable<boolean>;
   updateAt: string;
@@ -54,12 +53,15 @@ export class HomeComponent implements OnInit {
     this.totalPlanned$ = this.homeQuery.totalPlanned$;
 
     this.setFilters();
+
+    this._intervalHelper = new IntervalHelper(_ => {
+      this.loadReports();
+    },  1000 * 10); //10 секунд
     
     await this.homeService.loadRelatedData();
-
     await this.loadReports();
 
-    this.startUpdateInterval();
+    this._intervalHelper.startInterval();
   }
 
   trackByRouteStat(index: number, routeStat: RouteStat) {
@@ -71,7 +73,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.clearInterval();
+    this._intervalHelper.onComponentDestroy();
     this.homeService.onDestroy();
   }
 
@@ -83,7 +85,7 @@ export class HomeComponent implements OnInit {
       { key: 'последний 1 час', value: '60' },
       { key: 'последний 3 часа', value: '180' },
       { key: 'за сегодня', value: 'today' },
-      { key: 'за неделю', value: 'week' }
+      //{ key: 'за неделю', value: 'week' }
     ];
 
     let routeStatFilters = this.homeQuery.getValue().routeStatFilters;
@@ -95,11 +97,9 @@ export class HomeComponent implements OnInit {
     });
 
     this.routeStatFilters.get('intervalId').valueChanges.subscribe(_ => {
-      this.clearInterval();
-
       window.setTimeout(() => {
         this.loadReports();
-        this.startUpdateInterval();
+        this._intervalHelper.startInterval();
       });
     });
 
@@ -115,22 +115,6 @@ export class HomeComponent implements OnInit {
 
     if (isSuccess) {
       this.updateAt = `Обновлено в ${formatDate(new Date(), "HH:mm:ss", "ru")}`;
-    }
-  }
-
-  private startUpdateInterval() {
-    let that = this;
-
-    this.clearInterval();
-
-    this._intervalId = setInterval(async _ => {
-      await that.loadReports();
-    }, this._updateInterval);
-  }
-
-  private clearInterval() {
-    if (this._intervalId) {
-      clearInterval(this._intervalId);
     }
   }
 }

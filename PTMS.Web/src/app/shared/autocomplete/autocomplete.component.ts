@@ -170,18 +170,6 @@ export class AutocompleteComponent implements ControlValueAccessor, OnInit, OnDe
         });
     }
 
-    let input = this.elRef.nativeElement.querySelector('input');
-
-    if (this.elRef.nativeElement.hasAttribute('cdkFocusInitial')) {
-      input.focus();
-    }
-
-    this.focusMonitor.monitor(input)
-      .subscribe(origin => {
-        this.focused = !!origin;
-        this.stateChanges.next();
-      });
-
     this.autocompleteControl.valueChanges
       .pipe(map(x => this.value))
       .subscribe(newValue => {
@@ -190,6 +178,22 @@ export class AutocompleteComponent implements ControlValueAccessor, OnInit, OnDe
         if (newValue != previousValue) {
           this.valueChanges.next(newValue);
         }
+      });
+  }
+
+  ngAfterViewInit() {
+    let input = this.elRef.nativeElement.querySelector('input');
+
+    window.setTimeout(_ => {
+      if (this.elRef.nativeElement.hasAttribute('cdkFocusInitial')) {
+        input.focus();
+      }
+    });
+
+    this.focusMonitor.monitor(input)
+      .subscribe(origin => {
+        this.focused = !!origin;
+        this.stateChanges.next();
       });
   }
 

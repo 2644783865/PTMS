@@ -32,7 +32,7 @@ export class LayoutComponent implements OnInit {
           { link: 'objects', label: 'Транспорт', visible: true },
           { link: 'routes', label: 'Маршруты', visible: this.authService.isInRole(RoleEnum.Administrator, RoleEnum.Dispatcher) },
           { link: 'busStations', label: 'Остановки', visible: this.authService.isInRole(RoleEnum.Administrator, RoleEnum.Dispatcher) },
-          { link: 'change-route', label: 'Сменить Маршрут ТС', visible: this.authService.isInRole(RoleEnum.Transporter) },
+          { link: 'change-route', label: 'Сменить Маршрут ТС', visible: this.authService.isInRole(RoleEnum.Transporter, RoleEnum.Mechanic) },
           { link: 'users', label: 'Пользователи', visible: this.authService.isInRole(RoleEnum.Administrator) }
         ];
 
@@ -45,7 +45,8 @@ export class LayoutComponent implements OnInit {
   }
 
   get navigation() {
-    let dropdownNavigationItems = this.dictionariesNavigation;
+    let dropdownNavigationItems = this.dictionariesNavigation
+      .concat(this.adminNavigation);
 
     return this.allNavigation.filter(x => {
       return !dropdownNavigationItems.some(d => d.link == x.link);
@@ -54,6 +55,10 @@ export class LayoutComponent implements OnInit {
 
   get dictionariesNavigation() {
     return this.allNavigation.filter(x => ['routes', 'busStations'].includes(x.link));
+  }
+
+  get adminNavigation() {
+    return this.allNavigation.filter(x => ['users'].includes(x.link));
   }
 
   onLogoutClick() {

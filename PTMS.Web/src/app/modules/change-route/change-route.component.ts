@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormGroupDirective } from '@angular/forms';
-import { ObjectDto } from '@app/core/dtos';
+import { ObjectDto, RouteDto } from '@app/core/dtos';
 import { Observable } from 'rxjs';
 import { ChangeRouteService } from './change-route.service';
 import { ChangeRouteQuery } from './change-route.state';
@@ -12,6 +12,7 @@ import { ChangeRouteQuery } from './change-route.state';
 export class ChangeRouteComponent implements OnInit {
   routeForm: FormGroup;
   vehicles$: Observable<ObjectDto[]>;
+  routes$: Observable<RouteDto[]>;
 
   @ViewChild(FormGroupDirective) formGroupDirective: FormGroupDirective;
   
@@ -21,13 +22,16 @@ export class ChangeRouteComponent implements OnInit {
     private changeRouteQuery: ChangeRouteQuery) {
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.routeForm = this.fb.group({
       vehicle: [''],
-      newRouteName: ['', Validators.required, this.changeRouteService.routeValidator]
+      newRoute: ['', Validators.required]
     });
 
-    this.vehicles$ = this.changeRouteQuery.selectAll();
+    this.vehicles$ = this.changeRouteQuery.list$;
+    this.routes$ = this.changeRouteQuery.routes$;
+
+    await this.changeRouteService.loadRelatedData();
   }
 
   displayFn(vehicle: ObjectDto) {
@@ -39,21 +43,14 @@ export class ChangeRouteComponent implements OnInit {
   }
 
   async onSave() {
-    if (this.routeForm.valid) {
-      let formValue = this.routeForm.value;
+    let formValue = this.routeForm.value;
 
-      let vehicle = formValue.vehicle as ObjectDto;
-      let newRouteName = formValue.newRouteName as string;
+    let vehicle = formValue.vehicle as ObjectDto;
+    let newRoute = formValue.newRoute as RouteDto;
 
-      let updatedItem = await this.changeRouteService.save(vehicle, newRouteName);
+    let updatedItem = await this.changeRouteService.save(vehicle, newRoute);
 
-      this.formGroupDirective.resetForm();
-
-      this.routeForm.setValue({
-        vehicle: updatedItem,
-        newRouteName: ''
-      });
-    }
+    this.formGroupDirective.resetForm();
   }
 
   ngOnDestroy() {

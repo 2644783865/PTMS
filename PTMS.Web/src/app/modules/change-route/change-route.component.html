@@ -3,7 +3,7 @@
 <div class="row">
   <div class="col-12 col-md-7 col-lg-5">
     <form class="form-full-container"
-          (ngSubmit)="onSave()"
+          (appSubmit)="onSave()"
           [formGroup]="routeForm">
 
       <mat-card>
@@ -21,7 +21,7 @@
               <b>Номер:</b> {{selectedVehicle.name}}
             </div>
             <div>
-              <b>Марка:</b> {{selectedVehicle.carBrand.cbName}}
+              <b>Марка:</b> {{selectedVehicle.carBrand.name}}
             </div>
             <div>
               <b>Год выпуска:</b> {{selectedVehicle.yearRelease}}
@@ -31,10 +31,12 @@
             </div>
             <div>
               <mat-form-field>
-                <input matInput placeholder="Новый маршрут"
-                       formControlName="newRouteName"
-                       autofocus>
-                <app-input-error controlName="newRouteName"></app-input-error>
+                  <mat-label>Новый маршрут</mat-label>
+                  <app-autocomplete [options]="routes$"
+                                    formControlName="newRoute"
+                                    cdkFocusInitial>
+                  </app-autocomplete>
+                  <app-input-error controlName="newRoute"></app-input-error>
               </mat-form-field>
               <div class="text-right" style="margin-top: 10px;">
                 <app-loading-button color="primary"
