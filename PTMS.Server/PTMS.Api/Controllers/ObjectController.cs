@@ -87,22 +87,22 @@ namespace PTMS.Api.Controllers
         }
 
         [PtmsAuthorize(RoleNames.Dispatcher)]
-        [HttpPost("/object/{ids}/enable/{newRouteId}")]
-        public async Task<ObjectModel> EnableVehicle(int ids, int newRouteId)
+        [HttpPost("/object/{id}/enable/{newRouteId}")]
+        public async Task<ObjectModel> EnableVehicle(int id, int newRouteId)
         {
             var result = await _objectService.EnableAsync(
-                ids,
-                newRouteId);
+                id,
+                newRouteId, 
+                User);
 
             return result;
         }
 
         [PtmsAuthorize(RoleNames.Dispatcher)]
-        [HttpPost("/object/{ids}/disable")]
-        public async Task<ObjectModel> DisableVehicle(int ids)
+        [HttpPost("/object/{id}/disable")]
+        public async Task<ObjectModel> DisableVehicle(int id)
         {
-            var result = await _objectService.DisableAsync(
-                ids);
+            var result = await _objectService.DisableAsync(id, User);
 
             return result;
         }
@@ -111,7 +111,7 @@ namespace PTMS.Api.Controllers
         [HttpPost("/object")]
         public async Task<ObjectModel> Post([FromBody]ObjectAddEditRequest model)
         {
-            var result = await _objectService.AddAsync(model);
+            var result = await _objectService.AddAsync(model, User);
             return result;
         }
 
@@ -119,7 +119,7 @@ namespace PTMS.Api.Controllers
         [HttpPut("/object/{id}")]
         public async Task<ObjectModel> Put(int id, [FromBody]ObjectAddEditRequest model)
         {
-            var result = await _objectService.UpdateAsync(id, model);
+            var result = await _objectService.UpdateAsync(id, model, User);
             return result;
         }
 
@@ -127,7 +127,7 @@ namespace PTMS.Api.Controllers
         [HttpDelete("/object/{id}")]
         public async Task Delete(int id)
         {
-            await _objectService.DeleteByIdAsync(id);
+            await _objectService.DeleteByIdAsync(id, User);
         }
     }
 }

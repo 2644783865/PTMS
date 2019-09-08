@@ -33,6 +33,7 @@ namespace PTMS.Persistance
         public virtual DbSet<Sim> Sim { get; set; }
         public virtual DbSet<WebMapUser> WebMapUsers { get; set; }
         public virtual DbSet<UserProject> UsersProjs { get; set; }
+        public virtual DbSet<EventLog> EventLogs { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -750,6 +751,8 @@ namespace PTMS.Persistance
                     .HasColumnName("USER_")
                     .HasAnnotation("Description", "Пользователь");
             });
+
+            builder.ConfigureEventLogs();
         }
     }
 }

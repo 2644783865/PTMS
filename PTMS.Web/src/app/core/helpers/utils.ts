@@ -9,6 +9,10 @@ export function toDate(date: Date) {
   return formatDate(date, "yyyy-MM-dd", "en")
 }
 
+export function toDateTime(date: Date) {
+  return formatDate(date, "yyyy-MM-dd HH:mm", "en")
+}
+
 export function isNotNullOrEmpty(value: any) {
   return value !== undefined && value !== null && value !== '';
 }

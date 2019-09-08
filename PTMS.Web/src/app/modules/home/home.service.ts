@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HomeStore } from './home.state';
 import { ObjectDataService, ProjectDataService, ProviderDataService, RouteDataService, PlanDataService } from '@app/core/data-services';
-import { toDate } from '@app/core/helpers';
-import { ObjectDto } from '@app/core/dtos';
+import { toDate, toDateTime } from '@app/core/helpers';
+import { EventLogDataService } from '@app/core/data-services/event-log.data.service';
+import { EventEnum } from '@app/core/enums/event.enum';
 
 @Injectable()
 export class HomeService {
@@ -12,7 +13,8 @@ export class HomeService {
     private projectDataService: ProjectDataService,
     private providerDataService: ProviderDataService,
     private routeDataService: RouteDataService,
-    private planDataService: PlanDataService)
+    private planDataService: PlanDataService,
+    private eventLogDataService: EventLogDataService)
   {
   }
 
@@ -55,6 +57,24 @@ export class HomeService {
       console.error(err);
 
       return false;
+    }
+  }
+
+  async loadEventLogs(): Promise<void> {
+    try {
+      let startDate = new Date();
+      startDate.setHours(5, 0, 0, 0);
+
+      let params = {
+        eventEnum: EventEnum.ChangeObjectRoute,
+        startDate: toDateTime(startDate)
+      }
+
+      let result = await this.eventLogDataService.getAll(1, 25, params);
+      this.homeStore.setEventLogs(result.data);
+    }
+    catch (err) {
+      console.error(err);
     }
   }
 

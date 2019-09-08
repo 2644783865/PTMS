@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material';
 import { formatDate } from '@angular/common';
 import { ProjectDto } from '@app/core/dtos';
 import { KeyValuePair, IntervalHelper } from '@app/core/helpers';
+import { EventLogDto } from '@app/core/dtos/EventLogDto';
 
 @Component({
   selector: 'app-home',
@@ -30,9 +31,12 @@ export class HomeComponent implements OnInit {
   totalFact$: Observable<number>;
   totalPlanned$: Observable<number>;
 
+  eventLogs$: Observable<EventLogDto[]>;
+
   displayedColumnsProject = ['project', 'onlineNumber'];
   displayedColumnsProvider = ['provider', 'onlineNumber'];
   displayedColumnsRoute = ['route', 'onlineNumber'];
+  displayedColumnsLogs = ['timeStamp', 'user', 'message'];
   
   constructor(
     private homeQuery: HomeQuery,
@@ -52,16 +56,18 @@ export class HomeComponent implements OnInit {
     this.totalFact$ = this.homeQuery.totalFact$
     this.totalPlanned$ = this.homeQuery.totalPlanned$;
 
+    this.eventLogs$ = this.homeQuery.eventLogs$;
+
     this.setFilters();
 
     this._intervalHelper = new IntervalHelper(_ => {
-      this.loadReports();
+      this.loadDashboard();
     },  1000 * 10); //10 секунд
     
     await this.homeService.loadRelatedData();
-    await this.loadReports();
+    await this.loadDashboard();
 
-    this._intervalHelper.startInterval();
+    //this._intervalHelper.startInterval();
   }
 
   trackByRouteStat(index: number, routeStat: RouteStat) {
@@ -98,7 +104,7 @@ export class HomeComponent implements OnInit {
 
     this.routeStatFilters.get('intervalId').valueChanges.subscribe(_ => {
       window.setTimeout(() => {
-        this.loadReports();
+        this.loadDashboard();
         this._intervalHelper.startInterval();
       });
     });
@@ -108,7 +114,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  private async loadReports() {
+  private async loadDashboard() {
     let intervalId = this.routeStatFilters.get('intervalId').value;
 
     let isSuccess = await this.homeService.loadObjectsForReporting(intervalId);
@@ -116,5 +122,7 @@ export class HomeComponent implements OnInit {
     if (isSuccess) {
       this.updateAt = `Обновлено в ${formatDate(new Date(), "HH:mm:ss", "ru")}`;
     }
+
+    await this.homeService.loadEventLogs();
   }
 }

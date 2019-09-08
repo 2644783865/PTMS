@@ -4,12 +4,14 @@ import { AppEntityState, AppEntityStore, AppQueryEntity } from '@app/core/akita-
 import { switchMap } from 'rxjs/operators';
 import { of, combineLatest, Observable } from 'rxjs';
 import { ObjectDto, ProjectDto, ProviderDto, RouteDto, PlanByRouteDto } from '@app/core/dtos';
+import { EventLogDto } from '@app/core/dtos/EventLogDto';
 
 export interface HomeState extends AppEntityState<ObjectDto> {
   projects: ProjectDto[];
   providers: ProviderDto[];
   routes: RouteDto[];
   plansByRoutes: PlanByRouteDto[];
+  eventLogs: EventLogDto[];
   routeStatFilters: {
     showOnlyErrors: boolean,
     projectId: number,
@@ -68,12 +70,19 @@ export class HomeStore extends AppEntityStore<HomeState, ObjectDto> {
     });
   }
 
+  setEventLogs(eventLogs: EventLogDto[]){
+    this.update({
+      eventLogs
+    })
+  }
+
   constructor() {
     let initialState = {
       projects: [],
       providers: [],
       routes: [],
       plansByRoutes: [],
+      eventLogs: [],
       routeStatFilters: {
         showOnlyErrors: false,
         projectId: null,
@@ -90,6 +99,7 @@ export class HomeQuery extends AppQueryEntity<HomeState, ObjectDto> {
   projects$ = this.select(s => s.projects);
   providers$ = this.select(s => s.providers);
   routes$ = this.select(s => s.routes);
+  eventLogs$ = this.select(s => s.eventLogs);
 
   statByProject$: Observable<ProjectStat[]> = combineLatest(
     this.list$,

@@ -1,44 +1,52 @@
 @import "~variables.scss";
 
-.stat-widget-container {
-  position: relative;
-  max-height: 600px;
-  overflow: auto;
-}
-
-mat-header-cell, mat-cell, mat-footer-cell {
-  padding-left: 16px;
-
-  &.mat-column-provider,
-  &.mat-column-route,
-  &.mat-column-project {
-    flex: 2
-  }
-
-  &.mat-column-onlineNumber {
-    flex: 1;
-    justify-content: center;
+@media #{$app-lg} {
+  .stat-widget-container {
+    position: relative;
+    max-height: 600px;
+    overflow: auto;
   }
 }
 
-mat-cell:first-of-type, mat-header-cell:first-of-type {
-  padding-left: 5px;
-
-  @media #{$app-sm} {
+.home-stats {
+  mat-header-cell, mat-cell, mat-footer-cell {
     padding-left: 16px;
+  
+    &.mat-column-provider,
+    &.mat-column-route,
+    &.mat-column-project {
+      flex: 2
+    }
+  
+    &.mat-column-onlineNumber {
+      flex: 1;
+      justify-content: center;
+    }
   }
-}
-
-mat-cell:last-of-type, mat-footer-cell:last-of-type, mat-header-cell:last-of-type {
-  padding-right: 5px;
-
-  @media #{$app-sm} {
-    padding-right: 16px;
+  
+  mat-cell:first-of-type, mat-header-cell:first-of-type {
+    padding-left: 5px;
+  
+    @media #{$app-sm} {
+      padding-left: 16px;
+    }
   }
-}
-
-mat-row {
-  padding: 5px 0;
+  
+  mat-cell:last-of-type, mat-footer-cell:last-of-type, mat-header-cell:last-of-type {
+    padding-right: 5px;
+  
+    @media #{$app-sm} {
+      padding-right: 16px;
+    }
+  }
+  
+  mat-row {
+    padding: 5px 0;
+  }
+  
+  mat-footer-row, mat-row {
+    min-height: 32px;
+  }
 }
 
 mat-card-title {
@@ -49,14 +57,16 @@ mat-card-title {
   }
 }
 
-mat-footer-row, mat-row {
-  min-height: 32px;
-}
-
 .update-at-label {
   font-size: 16px;
   font-style: italic;
-  float: right;
+  text-align: right;
+  display: block;
+
+  @media #{$app-sm} {
+    float: right;
+    display: inline-block;
+  }    
 }
 
 .total-row {
@@ -69,5 +79,15 @@ mat-footer-row, mat-row {
 
   @media #{$app-lg} {
     font-size: 24px;
+  }
+}
+
+.mat-column-message {
+  flex: 3
+}
+
+@media #{$app-sm-down} {
+  .table-wrapper.table-mobile mat-cell {
+    padding: 10px 0;
   }
 }

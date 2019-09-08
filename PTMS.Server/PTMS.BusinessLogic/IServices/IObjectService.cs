@@ -28,9 +28,14 @@ namespace PTMS.BusinessLogic.IServices
 
         Task<ObjectModel> GetByIdAsync(int ids);
 
-        Task<ObjectModel> AddAsync(ObjectAddEditRequest model);
+        Task<ObjectModel> AddAsync(
+            ObjectAddEditRequest model,
+            ClaimsPrincipal principal);
 
-        Task<ObjectModel> UpdateAsync(int id, ObjectAddEditRequest model);
+        Task<ObjectModel> UpdateAsync(
+            int id, 
+            ObjectAddEditRequest model,
+            ClaimsPrincipal principal);
 
         Task<ObjectModel> ChangeRouteAsync(
             int ids,
@@ -39,12 +44,16 @@ namespace PTMS.BusinessLogic.IServices
 
         Task<ObjectModel> EnableAsync(
             int ids,
-            int newRouteId);
+            int newRouteId,
+            ClaimsPrincipal principal);
 
         Task<ObjectModel> DisableAsync(
-            int ids);
+            int ids,
+            ClaimsPrincipal principal);
 
-        Task DeleteByIdAsync(int id);
+        Task DeleteByIdAsync(
+            int id,
+            ClaimsPrincipal principal);
         
         Task<List<ObjectModel>> FindForReportingAsync(int minutes);
     }

@@ -6,6 +6,7 @@ using PTMS.BusinessLogic.Models;
 using PTMS.Common;
 using PTMS.DataServices.IRepositories;
 using PTMS.Domain.Entities;
+using PTMS.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -21,6 +22,7 @@ namespace PTMS.BusinessLogic.Services
         private readonly IGranitRepository _granitRepository;
         private readonly ICarBrandRepository _carBrandRepository;
         private readonly IBusDataRepository _busDataRepository;
+        private readonly EventLogCreator _eventLogCreator;
 
         public ObjectService(
             AppUserManager userManager,
@@ -29,6 +31,7 @@ namespace PTMS.BusinessLogic.Services
             IGranitRepository granitRepository,
             ICarBrandRepository carBrandRepository,
             IBusDataRepository busDataRepository,
+            EventLogCreator eventLogCreator,
             IMapper mapper)
             : base(mapper)
         {
@@ -38,6 +41,7 @@ namespace PTMS.BusinessLogic.Services
             _granitRepository = granitRepository;
             _carBrandRepository = carBrandRepository;
             _busDataRepository = busDataRepository;
+            _eventLogCreator = eventLogCreator;
         }
 
         public async Task<PageResult<ObjectModel>> FindByParams(
@@ -94,6 +98,7 @@ namespace PTMS.BusinessLogic.Services
         {
             var userRoutesModel = await _userManager.GetAvailableRoutesModel(principal);
             var entity = await _objectRepository.GetByIdAsync(id);
+            var oldEntity = entity.Clone();
 
             if (userRoutesModel.ProjectId.HasValue && userRoutesModel.ProjectId != entity.ProjId)
             {
@@ -117,15 +122,19 @@ namespace PTMS.BusinessLogic.Services
 
             var updatedEntity = await _objectRepository.UpdateAsync(entity);
 
+            await _eventLogCreator.CreateLog(principal, EventEnum.ChangeObjectRoute, oldEntity, updatedEntity);
+
             var result = await _objectRepository.GetFullByIdAsync(updatedEntity.Id);
             return MapToModel<ObjectModel>(result);
         }
         
         public async Task<ObjectModel> EnableAsync(
             int id,
-            int newRouteId)
+            int newRouteId,
+            ClaimsPrincipal principal)
         {
             var entity = await _objectRepository.GetByIdAsync(id);
+            var oldEntity = entity.Clone();
 
             if (!entity.ObjOutput)
             {
@@ -144,13 +153,16 @@ namespace PTMS.BusinessLogic.Services
             }
 
             var result = await _objectRepository.UpdateAsync(entity);
+            await _eventLogCreator.CreateLog(principal, EventEnum.EnableObject, oldEntity, result);
             return await GetByIdAsync(result.Id);
         }
 
         public async Task<ObjectModel> DisableAsync(
-            int id)
+            int id,
+            ClaimsPrincipal principal)
         {
             var entity = await _objectRepository.GetByIdAsync(id);
+            var oldEntity = entity.Clone();
 
             if (entity.ObjOutput)
             {
@@ -161,11 +173,15 @@ namespace PTMS.BusinessLogic.Services
             entity.ObjOutputDate = DateTime.Now;
 
             var result = await _objectRepository.UpdateAsync(entity);
+            await _eventLogCreator.CreateLog(principal, EventEnum.DisableObject, oldEntity, result);
             return await GetByIdAsync(result.Id);
         }
 
-        public async Task DeleteByIdAsync(int id)
+        public async Task DeleteByIdAsync(int id, ClaimsPrincipal principal)
         {
+            var entity = await _objectRepository.GetByIdWithBlockAsync(id);
+            await _eventLogCreator.CreateLog(principal, EventEnum.Delete, entity, null);
+
             await _objectRepository.DeleteByIdAsync(id);
         }
 
@@ -179,7 +195,7 @@ namespace PTMS.BusinessLogic.Services
             return result;
         }
 
-        public async Task<ObjectModel> AddAsync(ObjectAddEditRequest request)
+        public async Task<ObjectModel> AddAsync(ObjectAddEditRequest request, ClaimsPrincipal principal)
         {
             await Validate(request, null);
 
@@ -195,14 +211,18 @@ namespace PTMS.BusinessLogic.Services
             var result = await _objectRepository.AddAsync(entity);
             await HandleBlock(result.Id, null, request);
 
+            await _eventLogCreator.CreateLog(principal, EventEnum.Create, null, result);
+
             return await GetByIdAsync(result.Id);
         }
 
-        public async Task<ObjectModel> UpdateAsync(int id, ObjectAddEditRequest request)
+        public async Task<ObjectModel> UpdateAsync(int id, ObjectAddEditRequest request, ClaimsPrincipal principal)
         {
             var entity = await _objectRepository.GetByIdWithBlockAsync(id);
             var block = entity.Block;
             entity.Block = null;
+
+            var oldEntity = entity.Clone();
 
             await Validate(request, entity);
 
@@ -215,6 +235,8 @@ namespace PTMS.BusinessLogic.Services
             {
                 await _busDataRepository.UpdateBusRoutes(result);
             }
+
+            await _eventLogCreator.CreateLog(principal, EventEnum.Update, oldEntity, result);
 
             return await GetByIdAsync(result.Id);
         }

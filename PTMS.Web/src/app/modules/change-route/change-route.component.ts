@@ -4,6 +4,7 @@ import { ObjectDto, RouteDto } from '@app/core/dtos';
 import { Observable } from 'rxjs';
 import { ChangeRouteService } from './change-route.service';
 import { ChangeRouteQuery } from './change-route.state';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-change-route-widget',
@@ -29,7 +30,18 @@ export class ChangeRouteComponent implements OnInit {
     });
 
     this.vehicles$ = this.changeRouteQuery.list$;
-    this.routes$ = this.changeRouteQuery.routes$;
+    
+    this.routes$ = this.changeRouteQuery.routes$
+      .pipe(map(routes => {
+        let selectedVehicle = this.routeForm.get('vehicle').value as ObjectDto;
+
+        if (selectedVehicle) {
+          return routes.filter(r => r.id != selectedVehicle.lastRout);
+        }
+        else {
+          return routes;
+        }
+      }));
 
     await this.changeRouteService.loadRelatedData();
   }

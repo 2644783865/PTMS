@@ -8,3 +8,8 @@ $app-sm: "(min-width: 576px)";
 $app-md: "(min-width: 768px)";
 $app-lg: "(min-width: 992px)";
 $app-xl: "(min-width: 1200px)";
+
+$app-sm-down: "(max-width: 576px)";
+$app-md-down: "(max-width: 768px)";
+$app-lg-down: "(max-width: 992px)";
+$app-xl-down: "(max-width: 1200px)";

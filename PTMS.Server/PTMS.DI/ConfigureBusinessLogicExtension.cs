@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using PTMS.BusinessLogic.Helpers;
 using PTMS.BusinessLogic.IServices;
 using PTMS.BusinessLogic.Services;
 using PTMS.Infrastructure;
@@ -22,6 +23,9 @@ namespace PTMS.DI
             services.AddScoped<IBlockTypeService, BlockTypeService>();
             services.AddScoped<IBusStationService, BusStationService>();
             services.AddScoped<IBusStationRouteService, BusStationRouteService>();
+            services.AddScoped<IEventLogService, EventLogService>();
+
+            services.AddScoped<EventLogCreator>();
         }
     }
 }

@@ -34,5 +34,10 @@ namespace PTMS.Domain.Entities
         public Project Project { get; set; }
         public Route Route { get; set; }
         public Granit Block { get; set; }
+
+        public Objects Clone()
+        {
+            return (Objects)this.MemberwiseClone();
+        }
     }
 }

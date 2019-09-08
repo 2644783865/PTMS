@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 using PTMS.BusinessLogic.Models;
+using PTMS.BusinessLogic.Models.EventLog;
 using PTMS.BusinessLogic.Models.User;
 using PTMS.Domain.Entities;
+using System.Linq;
 
 namespace PTMS.DI
 {
@@ -54,6 +56,13 @@ namespace PTMS.DI
 
                 CreateMap<BusStationRoute, BusStationRouteModel>();
                 CreateMap<BusStationRouteModel, BusStationRoute>();
+
+                CreateMap<EventLog, EventLogModel>();
+                CreateMap<EventLogField, EventLogFieldModel>();
+
+                CreateMap<AppUser, UserLightModel>()
+                    .ForMember(x => x.RoleId, x => x.MapFrom(y => y.UserRoles.First().RoleId))
+                    .ForMember(m => m.Status, options => options.MapFrom(x => new UserStatusModel(x.Status)));
             }
         }
 
