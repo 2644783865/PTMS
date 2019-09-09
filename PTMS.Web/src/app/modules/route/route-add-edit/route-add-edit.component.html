@@ -22,7 +22,7 @@
         </div>
         <mat-divider></mat-divider>
         <div class="row" style="padding-top: 16px;">
-            <div class="col-xl-4 col-lg-5 col-12">
+            <div class="col-xl-4 col-lg-4 col-12">
                 <mat-form-field>
                     <input matInput placeholder="Название *" type="text"
                             formControlName="name">
@@ -49,7 +49,7 @@
                 </mat-form-field>
             </div>
             <div class="col-xl-1 d-xl-block d-none"></div>
-            <div class="col-xl-7 col-lg-7 col-12" formArrayName="busStationRoutes">
+            <div class="col-xl-7 col-lg-8 col-12" formArrayName="busStationRoutes">
                 <div class="text-right form-field-static">
                     <button mat-raised-button color="primary" type="button"
                             (click)="addNewStation(0)"
@@ -78,6 +78,9 @@
                                     <app-input-clear-icon matSuffix controlName="busStation"></app-input-clear-icon>
                                     <app-input-error controlName="busStation"></app-input-error>
                                 </mat-form-field>
+                                <mat-checkbox color="primary" formControlName="isEndingStation">
+                                    Это конечная остановка?
+                                </mat-checkbox>
                             </div>
                             <div class="col-2">
                                 <mat-form-field>
@@ -100,6 +103,9 @@
                         <div class="row" *ngIf="!isItemEditingInProgress(fGroup)">
                             <div class="col-7">
                                 {{fGroup.controls.busStation.value.name}}
+                                <span class="label-pill label-pill-info" [ngShow]="fGroup.controls.isEndingStation.value">
+                                    Конечная
+                                </span>
                             </div>
                             <div class="col-2">
                                 {{fGroup.controls.num.value}}

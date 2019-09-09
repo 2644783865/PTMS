@@ -54,7 +54,7 @@ namespace PTMS.DataServices.Infrastructure
 
         protected virtual string GetInsertStatement(TEntity entity)
         {
-            var columnsWithComma = string.Join(", ", _columnDefenitions.Keys);
+            var columnsWithComma = string.Join(", ", _columnDefenitions.Keys.Select(x => $"\"{x}\""));
             var primaryKeyValue = GetPrimaryKeyValue(entity);
 
             var sb = new StringBuilder();
@@ -91,7 +91,7 @@ END
 
         protected virtual string GetUpdateStatement(TEntity entity)
         {
-            var columnsWithComma = string.Join(", ", _columnDefenitions.Keys);
+            var columnsWithComma = string.Join(", ", _columnDefenitions.Keys.Select(x => $"\"{x}\""));
             var primaryKeyValue = GetPrimaryKeyValue(entity);
 
             var sb = new StringBuilder();
@@ -104,7 +104,7 @@ declare variable SQL_ varchar(500) = 'SELECT {columnsWithComma} FROM {_tableName
             var variableDefenitions = _columnDefenitions.ToDictionary(x => "o_" + x.Key, x => x.Value);
             var variableWithComma = string.Join(", ", variableDefenitions.Keys.Select(x => ":" + x));
 
-            var setStatement = string.Join(", ", _columnDefenitions.Keys.Select(x => $"{x} = :o_{x}"));
+            var setStatement = string.Join(", ", _columnDefenitions.Keys.Select(x => $"\"{x}\" = :o_{x}"));
 
             foreach (var varName in variableDefenitions.Keys)
             {

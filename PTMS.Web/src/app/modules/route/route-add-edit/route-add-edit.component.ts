@@ -206,14 +206,16 @@ export class RouteAddEditComponent implements OnInit {
 
     return {
       busStation,
-      num: bsRoute.num
+      num: bsRoute.num,
+      isEndingStation: bsRoute.isEndingStation
     };
   }
 
   private getEmptyStationFormGroup(): FormGroup{
     return this.fb.group({
       busStation: [null, Validators.required],
-      num: [null, Validators.required]
+      num: [null, Validators.required],
+      isEndingStation: [false]
     });
   }
 }

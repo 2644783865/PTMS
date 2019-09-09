@@ -4,4 +4,5 @@ export interface BusStationRouteDto
         busStationId: number | null;
         routeId: number | null;
         num: number | null;
+        isEndingStation: boolean;
     }

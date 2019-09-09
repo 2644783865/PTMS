@@ -120,7 +120,8 @@ export class RouteService {
         id: formValue.id,
         busStationId: formValue.busStation.id,
         routeId: routeId,
-        num: formValue.num
+        num: formValue.num,
+        isEndingStation: formValue.isEndingStation
       } as BusStationRouteDto;
 
       promiseChainer.add(() => {
@@ -132,7 +133,8 @@ export class RouteService {
       let dto = {
         busStationId: formValue.busStation.id,
         routeId: routeId,
-        num: formValue.num
+        num: formValue.num,
+        isEndingStation: formValue.isEndingStation
       } as BusStationRouteDto;
 
       promiseChainer.add(() => {
