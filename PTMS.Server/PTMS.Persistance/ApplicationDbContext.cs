@@ -104,47 +104,7 @@ namespace PTMS.Persistance
                     .HasAnnotation("Description", "Тип блока");
             });
 
-            builder.Entity<BusStation>(entity =>
-            {
-                entity.ToTable("BS                             ");
-
-                entity.HasIndex(e => e.Id)
-                    .HasName("PK_BS_1");
-
-                entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.Property(e => e.Azmth).HasColumnName("AZMTH");
-
-                entity.Property(e => e.Lat).HasColumnName("LAT");
-
-                entity.Property(e => e.Lon).HasColumnName("LON");
-
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasColumnName("NAME")
-                    .HasMaxLength(110);
-            });
-
-            builder.Entity<BusStationRoute>(entity =>
-            {
-                entity.ToTable("BS_ROUTE                       ");
-
-                entity.HasIndex(e => e.Id)
-                    .HasName("PK_BS_ROUTE_1");
-
-                entity.HasIndex(e => new { e.Num, e.RouteId })
-                    .HasName("BS_ROUTE_IDX")
-                    .IsUnique();
-
-                entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.Property(e => e.BusStationId).HasColumnName("BS_ID");
-
-                entity.Property(e => e.Num).HasColumnName("NUM");
-
-                entity.Property(e => e.RouteId).HasColumnName("ROUTE_ID");
-            });
-
+            builder.ConfigureStations();
             builder.ConfigureCarBrands();
 
             builder.Entity<CarType>(entity =>
