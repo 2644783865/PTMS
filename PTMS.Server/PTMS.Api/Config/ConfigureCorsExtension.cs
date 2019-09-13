@@ -15,7 +15,7 @@ namespace PTMS.Api.Config
                 options.AddPolicy("CorsPolicy", builder =>
                 {
                     builder.WithOrigins(appSettings.CorsAllowedOrigins);
-                    builder.WithHeaders("Content-Type", "Authorization");
+                    builder.AllowAnyHeader();
                     builder.AllowAnyMethod();
                 });
             });
