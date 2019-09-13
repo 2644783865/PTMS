@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StoreConfig, Store, Query } from '@datorama/akita';
 import { AccountIdentityDto } from '../dtos/AccountIdentityDto';
+import { CookieHelper } from '../helpers';
 
 export interface AuthState {
   identity: AccountIdentityDto;
@@ -15,14 +16,14 @@ export interface AuthState {
 })
 export class AuthStore extends Store<AuthState> {
 
-  constructor() {
+  constructor(private _cookieHelper: CookieHelper) {
     super({
       identity: null as AccountIdentityDto,
       token: null,
       isLogged: false
     });
 
-    let tokenInStorage = window.localStorage.getItem("authToken");
+    let tokenInStorage = _cookieHelper.getCookie("authToken");
 
     if (tokenInStorage) {
       this.update({ token: tokenInStorage });
@@ -30,8 +31,14 @@ export class AuthStore extends Store<AuthState> {
   }
 
   akitaPreUpdate(prevState: AuthState, nextState: AuthState) {
-    window.localStorage.setItem("authToken", nextState.token);
-    nextState.isLogged = !!nextState.token;
+    if (nextState.token) {
+      this._cookieHelper.setCookie("authToken", nextState.token, 99);
+      nextState.isLogged = true;
+    }
+    else {
+      this._cookieHelper.deleteCookie("authToken");
+      nextState.isLogged = false;
+    }    
 
     return nextState;
   }
