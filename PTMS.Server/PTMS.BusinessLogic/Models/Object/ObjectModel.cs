@@ -29,27 +29,7 @@ namespace PTMS.BusinessLogic.Models
         public int? DispRoute { get; set; }
         public short? LastAddInfo { get; set; }
         public short? Lowfloor { get; set; }
-        public string StatusName
-        {
-            get
-            {
-                if (ObjOutput)
-                {
-                    if (ObjOutputDate.HasValue)
-                    {
-                        return $"Выведено {ObjOutputDate.Value.ToString("dd.MM.yyyy")}";
-                    }
-                    else
-                    {
-                        return "Выведено из эксплуатации";
-                    }
-                }
-                else
-                {
-                    return "Активно";
-                }
-            }
-        }
+        public string StatusName { get; set; }
 
         public CarBrandModel CarBrand { get; set; }
         public ProviderModel Provider { get; set; }

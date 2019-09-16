@@ -10,6 +10,7 @@ using PTMS.Persistance;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace PTMS.Api.Config
 {

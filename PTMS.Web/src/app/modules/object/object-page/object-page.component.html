@@ -1,8 +1,17 @@
 <app-page-header>Транспорт</app-page-header>
 
-<div class="add-button" *ngIf="canAddVehicle">
-  <button mat-raised-button color="primary" (click)="openAddEditDialog()">
+<div class="add-button">
+  <button mat-raised-button 
+          color="primary" 
+          (click)="openAddEditDialog()" 
+          *ngIf="canAddVehicle">
     Добавить новое ТС
+  </button>
+  <button mat-raised-button
+          (click)="print()"
+          [ngShow]="(pagination$ | async).total > 0"
+          style="margin-left: 15px;">
+    Печать <mat-icon>print</mat-icon>
   </button>
 </div>
 

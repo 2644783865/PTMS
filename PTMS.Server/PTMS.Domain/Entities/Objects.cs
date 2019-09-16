@@ -29,6 +29,28 @@ namespace PTMS.Domain.Entities
         public short? LastAddInfo { get; set; }
         public short? Lowfloor { get; set; }
 
+        public string StatusName
+        {
+            get
+            {
+                if (ObjOutput)
+                {
+                    if (ObjOutputDate.HasValue)
+                    {
+                        return $"Выведено {ObjOutputDate.Value.ToString("dd.MM.yyyy")}";
+                    }
+                    else
+                    {
+                        return "Выведено из эксплуатации";
+                    }
+                }
+                else
+                {
+                    return "Активно";
+                }
+            }
+        }
+
         public CarBrand CarBrand { get; set; }
         public Provider Provider { get; set; }
         public Project Project { get; set; }

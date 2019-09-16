@@ -21,31 +21,35 @@ export class ObjectDataService {
     return this.http.get<ObjectDto[]>(`objects/reporting`, { minutes });
   }
 
-  getById(id: number) {
+  getById(id: number): Promise<ObjectDto> {
     return this.http.get<ObjectDto>(`object/${id}`);
   }
 
-  add(item: ObjectAddEditRequestDto) {
+  add(item: ObjectAddEditRequestDto): Promise<ObjectDto> {
     return this.http.post<ObjectDto>(`object`, item);
   }
 
-  update(id: number, item: ObjectAddEditRequestDto) {
+  update(id: number, item: ObjectAddEditRequestDto): Promise<ObjectDto> {
     return this.http.put<ObjectDto>(`object/${id}`, item);
   }
 
-  changeRoute(id: number, newRouteId: number) {
+  changeRoute(id: number, newRouteId: number): Promise<ObjectDto> {
     return this.http.post<ObjectDto>(`object/${id}/changeRoute/${newRouteId}`);
   }
 
-  changeProvider(id: number, newProviderId: number) {
+  changeProvider(id: number, newProviderId: number): Promise<ObjectDto> {
     return this.http.post<ObjectDto>(`object/${id}/changeProvider/${newProviderId}`);
   }
 
-  enable(id: number, newRouteId: number) {
+  enable(id: number, newRouteId: number): Promise<ObjectDto> {
     return this.http.post<ObjectDto>(`object/${id}/enable/${newRouteId}`);
   }
 
-  disable(id: number) {
+  disable(id: number): Promise<ObjectDto> {
     return this.http.post<ObjectDto>(`object/${id}/disable`);
+  }
+
+  getPrintUrl(params: object = null): string {
+    return this.http.getUrlOnly('objects/pdf', params);
   }
 }

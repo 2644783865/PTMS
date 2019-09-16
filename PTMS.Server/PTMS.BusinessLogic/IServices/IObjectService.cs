@@ -8,7 +8,7 @@ namespace PTMS.BusinessLogic.IServices
 {
     public interface IObjectService
     {
-        Task<PageResult<ObjectModel>> FindByParams(
+        Task<PageResult<ObjectModel>> FindByParamsAsync(
             ClaimsPrincipal user,
             string plateNumber,
             string routeName,
@@ -25,6 +25,21 @@ namespace PTMS.BusinessLogic.IServices
             OrderByEnum orderBy,
             int? page,
             int? pageSize);
+
+        Task<byte[]> GetVehiclesPdfAsync(
+            ClaimsPrincipal user,
+            string plateNumber,
+            string routeName,
+            int? carTypeId,
+            int? projectId,
+            bool? active,
+            int? carBrandId,
+            int? providerId,
+            int? yearRelease,
+            string blockNumber,
+            int? blockTypeId,
+            string sortBy,
+            OrderByEnum orderBy);
 
         Task<ObjectModel> GetByIdAsync(int ids);
 

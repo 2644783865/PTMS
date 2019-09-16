@@ -73,6 +73,7 @@ namespace PTMS.Api
             //    app.UseHttpsRedirection();
             //}
 
+            app.UseMiddleware<TokenFromQueryMiddlewareExtension>();
             app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseCors("CorsPolicy");

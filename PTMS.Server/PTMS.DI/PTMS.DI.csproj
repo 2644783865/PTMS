@@ -18,6 +18,7 @@
     <ProjectReference Include="..\PTMS.Domain\PTMS.Domain.csproj" />
     <ProjectReference Include="..\PTMS.Infrastructure\PTMS.Infrastructure.csproj" />
     <ProjectReference Include="..\PTMS.Persistance\PTMS.Persistance.csproj" />
+    <ProjectReference Include="..\PTMS.Templates\PTMS.Templates.csproj" />
   </ItemGroup>
 
   <ItemGroup>

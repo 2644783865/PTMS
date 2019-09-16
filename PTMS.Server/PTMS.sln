@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PTMS.Infrastructure", "PTMS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PTMS.Common", "PTMS.Common\PTMS.Common.csproj", "{6A8CFEFF-36F0-48BB-A93C-635DAB3CA354}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PTMS.DI", "PTMS.DI\PTMS.DI.csproj", "{F7FBB069-2321-4015-B35A-D77966A681D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PTMS.DI", "PTMS.DI\PTMS.DI.csproj", "{F7FBB069-2321-4015-B35A-D77966A681D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PTMS.Templates", "PTMS.Templates\PTMS.Templates.csproj", "{EE66B70E-BE89-46A0-B06B-B1F762907631}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{F7FBB069-2321-4015-B35A-D77966A681D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7FBB069-2321-4015-B35A-D77966A681D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7FBB069-2321-4015-B35A-D77966A681D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE66B70E-BE89-46A0-B06B-B1F762907631}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE66B70E-BE89-46A0-B06B-B1F762907631}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE66B70E-BE89-46A0-B06B-B1F762907631}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE66B70E-BE89-46A0-B06B-B1F762907631}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

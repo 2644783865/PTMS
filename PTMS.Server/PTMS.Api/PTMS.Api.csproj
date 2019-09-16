@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="weasyprint-v48\**" />
+    <Content Remove="weasyprint-v48\**" />
+    <EmbeddedResource Remove="weasyprint-v48\**" />
+    <None Remove="weasyprint-v48\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

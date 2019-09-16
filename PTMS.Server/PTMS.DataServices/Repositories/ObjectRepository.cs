@@ -24,6 +24,16 @@ namespace PTMS.DataServices.Repositories
             nameof(Objects.Block)
         };
 
+        private readonly string[] _includesForPrint =
+        {
+            nameof(Objects.CarBrand),
+            nameof(Objects.CarBrand) + "." + nameof(Objects.CarBrand.CarType),
+            nameof(Objects.Project),
+            nameof(Objects.Provider),
+            nameof(Objects.Route),
+            nameof(Objects.Block)
+        };
+
         private readonly string[] _includesLight =
         {
             nameof(Objects.CarBrand),
@@ -66,35 +76,6 @@ namespace PTMS.DataServices.Repositories
             int? page,
             int? pageSize)
         {
-            var locked = !active;
-            
-            if (userRoutesModel.ProjectId.HasValue)
-            {
-                projectId = userRoutesModel.ProjectId;
-            }
-
-            if (!string.IsNullOrEmpty(plateNumber))
-            {
-                plateNumber = plateNumber.ToUpper();
-            }
-
-            if (!string.IsNullOrEmpty(routeName))
-            {
-                routeName = routeName.PrepareRouteName();
-            }
-
-            Expression<Func<Objects, bool>> filter = x => (string.IsNullOrEmpty(plateNumber) || x.Name.Contains(plateNumber))
-                && (!projectId.HasValue || x.ProjId == projectId)
-                && (!carBrandId.HasValue || x.CarBrandId == carBrandId)
-                && (!providerId.HasValue || x.ProviderId == providerId)
-                && (string.IsNullOrEmpty(routeName) || x.Route.Name.Equals(routeName))
-                && (!carTypeId.HasValue || x.CarBrand.CarTypeId == carTypeId)
-                && (!locked.HasValue || x.ObjOutput == locked.Value)
-                && (!yearRelease.HasValue || x.YearRelease == yearRelease)
-                && (string.IsNullOrEmpty(blockNumber) || x.Phone.ToString().Contains(blockNumber) || x.Block.BlockNumber.ToString().Contains(blockNumber))
-                && (!blockTypeId.HasValue || x.Block.BlockTypeId == blockTypeId)
-                && (userRoutesModel.RouteIds == null || (x.LastRout.HasValue && userRoutesModel.RouteIds.Contains(x.LastRout.Value)));
-
             var includes = _includesPure;
 
             if (format == ModelFormatsEnum.Light)
@@ -106,47 +87,22 @@ namespace PTMS.DataServices.Repositories
                 includes = _includesFull;
             }
 
-            Expression<Func<Objects, object>> sortByFilter = null;
+            var filter = GetSearchFilter(
+                plateNumber,
+                routeName,
+                carTypeId,
+                projectId,
+                active,
+                userRoutesModel,
+                carBrandId,
+                providerId,
+                yearRelease,
+                blockNumber,
+                blockTypeId,
+                sortBy,
+                orderBy);
 
-            switch (sortBy.ToLower())
-            {
-                case "name":
-                    sortByFilter = x => x.Name;
-                    break;
-                case "laststationtime":
-                    sortByFilter = x => x.LastStationTime;
-                    break;
-                case "transporter":
-                    sortByFilter = x => x.Project.Name;
-                    break;
-                case "route":
-                    sortByFilter = x => x.Route.Name;
-                    break;
-                case "carbrand":
-                    sortByFilter = x => x.CarBrand.Name;
-                    break;
-                case "cartype":
-                    sortByFilter = x => x.CarBrand.CarType.Name;
-                    break;
-                case "provider":
-                    sortByFilter = x => x.Provider.Name;
-                    break;
-                case "phone":
-                    sortByFilter = x => x.Phone;
-                    break;
-                case "status":
-                    sortByFilter = x => x.ObjOutput ? 1 : 0;
-                    break;
-                case "yearrelease":
-                    sortByFilter = x => x.YearRelease;
-                    break;
-                case "block":
-                    sortByFilter = x => x.Block.BlockType.Name;
-                    break;
-                default:
-                    sortByFilter = x => x.LastTime;
-                    break;
-            }
+            var sortByFilter = GetSortExpression(sortBy);
 
             return FindPagedAsync(
                 filter,
@@ -155,6 +111,45 @@ namespace PTMS.DataServices.Repositories
                 page,
                 pageSize,
                 includes);
+        }
+
+        public Task<List<Objects>> FindAllForPdfAsync(
+            string plateNumber,
+            string routeName,
+            int? carTypeId,
+            int? projectId,
+            bool? active,
+            UserAvailableRoutes userRoutesModel,
+            int? carBrandId,
+            int? providerId,
+            int? yearRelease,
+            string blockNumber,
+            int? blockTypeId,
+            string sortBy,
+            OrderByEnum orderBy)
+        {
+            var filter = GetSearchFilter(
+                plateNumber,
+                routeName,
+                carTypeId,
+                projectId,
+                active,
+                userRoutesModel,
+                carBrandId,
+                providerId,
+                yearRelease,
+                blockNumber,
+                blockTypeId,
+                sortBy,
+                orderBy);
+
+            var sortByFilter = GetSortExpression(sortBy);
+
+            return FindOrderedAsync(
+                filter,
+                sortByFilter,
+                orderBy,
+                _includesForPrint);
         }
 
         public Task<Objects> GetFullByIdAsync(int id)
@@ -228,6 +223,100 @@ namespace PTMS.DataServices.Repositories
         private void PrepareObject(Objects entity)
         {
             entity.Name = entity.Name.ToUpper();
+        }
+
+        private Expression<Func<Objects, bool>> GetSearchFilter(
+            string plateNumber,
+            string routeName,
+            int? carTypeId,
+            int? projectId,
+            bool? active,
+            UserAvailableRoutes userRoutesModel,
+            int? carBrandId,
+            int? providerId,
+            int? yearRelease,
+            string blockNumber,
+            int? blockTypeId,
+            string sortBy,
+            OrderByEnum orderBy)
+        {
+            var locked = !active;
+
+            if (userRoutesModel.ProjectId.HasValue)
+            {
+                projectId = userRoutesModel.ProjectId;
+            }
+
+            if (!string.IsNullOrEmpty(plateNumber))
+            {
+                plateNumber = plateNumber.ToUpper();
+            }
+
+            if (!string.IsNullOrEmpty(routeName))
+            {
+                routeName = routeName.PrepareRouteName();
+            }
+
+            Expression<Func<Objects, bool>> filter = x => (string.IsNullOrEmpty(plateNumber) || x.Name.Contains(plateNumber))
+                && (!projectId.HasValue || x.ProjId == projectId)
+                && (!carBrandId.HasValue || x.CarBrandId == carBrandId)
+                && (!providerId.HasValue || x.ProviderId == providerId)
+                && (string.IsNullOrEmpty(routeName) || x.Route.Name.Equals(routeName))
+                && (!carTypeId.HasValue || x.CarBrand.CarTypeId == carTypeId)
+                && (!locked.HasValue || x.ObjOutput == locked.Value)
+                && (!yearRelease.HasValue || x.YearRelease == yearRelease)
+                && (string.IsNullOrEmpty(blockNumber) || x.Phone.ToString().Contains(blockNumber) || x.Block.BlockNumber.ToString().Contains(blockNumber))
+                && (!blockTypeId.HasValue || x.Block.BlockTypeId == blockTypeId)
+                && (userRoutesModel.RouteIds == null || (x.LastRout.HasValue && userRoutesModel.RouteIds.Contains(x.LastRout.Value)));
+
+            return filter;
+        }
+
+        private Expression<Func<Objects, object>> GetSortExpression(string sortBy)
+        {
+            Expression<Func<Objects, object>> sortByFilter = null;
+
+            switch (sortBy.ToLower())
+            {
+                case "name":
+                    sortByFilter = x => x.Name;
+                    break;
+                case "laststationtime":
+                    sortByFilter = x => x.LastStationTime;
+                    break;
+                case "transporter":
+                    sortByFilter = x => x.Project.Name;
+                    break;
+                case "route":
+                    sortByFilter = x => x.Route.Name;
+                    break;
+                case "carbrand":
+                    sortByFilter = x => x.CarBrand.Name;
+                    break;
+                case "cartype":
+                    sortByFilter = x => x.CarBrand.CarType.Name;
+                    break;
+                case "provider":
+                    sortByFilter = x => x.Provider.Name;
+                    break;
+                case "phone":
+                    sortByFilter = x => x.Phone;
+                    break;
+                case "status":
+                    sortByFilter = x => x.ObjOutput ? 1 : 0;
+                    break;
+                case "yearrelease":
+                    sortByFilter = x => x.YearRelease;
+                    break;
+                case "block":
+                    sortByFilter = x => x.Block.BlockType.Name;
+                    break;
+                default:
+                    sortByFilter = x => x.LastTime;
+                    break;
+            }
+
+            return sortByFilter;
         }
     }
 }

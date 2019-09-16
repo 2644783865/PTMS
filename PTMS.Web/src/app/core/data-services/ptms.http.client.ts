@@ -64,6 +64,17 @@ export class PtmsHttpClient {
     return this.http.delete(this.getFullUrl(relativeUrl)).toPromise();
   }
 
+  getUrlOnly(relativeUrl: string, params: object = null) {
+    let result = this.getFullUrl(relativeUrl);
+
+    if (params) {
+      let httpParams = this.convertToHttpParams(params);
+      result += "?" + httpParams.toString();
+    }
+
+    return result;
+  }
+
   private convertToHttpParams(params: object): HttpParams {
     let result = new HttpParams();
 

@@ -42,13 +42,7 @@ export class ObjectService {
     let page = event ? event.page : 1;
     let pageSize = event ? event.pageSize : 50;
 
-    let dto = {
-      ...searchParams,
-      project: searchParams.project && searchParams.project.id,
-      carBrand: searchParams.carBrand && searchParams.carBrand.id,
-      active: this.getActiveFlag(searchParams.active),
-      format: 'pure'
-    };
+    let dto = this.getFiltersDto(searchParams);
 
     this.objectStore.setLoading(true);
     let response = await this.objectDataService.getAll(page, pageSize, dto);
@@ -186,6 +180,25 @@ export class ObjectService {
     }
   }
 
+  print(searchParams: any, totalCount: number) {
+    let dto = this.getFiltersDto(searchParams);
+    this.authService.setAuthTokenQueryParam(dto);
+    let url = this.objectDataService.getPrintUrl(dto);
+
+    if (totalCount > 1000) {
+      this.confirmDialogService.openDialog(
+        `Необходимо обработать ${totalCount} записей. Это может занять 1-2 минуты.`,
+        'Продолжить',
+        'Отмена')
+        .then(_ => {
+          window.open(url, "_blank");
+        });
+    }
+    else {
+      window.open(url, "_blank");
+    }
+  }
+
   onDestroy() {
     this.objectStore.reset();
   }
@@ -236,5 +249,17 @@ export class ObjectService {
     vehicle.carBrand = state.carBrands.find(x => x.id == vehicle.carBrandId);
 
     return vehicle;
+  }
+
+  private getFiltersDto(searchParams: any): any {
+    let dto = {
+      ...searchParams,
+      project: searchParams.project && searchParams.project.id,
+      carBrand: searchParams.carBrand && searchParams.carBrand.id,
+      active: this.getActiveFlag(searchParams.active),
+      format: 'pure'
+    };
+
+    return dto;
   }
 }

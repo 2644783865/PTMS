@@ -5,7 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PTMS.BusinessLogic\PTMS.BusinessLogic.csproj" />
+    <PackageReference Include="Balbarak.WeasyPrint" Version="1.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PTMS.BusinessLogic\PTMS.BusinessLogic.csproj" />
+  </ItemGroup>
+  
 </Project>

@@ -127,6 +127,11 @@ export class ObjectPageComponent implements OnInit {
     this.search();
   }
 
+  print() {
+    let totalCount = this.objectQuery.getValue().total;
+    this.objectService.print(this.filters.value, totalCount);
+  }
+
   ngOnDestroy() {
     this._intervalHelper.onComponentDestroy();
     this.objectService.onDestroy();

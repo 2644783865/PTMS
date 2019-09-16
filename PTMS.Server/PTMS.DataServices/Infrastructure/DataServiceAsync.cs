@@ -71,6 +71,22 @@ namespace PTMS.DataServices.Infrastructure
             return Prepare(filter, includes).ToListAsync();
         }
 
+        protected Task<List<TEntity>> FindOrderedAsync(
+            Expression<Func<TEntity, bool>> filter,
+            Expression<Func<TEntity, object>> orderBySelector,
+            OrderByEnum orderByEnum,
+            params string[] includes)
+        {
+            var orderByAsc = orderByEnum == OrderByEnum.Asc;
+            var query = Prepare(filter, includes);
+
+            query = orderByAsc
+                ? query.OrderBy(orderBySelector)
+                : query.OrderByDescending(orderBySelector);
+
+            return query.ToListAsync();
+        }
+
         protected Task<TEntity> GetAsync(
             Expression<Func<TEntity, bool>> filter,
             params string[] includes)

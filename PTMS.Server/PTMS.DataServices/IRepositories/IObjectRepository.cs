@@ -43,5 +43,20 @@ namespace PTMS.DataServices.IRepositories
         Task<List<Objects>> FindForReportingAsync(DateTime onlineStartDate, DateTime onlineEndDate);
 
         Task<short> GetNextObjectIdAsync();
+
+        Task<List<Objects>> FindAllForPdfAsync(
+            string plateNumber,
+            string routeName,
+            int? carTypeId,
+            int? projectId,
+            bool? active,
+            UserAvailableRoutes userRoutesModel,
+            int? carBrandId,
+            int? providerId,
+            int? yearRelease,
+            string blockNumber,
+            int? blockTypeId,
+            string sortBy,
+            OrderByEnum orderBy);
     }
 }

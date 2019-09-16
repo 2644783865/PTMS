@@ -7,6 +7,8 @@ using PTMS.Common;
 using PTMS.DataServices.IRepositories;
 using PTMS.Domain.Entities;
 using PTMS.Domain.Enums;
+using PTMS.Templates;
+using PTMS.Templates.Models;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -23,6 +25,8 @@ namespace PTMS.BusinessLogic.Services
         private readonly ICarBrandRepository _carBrandRepository;
         private readonly IBusDataRepository _busDataRepository;
         private readonly EventLogCreator _eventLogCreator;
+        private readonly IHtmlBuilder _htmlBuilder;
+        private readonly IPdfService _pdfService;
 
         public ObjectService(
             AppUserManager userManager,
@@ -32,6 +36,8 @@ namespace PTMS.BusinessLogic.Services
             ICarBrandRepository carBrandRepository,
             IBusDataRepository busDataRepository,
             EventLogCreator eventLogCreator,
+            IHtmlBuilder htmlBuilder,
+            IPdfService pdfService,
             IMapper mapper)
             : base(mapper)
         {
@@ -42,9 +48,11 @@ namespace PTMS.BusinessLogic.Services
             _carBrandRepository = carBrandRepository;
             _busDataRepository = busDataRepository;
             _eventLogCreator = eventLogCreator;
+            _htmlBuilder = htmlBuilder;
+            _pdfService = pdfService;
         }
 
-        public async Task<PageResult<ObjectModel>> FindByParams(
+        public async Task<PageResult<ObjectModel>> FindByParamsAsync(
             ClaimsPrincipal userPrincipal,
             string plateNumber,
             string routeName,
@@ -83,6 +91,46 @@ namespace PTMS.BusinessLogic.Services
                 pageSize);
 
             return MapToModel<ObjectModel>(result);
+        }
+
+        public async Task<byte[]> GetVehiclesPdfAsync(
+            ClaimsPrincipal userPrincipal,
+            string plateNumber,
+            string routeName,
+            int? carTypeId,
+            int? projectId,
+            bool? active,
+            int? carBrandId,
+            int? providerId,
+            int? yearRelease,
+            string blockNumber,
+            int? blockTypeId,
+            string sortBy,
+            OrderByEnum orderBy)
+        {
+            var userRoutesModel = await _userManager.GetAvailableRoutesModel(userPrincipal);
+
+            var vehicles = await _objectRepository.FindAllForPdfAsync(
+                plateNumber,
+                routeName,
+                carTypeId,
+                projectId,
+                active,
+                userRoutesModel,
+                carBrandId,
+                providerId,
+                yearRelease,
+                blockNumber,
+                blockTypeId,
+                sortBy,
+                orderBy);
+
+            var htmlModel = new ObjectsPrintModel(vehicles, userPrincipal.GetRoleName());
+            var htmlString = await _htmlBuilder.GetObjectsTable(htmlModel);
+
+            var pdfDoc = _pdfService.ConvertHtmlToPdf(htmlString);
+
+            return pdfDoc;
         }
 
         public async Task<ObjectModel> GetByIdAsync(int id)

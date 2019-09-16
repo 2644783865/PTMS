@@ -103,4 +103,8 @@ export class AuthService {
       throw new Error('User identity is not loaded');
     }
   }
+
+  setAuthTokenQueryParam(params: any) {
+    params.authJwtToken = this.getToken();
+  }
 }

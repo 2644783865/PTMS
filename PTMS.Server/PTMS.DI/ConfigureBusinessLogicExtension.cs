@@ -3,6 +3,7 @@ using PTMS.BusinessLogic.Helpers;
 using PTMS.BusinessLogic.IServices;
 using PTMS.BusinessLogic.Services;
 using PTMS.Infrastructure;
+using PTMS.Templates;
 
 namespace PTMS.DI
 {
@@ -26,6 +27,10 @@ namespace PTMS.DI
             services.AddScoped<IEventLogService, EventLogService>();
 
             services.AddScoped<EventLogCreator>();
+
+            services.AddSingleton<IHtmlBuilder, HtmlBuilder>();
+
+            services.AddScoped<IPdfService, PdfService>();
         }
     }
 }

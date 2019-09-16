@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PTMS.Api.Attributes;
 using PTMS.BusinessLogic.IServices;
 using PTMS.BusinessLogic.Models;
 using PTMS.Common;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace PTMS.Api.Controllers
 {
@@ -36,7 +37,7 @@ namespace PTMS.Api.Controllers
             string sortBy = "lastTime",
             OrderByEnum orderBy = OrderByEnum.Desc)
         {
-            var result = await _objectService.FindByParams(
+            var result = await _objectService.FindByParamsAsync(
                 User,
                 plateNumber,
                 routeName,
@@ -128,6 +129,40 @@ namespace PTMS.Api.Controllers
         public async Task Delete(int id)
         {
             await _objectService.DeleteByIdAsync(id, User);
+        }
+
+        [PtmsAuthorize(RoleNames.Dispatcher, RoleNames.Transporter, RoleNames.Mechanic)]
+        [HttpGet("/objects/pdf")]
+        public async Task<IActionResult> GetPdf(
+            string plateNumber = null,
+            string routeName = null,
+            int? carType = null,
+            int? project = null,
+            int? carBrand = null,
+            int? provider = null,
+            int? yearRelease = null,
+            string blockNumber = null,
+            int? blockType = null,
+            bool? active = null,
+            string sortBy = "lastTime",
+            OrderByEnum orderBy = OrderByEnum.Desc)
+        {
+            var pdfDoc = await _objectService.GetVehiclesPdfAsync(
+                User,
+                plateNumber,
+                routeName,
+                carType,
+                project,
+                active,
+                carBrand,
+                provider,
+                yearRelease,
+                blockNumber,
+                blockType,
+                sortBy,
+                orderBy);
+
+            return CreatePdfResult(pdfDoc, $"Транспортные средства {DateTime.Now.ToDateTimeString()}");
         }
     }
 }

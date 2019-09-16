@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Views\**\*">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Views\ObjectsPrint.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PTMS.Common\PTMS.Common.csproj" />
+    <ProjectReference Include="..\PTMS.Domain\PTMS.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -7,6 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="..\PTMS.DataServices\PTMS.DataServices.csproj" />
     <ProjectReference Include="..\PTMS.Domain\PTMS.Domain.csproj" />
+    <ProjectReference Include="..\PTMS.Templates\PTMS.Templates.csproj" />
   </ItemGroup>
 
   <ItemGroup>

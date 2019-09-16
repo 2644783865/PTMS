@@ -192,3 +192,4 @@ bin
 *.1
 packages
 node_modules
+weasyprint-v48
