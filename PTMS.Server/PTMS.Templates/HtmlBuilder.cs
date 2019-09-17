@@ -5,6 +5,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.ObjectPool;
 using PTMS.Templates.Models;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -37,7 +38,11 @@ namespace PTMS.Templates
         #region Private
         private async Task<string> GetHtml<T>(string viewName, T model)
         {
+            var startDate = DateTime.Now;
             var result = await _razorViewToHtmlRenderer.RenderViewToHtmlString(viewName, model);
+            var endDate = DateTime.Now;
+
+            _logger.LogWarning("GetHtml method takes {0}ms", (endDate - startDate).Milliseconds);
             return result;
         }
 
