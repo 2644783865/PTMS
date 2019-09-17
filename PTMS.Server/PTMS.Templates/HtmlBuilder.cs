@@ -14,7 +14,7 @@ namespace PTMS.Templates
 {
     public class HtmlBuilder : IHtmlBuilder
     {
-        private readonly IServiceScopeFactory _serviceScopeFactory;
+        private readonly RazorViewToHtmlRenderer _razorViewToHtmlRenderer;
         private readonly ILogger _logger;
         private readonly ILoggerFactory _loggerFactory;
 
@@ -25,7 +25,7 @@ namespace PTMS.Templates
             _logger = logger;
             _loggerFactory = loggerFactory;
 
-            _serviceScopeFactory = InitializeServices();
+            _razorViewToHtmlRenderer = InitializeServices();
         }
 
         public async Task<string> GetObjectsTable(ObjectsPrintModel model)
@@ -37,16 +37,11 @@ namespace PTMS.Templates
         #region Private
         private async Task<string> GetHtml<T>(string viewName, T model)
         {
-            using (var serviceScope = _serviceScopeFactory.CreateScope())
-            {
-                var helper = serviceScope.ServiceProvider.GetRequiredService<RazorViewToHtmlRenderer>();
-                var result = await helper.RenderViewToHtmlString(viewName, model);
-
-                return result;
-            }
+            var result = await _razorViewToHtmlRenderer.RenderViewToHtmlString(viewName, model);
+            return result;
         }
 
-        private IServiceScopeFactory InitializeServices()
+        private RazorViewToHtmlRenderer InitializeServices()
         {
             var services = new ServiceCollection();
 
@@ -67,8 +62,8 @@ namespace PTMS.Templates
                 options.FileProviders.Add(fileProvider);
 
                 options.ViewLocationFormats.Clear();
-                options.ViewLocationFormats.Add("/Views/{0}" + RazorViewEngine.ViewExtension);
-                options.ViewLocationFormats.Add("/Views/Shared/{0}" + RazorViewEngine.ViewExtension);
+                options.ViewLocationFormats.Add("/Templates/{0}" + RazorViewEngine.ViewExtension);
+                options.ViewLocationFormats.Add("/Templates/Shared/{0}" + RazorViewEngine.ViewExtension);
             });
 
             var diagnosticSource = new DiagnosticListener("Microsoft.AspNetCore");
@@ -78,13 +73,11 @@ namespace PTMS.Templates
             services.AddSingleton(_logger);
             services.AddSingleton(_loggerFactory);
 
-            var builder = services.AddMvcCore();
-            builder.AddRazorViewEngine();
-
+            services.AddMvc();
             services.AddSingleton<RazorViewToHtmlRenderer>();
 
             var serviceProvider = services.BuildServiceProvider();
-            return serviceProvider.GetRequiredService<IServiceScopeFactory>();
+            return serviceProvider.GetRequiredService<RazorViewToHtmlRenderer>();
         }
         #endregion
     }

@@ -21,7 +21,7 @@ pipeline {
   stage("Build Server") {
    steps {
 	bat "if exist ${tempServerFolder} rmdir /s/q ${tempServerFolder}"
-    bat "cd PTMS.Server & dotnet publish PTMS.Api -r win-x64 --self-contained -c Release -o ${tempServerFolder}"
+    bat "cd PTMS.Server & dotnet publish PTMS.Api -c Release -o ${tempServerFolder}"
    }
   }
   stage("Run DbCreator") {
