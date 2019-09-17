@@ -31,7 +31,8 @@ namespace PTMS.DataServices.Repositories
             nameof(Objects.Project),
             nameof(Objects.Provider),
             nameof(Objects.Route),
-            nameof(Objects.Block)
+            nameof(Objects.Block),
+            nameof(Objects.Block) + "." + nameof(Objects.Block.BlockType)
         };
 
         private readonly string[] _includesLight =

@@ -125,7 +125,19 @@ namespace PTMS.BusinessLogic.Services
                 sortBy,
                 orderBy);
 
-            var htmlModel = new ObjectsPrintModel(vehicles, userPrincipal.GetRoleName());
+            var htmlModel = new ObjectsPrintModel(vehicles, userPrincipal.GetRoleName())
+            {
+                PlateNumber = plateNumber,
+                RouteName = routeName,
+                CarTypeId = carTypeId,
+                ProjectId = projectId,
+                Active = active,
+                CarBrandId = carBrandId,
+                ProviderId = providerId,
+                YearRelease = yearRelease,
+                BlockNumber = blockNumber,
+                BlockTypeId = blockTypeId,
+            };
             var htmlString = await _htmlBuilder.GetObjectsTable(htmlModel);
 
             var pdfDoc = _pdfService.ConvertHtmlToPdf(htmlString);

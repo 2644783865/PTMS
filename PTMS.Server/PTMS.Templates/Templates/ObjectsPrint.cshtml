@@ -5,15 +5,24 @@
 }
 
 <style>
+    * {
+        font-size: 12px;
+    }
+
     @@page {
         size: landscape;
-        margin: 0.2cm;
+        margin: 0.2cm 0.2cm 0.6cm 0.2cm;
+        
+        @@bottom-center {
+            font-size: 12px;
+            content: counter(page);
+        }
     }
 
     table {
         border-collapse: collapse;
-        font-size: 12px;
         text-align: center;
+        width: 100%;
     }
 
     table, th, td {
@@ -22,6 +31,49 @@
     }
 </style>
 
+<div style="margin-bottom: 15px">
+    @if (!string.IsNullOrEmpty(Model.PlateNumber))
+    {
+        <div><b>Номер ТС:</b> @Model.PlateNumber</div>
+    }
+    @if (!string.IsNullOrEmpty(Model.RouteName))
+    {
+        <div><b>Маршрут:</b> @Model.RouteName</div>
+    }
+    @if (Model.Project != null)
+    {
+        <div><b>Перевозчик:</b> @Model.Project.Name</div>
+    }
+    @if (!string.IsNullOrEmpty(Model.BlockNumber))
+    {
+        <div><b>Номер Блока / Телефон (IMEI):</b> @Model.BlockNumber</div>
+    }
+    @if (Model.Active.HasValue)
+    {
+        <div><b>Статус ТС:</b> @(Model.Active.Value ? "Только активные" : "Только выведенные")</div>
+    }
+    @if (Model.CarBrand != null)
+    {
+        <div><b>Марка ТС:</b> @Model.CarBrand.Name</div>
+    }
+    @if (Model.CarType != null)
+    {
+        <div><b>Тип ТС:</b> @Model.CarType.Name</div>
+    }
+    @if (Model.Provider != null)
+    {
+        <div><b>Установщик:</b> @Model.Provider.Name</div>
+    }
+    @if (Model.BlockType != null)
+    {
+        <div><b>Тип Блока:</b> @Model.BlockType.Name</div>
+    }
+    @if (Model.YearRelease.HasValue)
+    {
+        <div><b>Год выпуска:</b> @Model.YearRelease.Value</div>
+    }
+    <div><b>Дата документа:</b> @DateTime.Now.ToDateTimeString()</div>
+</div>
 
 <table>
     <thead>
