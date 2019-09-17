@@ -15,17 +15,8 @@ The application consists of two folders.
 ### How to start up - backend
 
 1) Open solution in VS, run build command
-2) Take Projects database backup and restore it in the directory specified in */PTMS.Server/PTMS.Api/appsettings.Development.json* file.
-3) Open restored database and run the following script under it
-```
---Add primary key to proj_routs
-ALTER TABLE PROJ_ROUTS ADD CONSTRAINT PK_PROJ_ROUTS_1 PRIMARY KEY (IDS_);
-
---Add efhistory table for migrations
-CREATE TABLE "__EFMigrationsHistory" ( 
-"MigrationId" varchar(150) NOT NULL PRIMARY KEY, 
-"ProductVersion" varchar(32) NOT NULL);
-```
+2) Take Projects database backup and restore it in the directory specified in */PTMS.Server/PTMS.Api/appsettings.json* file.
+3) Open restored database and run the following script under it run a script from "sql before start.sql" file
 4) In Visual Studio, navigate to Tools -> Nuget Package Manager -> Package Manager Console. In the console run **update-database** command to apply migrations
 
 ### How to start up - frontend
