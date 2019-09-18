@@ -34,6 +34,7 @@ pipeline {
 	bat "if exist ${serverFolder} rmdir /s/q ${serverFolder}"
     bat "move ${tempServerFolder} ${serverFolder}"
 	bat "xcopy /s/y ${configFolder}\\appsettings.json ${serverFolder}"
+	bat "xcopy /s/y ${configFolder}\\nlog.config ${serverFolder}"
 	bat "iisreset /start"
    }
   }

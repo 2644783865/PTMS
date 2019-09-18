@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { ObjectStore, ObjectUI } from './object.state';
 import { ObjectDataService, ProjectDataService, ProviderDataService, CarBrandDataService, CarTypeDataService, BlockTypeDataService, RouteDataService } from '@app/core/data-services';
-import { NotificationService } from '@app/core/notification';
 import { AuthService } from '@app/core/auth';
 import { ConfirmDialogService } from '@app/shared/confirm-dialog/confirm-dialog.service';
 import { RoleEnum } from '@app/core/enums';
 import { PaginatorEvent } from '@app/shared/paginator/paginator.event';
 import { AppPaginationResponse } from '@app/core/akita-extensions';
 import { RouteDto, ObjectAddEditRequestDto, ObjectDto } from '@app/core/dtos';
+import { NotificationService } from '@app/shared';
 
 @Injectable()
 export class ObjectService {

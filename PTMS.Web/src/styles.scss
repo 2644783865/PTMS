@@ -178,6 +178,12 @@ html, body {
   margin-bottom: 15px;
 }
 
+.button-group {
+  button:not(:first-child) {
+    margin-left: 15px;
+  }
+}
+
 .bg-success {
   background-color: #d4edda !important;
 }

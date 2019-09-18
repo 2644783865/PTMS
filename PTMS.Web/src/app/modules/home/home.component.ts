@@ -67,7 +67,7 @@ export class HomeComponent implements OnInit {
     await this.homeService.loadRelatedData();
     await this.loadDashboard();
 
-    //this._intervalHelper.startInterval();
+    this._intervalHelper.startInterval();
   }
 
   trackByRouteStat(index: number, routeStat: RouteStat) {

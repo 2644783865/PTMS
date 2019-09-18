@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { UserStore, UserUI } from './user.state';
 import { UserDataService, ProjectDataService, RouteDataService } from '@app/core/data-services';
-import { NotificationService } from '@app/core/notification';
 import { AuthService } from '@app/core/auth';
 import { NewUserDto, ConfirmUserDto, ChangePasswordDto, UserDto } from '@app/core/dtos';
 import { UserStatusEnum } from '@app/core/enums';
+import { NotificationService } from '@app/shared';
 
 @Injectable()
 export class UserService {

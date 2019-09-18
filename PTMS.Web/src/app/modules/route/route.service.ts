@@ -4,7 +4,7 @@ import { RouteDataService, ProjectDataService, BusStationDataService, BusStation
 import { applyTransaction } from '@datorama/akita';
 import { RouteFullDto, BusStationRouteDto, RouteDto } from '@app/core/dtos';
 import { InlineFormResult, PromiseChainHelper } from '@app/core/helpers';
-import { NotificationService } from '@app/core/notification';
+import { NotificationService } from '@app/shared';
 
 export interface RouteSaveResult {
   success: boolean

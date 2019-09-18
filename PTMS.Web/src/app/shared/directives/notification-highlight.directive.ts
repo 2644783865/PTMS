@@ -1,6 +1,6 @@
 import { Directive, ElementRef, Input } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { NotificationService } from '@app/core/notification/notification.service';
+import { NotificationService } from '@app/shared/helpers';
 
 @Directive({
   selector: '[appUpdatedRow]'

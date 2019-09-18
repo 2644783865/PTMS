@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ObjectDataService } from '@app/core/data-services/object.data.service';
 import { ObjectDto, RouteDto } from '@app/core/dtos';
-import { NotificationService } from '@app/core/notification/notification.service';
+import { NotificationService } from '@app/shared';
 import { ChangeRouteStore } from './change-route.state';
 import { RouteDataService } from '@app/core/data-services';
 import { isNotNullOrEmpty } from '@app/core/helpers';

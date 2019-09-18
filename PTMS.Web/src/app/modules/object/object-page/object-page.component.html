@@ -1,6 +1,6 @@
 <app-page-header>Транспорт</app-page-header>
 
-<div class="add-button">
+<div class="add-button button-group">
   <button mat-raised-button 
           color="primary" 
           (click)="openAddEditDialog()" 
@@ -9,8 +9,7 @@
   </button>
   <button mat-raised-button
           (click)="print()"
-          [ngShow]="(pagination$ | async).total > 0"
-          style="margin-left: 15px;">
+          [disabled]="!(pagination$ | async).total">
     Печать <mat-icon>print</mat-icon>
   </button>
 </div>

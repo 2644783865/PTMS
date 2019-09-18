@@ -56,6 +56,16 @@ namespace PTMS.Templates.Models
             get { return Role == RoleNames.Administrator || Role == RoleNames.Dispatcher; }
         }
 
+        public bool ShowCarType
+        {
+            get { return Role == RoleNames.Administrator || Role == RoleNames.Dispatcher; }
+        }
+
+        public int FontSize
+        {
+            get { return Role == RoleNames.Administrator || Role == RoleNames.Dispatcher ? 12 : 14; }
+        }
+
         public ObjectsPrintModel(List<Objects> vehicles, string roleName)
         {
             Vehicles = vehicles;

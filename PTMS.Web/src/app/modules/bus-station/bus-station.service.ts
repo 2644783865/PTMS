@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { BusStationDataService } from '@app/core/data-services';
 import { applyTransaction } from '@datorama/akita';
 import { BusStationDto } from '@app/core/dtos';
-import { NotificationService } from '@app/core/notification';
 import { BusStationStore } from './bus-station.state';
 import { ConfirmDialogService } from '@app/shared/confirm-dialog/confirm-dialog.service';
+import { NotificationService } from '@app/shared';
 
 @Injectable()
 export class BusStationService {

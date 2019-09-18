@@ -3,10 +3,10 @@ import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { AuthService } from '@app/core/auth';
 import { Router, ActivatedRoute } from '@angular/router';
-import { NotificationService } from '@app/core/notification';
 import { AccountDataService } from '@app/core/data-services';
 import { matchOther } from '@app/core/validation';
 import { LoginDto, RegisterDto } from '@app/core/dtos';
+import { NotificationService } from '@app/shared';
 
 declare function require(name: string);
 

@@ -6,13 +6,13 @@
 
 <style>
     * {
-        font-size: 12px;
+        font-size: @(Model.FontSize)px;
     }
 
     @@page {
         size: landscape;
         margin: 0.2cm 0.2cm 0.6cm 0.2cm;
-        
+
         @@bottom-center {
             font-size: 12px;
             content: counter(page);
@@ -83,12 +83,12 @@
 
             @if (Model.ShowProjects)
             {
-            <th>Перевозчик</th>
+                <th>Перевозчик</th>
             }
 
             @if (Model.ShowProviders)
             {
-            <th>Установщик</th>
+                <th>Установщик</th>
             }
 
             <th>Время посл. отклика</th>
@@ -96,12 +96,17 @@
 
             @if (Model.ShowBlocks)
             {
-            <th>Телефон (IMEI)</th>
-            <th>Блок</th>
+                <th>Телефон (IMEI)</th>
+                <th>Блок</th>
             }
 
             <th>Марка ТС</th>
-            <th>Тип ТС</th>
+
+            @if (Model.ShowCarType)
+            {
+                <th>Тип ТС</th>
+            }
+
             <th>Год выпуска</th>
             <th>Статус</th>
         </tr>
@@ -114,36 +119,40 @@
             <td>@(vehicle.Route?.Name ?? Utils.NaString)</td>
 
             @if (Model.ShowProjects)
-                {
-            <td>@(vehicle.Project?.Name ?? Utils.NaString)</td>
-                }
+            {
+                <td>@(vehicle.Project?.Name ?? Utils.NaString)</td>
+            }
 
             @if (Model.ShowProviders)
-                {
-            <td>@(vehicle.Provider?.Name ?? Utils.NaString)</td>
-                }
+            {
+                <td>@(vehicle.Provider?.Name ?? Utils.NaString)</td>
+            }
 
             <td>@vehicle.LastTime.ToDateTimeString()</td>
             <td>@vehicle.LastStationTime.ToDateTimeString()</td>
 
             @if (Model.ShowBlocks)
-                {
-            <td>@(vehicle.Phone > 0 ? vehicle.Phone.ToString() : Utils.NaString)</td>
-            <td>
-                @if (vehicle.Block != null)
-                        {
-                @vehicle.Block.BlockNumber
-                @vehicle.Block.BlockType?.Name
-                        }
-                        else
-                        {
-                @Utils.NaString
-                        }
-            </td>
-                }
+            {
+                <td>@(vehicle.Phone > 0 ? vehicle.Phone.ToString() : Utils.NaString)</td>
+                <td>
+                    @if (vehicle.Block != null)
+                    {
+                        @vehicle.Block.BlockType?.Name @vehicle.Block.BlockNumber
+                    }
+                    else
+                    {
+                        @Utils.NaString
+                    }
+                </td>
+            }
 
             <td>@(vehicle.CarBrand?.Name ?? Utils.NaString)</td>
-            <td>@(vehicle.CarBrand?.CarType?.Name ?? Utils.NaString)</td>
+
+            @if (Model.ShowCarType)
+            {
+                <td>@(vehicle.CarBrand?.CarType?.Name ?? Utils.NaString)</td>
+            }
+
             <td>@(vehicle.YearRelease > 0 ? vehicle.YearRelease.ToString() : Utils.NaString)</td>
             <td>@vehicle.StatusName</td>
         </tr>
