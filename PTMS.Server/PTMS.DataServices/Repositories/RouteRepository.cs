@@ -17,8 +17,9 @@ namespace PTMS.DataServices.Repositories
     {
         public RouteRepository(
             ApplicationDbContext context,
-            RouteSyncService syncService)
-            : base(context, syncService)
+            RouteSyncService syncService,
+            IDataChangeEventEmitter dataChangeEventEmitter)
+            : base(context, syncService, dataChangeEventEmitter)
         {
 
         }

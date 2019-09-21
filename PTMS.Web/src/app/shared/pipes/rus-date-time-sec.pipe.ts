@@ -2,12 +2,12 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { formatDate } from '@angular/common';
 
 @Pipe({
-  name: 'RusDateTime'
+  name: 'RusDateTimeSec'
 })
-export class RusDateTimePipe implements PipeTransform {
+export class RusDateTimeSecPipe implements PipeTransform {
   transform(date: string | Date): string {
     if (date) {
-      var result = formatDate(date, "dd.MM.yyyy HH:mm", "ru");
+      var result = formatDate(date, "dd.MM.yyyy HH:mm:ss", "ru");
       return result;
     }
     else {

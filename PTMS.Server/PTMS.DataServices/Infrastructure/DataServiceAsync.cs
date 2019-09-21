@@ -24,6 +24,14 @@ namespace PTMS.DataServices.Infrastructure
             : base(dbContext, syncService)
         {
         }
+
+        public DataServiceAsync(
+            ApplicationDbContext dbContext,
+            DataSyncServiceEx<TEntity, int> syncService,
+            IDataChangeEventEmitter dataEventEmitter)
+            : base(dbContext, syncService, dataEventEmitter)
+        {
+        }
     }
 
     public abstract class DataServiceAsyncEx<TEntity, TPKey> : IDataServiceExAsync<TEntity, TPKey>
@@ -31,18 +39,28 @@ namespace PTMS.DataServices.Infrastructure
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly DataSyncServiceEx<TEntity, TPKey> _syncService;
+        private readonly IDataChangeEventEmitter _dataEventEmitter;
 
         public DataServiceAsyncEx(ApplicationDbContext dbContext)
-            : this(dbContext, null)
+            : this(dbContext, null, null)
         {
         }
 
         public DataServiceAsyncEx(
             ApplicationDbContext dbContext,
             DataSyncServiceEx<TEntity, TPKey> syncService)
+            : this(dbContext, syncService, null)
+        {
+        }
+
+        public DataServiceAsyncEx(
+            ApplicationDbContext dbContext,
+            DataSyncServiceEx<TEntity, TPKey> syncService,
+            IDataChangeEventEmitter dataEventEmitter)
         {
             _dbContext = dbContext;
             _syncService = syncService;
+            _dataEventEmitter = dataEventEmitter;
         }
 
         private DbSet<TEntity> EntitySet => _dbContext.Set<TEntity>();
@@ -135,6 +153,8 @@ namespace PTMS.DataServices.Infrastructure
             var addResult = await EntitySet.AddAsync(entity);
             await _dbContext.SaveChangesAsync();
 
+            EmitDataChangeEvent();
+
             var result = addResult.Entity;
             
             if (_syncService != null)
@@ -149,6 +169,8 @@ namespace PTMS.DataServices.Infrastructure
         {
             var updateResult = EntitySet.Update(entity);
             await _dbContext.SaveChangesAsync();
+
+            EmitDataChangeEvent();
 
             var result = updateResult.Entity;
 
@@ -171,6 +193,8 @@ namespace PTMS.DataServices.Infrastructure
 
             EntitySet.Remove(item);
             await _dbContext.SaveChangesAsync();
+
+            EmitDataChangeEvent();
 
             if (_syncService != null)
             {
@@ -219,6 +243,15 @@ namespace PTMS.DataServices.Infrastructure
             var expression = Expression.Equal(left, Expression.Convert(right, propertyInfo.PropertyType));
 
             return Expression.Lambda<Func<TEntity, bool>>(expression, parameter);
+        }
+
+        private void EmitDataChangeEvent()
+        {
+            if (_dataEventEmitter != null)
+            {
+                var changeEvent = new DataChangeEvent(typeof(TEntity));
+                _dataEventEmitter.OnNext(changeEvent);
+            }
         }
     }
 }

@@ -38,6 +38,10 @@ export class ObjectService {
     return this.authService.isInRole(RoleEnum.Administrator, RoleEnum.Dispatcher);
   }
 
+  get canViewHistory(): boolean {
+    return this.authService.isInRole(RoleEnum.Administrator);
+  }
+
   async loadPage(event: PaginatorEvent, searchParams: any) {
     let page = event ? event.page : 1;
     let pageSize = event ? event.pageSize : 50;

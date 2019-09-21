@@ -6,15 +6,15 @@ namespace PTMS.Domain.Enums
     {
         [Description("Добавление")]
         Create = 1,
-        [Description("Обновление")]
-        Update,
+        [Description("Редактирование")]
+        Update = 2,
         [Description("Удаление")]
-        Delete,
+        Delete = 3,
         [Description("Смена маршрута ТС")]
-        ChangeObjectRoute,
+        ChangeObjectRoute = 4,
         [Description("Ввод ТС в эксплуатацию")]
-        EnableObject,
+        EnableObject = 5,
         [Description("Вывод ТС из эксплуатации")]
-        DisableObject
+        DisableObject = 6
     }
 }

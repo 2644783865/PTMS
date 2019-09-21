@@ -37,6 +37,7 @@ export class ObjectPageComponent implements OnInit {
 
   isTransporter: boolean;
   canAddVehicle: boolean;
+  canViewHistory: boolean;
 
   constructor(
     private objectQuery: ObjectQuery,
@@ -56,6 +57,7 @@ export class ObjectPageComponent implements OnInit {
     
     this.isTransporter = this.objectService.isTransporter;
     this.canAddVehicle = this.objectService.canAddVehicle;
+    this.canViewHistory = this.objectService.canViewHistory;
 
     if (this.isTransporter) {
       let columnsToHide = ['transporter', 'provider', 'phone', 'block'];

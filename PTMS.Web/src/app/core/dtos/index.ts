@@ -11,6 +11,7 @@ export * from './EventLogDto';
 export * from './EventLogFieldDto';
 export * from './GranitDto';
 export * from './LoginDto';
+export * from './NamedEntityDto';
 export * from './NewUserDto';
 export * from './ObjectAddEditRequestDto';
 export * from './ObjectDto';

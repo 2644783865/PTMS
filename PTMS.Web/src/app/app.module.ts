@@ -13,6 +13,7 @@ import { ObjectModule } from './modules/object/object.module';
 import { ChangeRouteModule } from './modules/change-route/change-route.module';
 import { CoreModule } from './core/core.module';
 import { BusStationModule } from './modules/bus-station/bus-station.module';
+import { EventLogsModule } from './modules/event-logs/event-log.module';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { BusStationModule } from './modules/bus-station/bus-station.module';
     UserModule,
     ChangeRouteModule,
     BusStationModule,
+    EventLogsModule,
 
     //app
     AppRoutingModule

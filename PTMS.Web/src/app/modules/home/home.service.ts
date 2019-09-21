@@ -3,7 +3,6 @@ import { HomeStore } from './home.state';
 import { ObjectDataService, ProjectDataService, ProviderDataService, RouteDataService, PlanDataService } from '@app/core/data-services';
 import { toDate, toDateTime } from '@app/core/helpers';
 import { EventLogDataService } from '@app/core/data-services/event-log.data.service';
-import { EventEnum } from '@app/core/enums/event.enum';
 
 @Injectable()
 export class HomeService {
@@ -66,7 +65,7 @@ export class HomeService {
       startDate.setHours(5, 0, 0, 0);
 
       let params = {
-        eventEnum: EventEnum.ChangeObjectRoute,
+        eventEnum: 4, //"ChangeObjectRoute",
         startDate: toDateTime(startDate)
       }
 

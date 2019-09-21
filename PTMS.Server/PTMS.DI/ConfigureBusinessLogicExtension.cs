@@ -29,6 +29,7 @@ namespace PTMS.DI
             services.AddScoped<EventLogCreator>();
 
             services.AddSingleton<IHtmlBuilder, HtmlBuilder>();
+            services.AddSingleton<AppCacheHelper>();
 
             services.AddScoped<IPdfService, PdfService>();
         }

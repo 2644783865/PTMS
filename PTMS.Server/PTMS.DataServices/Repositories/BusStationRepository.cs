@@ -11,8 +11,11 @@ namespace PTMS.DataServices.Repositories
 {
     public class BusStationRepository : DataServiceAsync<BusStation>, IBusStationRepository
     {
-        public BusStationRepository(ApplicationDbContext context, BusStationSyncService syncService)
-            : base(context, syncService)
+        public BusStationRepository(
+            ApplicationDbContext context, 
+            BusStationSyncService syncService,
+            IDataChangeEventEmitter dataChangeEventEmitter)
+            : base(context, syncService, dataChangeEventEmitter)
         {
 
         }

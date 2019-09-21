@@ -16,6 +16,7 @@ import { AutocompleteModule } from './autocomplete/autocomplete.module';
 import { DirectivesModule } from './directives';
 import { PipesModule } from './pipes';
 import { ConfirmDialogModule } from './confirm-dialog/confirm-dialog.module';
+import { DatePickerModule } from './datepicker/datepicker.module';
 export * from './helpers';
 
 let modules = [
@@ -54,7 +55,8 @@ let modules = [
   AutocompleteModule,
   DirectivesModule,
   PipesModule,
-  ConfirmDialogModule
+  ConfirmDialogModule,
+  DatePickerModule
 ];
 
 @NgModule({
