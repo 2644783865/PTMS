@@ -17,34 +17,34 @@ namespace PTMS.Api.Controllers
             _carBrandService = carBrandService;
         }
         
-        [ HttpGet( "/carBrands" ) ]
+        [HttpGet("/carBrands")]
         public async Task<ActionResult<List<CarBrandModel>>> GetAll()
         {
             var result = await _carBrandService.GetAllAsync();
             return result;
         }
 
-        [ PtmsAuthorize( RoleNames.Dispatcher ) ]
-        [ HttpPost( "/carBrand" ) ]
-        public async Task< CarBrandModel > Post( [ FromBody ] CarBrandModel model )
+        [PtmsAuthorize(RoleNames.Dispatcher)]
+        [HttpPost("/carBrand")]
+        public async Task<CarBrandModel> Post([FromBody]CarBrandModel model)
         {
-            var result = await _carBrandService.AddAsync( model );
+            var result = await _carBrandService.AddAsync(model);
             return result;
         }
 
-        [ PtmsAuthorize( RoleNames.Dispatcher ) ]
-        [ HttpPut( "/carBrand/{id}" ) ]
-        public async Task< CarBrandModel > Put( int id, [ FromBody ] CarBrandModel model )
+        [PtmsAuthorize(RoleNames.Dispatcher)]
+        [HttpPut("/carBrand/{id}")]
+        public async Task<CarBrandModel> Put(int id, [FromBody]CarBrandModel model)
         {
-            var result = await _carBrandService.UpdateAsync( model );
+            var result = await _carBrandService.UpdateAsync(model);
             return result;
         }
 
-        [ PtmsAuthorize( RoleNames.Dispatcher ) ]
-        [ HttpDelete( "/carBrand/{id}" ) ]
-        public async Task Delete( int id )
+        [PtmsAuthorize(RoleNames.Dispatcher)]
+        [HttpDelete("/carBrand/{id}")]
+        public async Task Delete(int id)
         {
-            await _carBrandService.DeleteByIdAsync( id );
+            await _carBrandService.DeleteByIdAsync(id);
         }
     }
 }
