@@ -216,6 +216,9 @@
               <button mat-menu-item *ngIf="vehicle.canEnable" (click)="openEnableDialog(vehicle)">
                 Ввести в эксплуатацию
               </button>
+              <button mat-menu-item *ngIf="canViewHistory" routerLink="/eventLogs" [queryParams]="{entityId: vehicle.id}">
+                История изменений
+              </button>
             </app-menu-icon-dropdown>
           </mat-cell>
         </ng-container>

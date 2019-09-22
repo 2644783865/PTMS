@@ -1,0 +1,117 @@
+<app-page-header>Журнал событий</app-page-header>
+
+<div *ngIf="(pagination$ | async) as pageData">
+  <div class="table-wrapper table-mobile mat-elevation-z8">
+
+    <mat-card [formGroup]="filters" class="table-filters form-full-container">
+      <div class="row">
+          <div class="col">
+              <mat-form-field>
+                <mat-label>Операция</mat-label>
+                <mat-select formControlName="eventEnum">
+                  <mat-option *ngFor="let operation of operations$ | async"
+                              [value]="operation.id">
+                    {{operation.name}}
+                  </mat-option>
+                </mat-select>
+                <app-input-clear-icon matSuffix controlName="eventEnum"></app-input-clear-icon>
+              </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field>
+              <input matInput placeholder="ID записи" type="text"
+                    formControlName="entityId" />
+              <app-input-clear-icon matSuffix controlName="entityId"></app-input-clear-icon>
+            </mat-form-field>
+          </div>
+          <div class="col">
+              <mat-form-field>
+                <input matInput #startDateInput 
+                      [matDatepicker]="startDate" (focus)="startDate.open()" 
+                      formControlName="startDate" placeholder="Дата От"
+                      [max]="filters.controls.endDate.value">
+                <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+                <mat-datepicker #startDate (closed)="startDateInput.blur()"></mat-datepicker>
+                <app-input-clear-icon matSuffix controlName="startDate"></app-input-clear-icon>
+              </mat-form-field>
+          </div>
+          <div class="col">
+              <mat-form-field>
+                <input matInput #endDateInput 
+                      [matDatepicker]="endDate" (focus)="endDate.open()" 
+                      formControlName="endDate" placeholder="Дата До"
+                      [min]="filters.controls.startDate.value">
+                <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+                <mat-datepicker #endDate (closed)="endDateInput.blur()"></mat-datepicker>
+                <app-input-clear-icon matSuffix controlName="endDate"></app-input-clear-icon>
+              </mat-form-field>
+          </div>
+      </div>
+    </mat-card>
+
+    <app-loading-bar [isLoading]="dataLoading$ | async"></app-loading-bar>
+
+    <mat-table [dataSource]="pageData.data">
+
+        <ng-container matColumnDef="operation">
+          <mat-header-cell *matHeaderCellDef> Операция </mat-header-cell>
+          <mat-cell *matCellDef="let eventLog" mobile-label="Операция"> 
+            {{eventLog.eventName}} 
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="timeStamp">
+            <mat-header-cell *matHeaderCellDef> Время </mat-header-cell>
+            <mat-cell *matCellDef="let eventLog" mobile-label="Время"> 
+              {{eventLog.timeStamp | RusDateTime}} 
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="user">
+            <mat-header-cell *matHeaderCellDef> Пользователь </mat-header-cell>
+            <mat-cell *matCellDef="let eventLog" mobile-label="Пользователь"> 
+              {{eventLog.user.fullName}}  
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="entity">
+              <mat-header-cell *matHeaderCellDef> Сущность </mat-header-cell>
+              <mat-cell *matCellDef="let eventLog" mobile-label="Сущность"> 
+                {{eventLog.entityType}} {{eventLog.entityId}}  
+              </mat-cell>
+            </ng-container>
+
+          <ng-container matColumnDef="message">
+            <mat-header-cell *matHeaderCellDef> Детали </mat-header-cell>
+            <mat-cell *matCellDef="let eventLog" mobile-label="Детали"> 
+              {{eventLog.message}}  
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="fields">
+              <mat-header-cell *matHeaderCellDef> Поля </mat-header-cell>
+              <mat-cell *matCellDef="let eventLog" mobile-label="Поля"> 
+                <div style="display: block">
+                    <div *ngFor="let field of eventLog.eventLogFields"
+                          style="align-items: center; display: flex;">
+                      <b>{{field.fieldName}}:</b> &nbsp;
+                      {{ getFieldValue(field.oldFieldValue) }} 
+                      <mat-icon>arrow_right_alt</mat-icon>
+                      {{ getFieldValue(field.newFieldValue) }}
+                    </div>
+                </div>
+              </mat-cell>
+            </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;">
+          </mat-row>
+      </mat-table>
+
+    <app-paginator [totalCount]="pageData.total"
+                   [currentPage]="pageData.currentPage"
+                   [pageSize]="pageData.perPage"
+                   (onChange)="search($event)">
+    </app-paginator>
+  </div>
+</div>

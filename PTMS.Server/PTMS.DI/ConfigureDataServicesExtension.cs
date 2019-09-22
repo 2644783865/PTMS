@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using PTMS.DataServices.Infrastructure;
 using PTMS.DataServices.IRepositories;
 using PTMS.DataServices.Repositories;
 using PTMS.DataServices.SyncServices;
@@ -34,6 +35,7 @@ namespace PTMS.DI
             services.AddScoped<ProjectRouteSyncService>();
             services.AddScoped<BusStationSyncService>();
             services.AddScoped<CarBrandSyncService>();
+            services.AddSingleton<IDataChangeEventEmitter, DataChangeEventEmitter>();
         }
     }
 }

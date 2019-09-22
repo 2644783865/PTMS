@@ -36,7 +36,9 @@ namespace PTMS.BusinessLogic.Helpers
         
         public async Task<UserAvailableRoutes> GetAvailableRoutesModel(ClaimsPrincipal userPrincipal)
         {
-            if (userPrincipal.IsInRole(RoleNames.Administrator))
+            if (userPrincipal == null 
+                || userPrincipal.IsInRole(RoleNames.Administrator)
+                || userPrincipal.IsInRole(RoleNames.Dispatcher))
             {
                 return new UserAvailableRoutes();
             }

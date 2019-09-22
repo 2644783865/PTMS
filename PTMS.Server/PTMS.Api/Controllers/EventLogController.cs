@@ -2,9 +2,11 @@
 using PTMS.Api.Attributes;
 using PTMS.BusinessLogic.IServices;
 using PTMS.BusinessLogic.Models.EventLog;
+using PTMS.BusinessLogic.Models.Shared;
 using PTMS.Common;
 using PTMS.Domain.Enums;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace PTMS.Api.Controllers
@@ -45,6 +47,38 @@ namespace PTMS.Api.Controllers
                 orderBy,
                 page,
                 pageSize);
+
+            return result;
+        }
+
+        [HttpGet("/eventEntityTypes")]
+        public ActionResult<List<NamedEntityModel>> GetEntityTypes()
+        {
+            var result = new List<NamedEntityModel>()
+            {
+                new NamedEntityModel
+                {
+                    Id = 1,
+                    Name = "Objects"
+                }
+            };
+
+            return result;
+        }
+
+        [HttpGet("/eventOperations")]
+        public ActionResult<List<NamedEntityModel>> GetOperations()
+        {
+            var result = new List<NamedEntityModel>();
+
+            foreach (EventEnum eventEnum in Enum.GetValues(typeof(EventEnum)))
+            {
+                result.Add(new NamedEntityModel
+                {
+                    Id = (int)eventEnum,
+                    Name = EnumHelper.GetDescription(eventEnum)
+                });
+            }
 
             return result;
         }
