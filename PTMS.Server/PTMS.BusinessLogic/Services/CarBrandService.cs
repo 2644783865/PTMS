@@ -26,5 +26,24 @@ namespace PTMS.BusinessLogic.Services
             var result = await _carBrandRepository.GetAllAsync();
             return MapToModel<CarBrandModel>(result);
         }
+
+        public async Task< CarBrandModel > AddAsync( CarBrandModel model )
+        {
+            var entity = MapFromModel( model );
+            var result = await _carBrandRepository.AddAsync( entity );
+            return MapToModel< CarBrandModel >( result );
+        }
+
+        public async Task< CarBrandModel > UpdateAsync( CarBrandModel model )
+        {
+            var entity = MapFromModel( model );
+            var result = await _carBrandRepository.UpdateAsync( entity );
+            return MapToModel< CarBrandModel >( result );
+        }
+
+        public async Task DeleteByIdAsync( int id )
+        {
+            await _carBrandRepository.DeleteByIdAsync( id );
+        }
     }
 }
