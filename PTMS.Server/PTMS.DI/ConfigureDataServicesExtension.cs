@@ -34,7 +34,7 @@ namespace PTMS.DI
             services.AddScoped<RouteSyncService>();
             services.AddScoped<ProjectRouteSyncService>();
             services.AddScoped<BusStationSyncService>();
-
+            services.AddScoped<CarBrandSyncService>();
             services.AddSingleton<IDataChangeEventEmitter, DataChangeEventEmitter>();
         }
     }
