@@ -23,5 +23,28 @@ namespace PTMS.Api.Controllers
             var result = await _carBrandService.GetAllAsync();
             return result;
         }
+
+        [PtmsAuthorize(RoleNames.Dispatcher)]
+        [HttpPost("/carBrand")]
+        public async Task<CarBrandModel> Post([FromBody]CarBrandModel model)
+        {
+            var result = await _carBrandService.AddAsync(model);
+            return result;
+        }
+
+        [PtmsAuthorize(RoleNames.Dispatcher)]
+        [HttpPut("/carBrand/{id}")]
+        public async Task<CarBrandModel> Put(int id, [FromBody]CarBrandModel model)
+        {
+            var result = await _carBrandService.UpdateAsync(model);
+            return result;
+        }
+
+        [PtmsAuthorize(RoleNames.Dispatcher)]
+        [HttpDelete("/carBrand/{id}")]
+        public async Task Delete(int id)
+        {
+            await _carBrandService.DeleteByIdAsync(id);
+        }
     }
 }
