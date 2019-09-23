@@ -9,6 +9,8 @@ namespace PTMS.BusinessLogic.IServices
     {
         Task<List<RouteModel>> GetAllAsync(ClaimsPrincipal userPrincipal, int? project, bool? active);
 
+        Task<List<string>> GetAllNamesAsync();
+
         Task<RouteModel> GetByIdAsync(int id);
 
         Task<List<RouteFullModel>> GetAllForPageAsync();

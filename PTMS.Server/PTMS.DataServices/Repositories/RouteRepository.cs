@@ -29,6 +29,11 @@ namespace PTMS.DataServices.Repositories
             int? projectId,
             bool? active)
         {
+            if (userRoutesModel == null)
+            {
+                userRoutesModel = new UserAvailableRoutes();
+            }
+
             if (userRoutesModel.ProjectId.HasValue)
             {
                 projectId = userRoutesModel.ProjectId;

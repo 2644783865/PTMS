@@ -18,17 +18,20 @@ namespace PTMS.BusinessLogic.Services
         private readonly AppUserManager _userManager;
         private readonly IRouteRepository _routeRepository;
         private readonly IProjectRouteRepository _projectRouteRepository;
+        private readonly AppCacheHelper _appCacheHelper;
 
         public RouteService(
             AppUserManager userManager,
             IRouteRepository routeRepository,
             IProjectRouteRepository projectRouteRepository,
+            AppCacheHelper appCacheHelper,
             IMapper mapper)
             : base(mapper)
         {
             _routeRepository = routeRepository;
             _userManager = userManager;
             _projectRouteRepository = projectRouteRepository;
+            _appCacheHelper = appCacheHelper;
         }
 
         public async Task<List<RouteModel>> GetAllAsync(
@@ -39,6 +42,17 @@ namespace PTMS.BusinessLogic.Services
             var userRoutesModel = await _userManager.GetAvailableRoutesModel(userPrincipal);
             var result = await _routeRepository.GetAllAsync(userRoutesModel, projectId, active);
             return MapToModel<RouteModel>(result);
+        }
+
+        public async Task<List<string>> GetAllNamesAsync()
+        {
+            var routes = await _appCacheHelper.GetCachedAsync(
+               "GetAllActiveRoutes",
+               () => _routeRepository.GetAllAsync(null, null, true),
+               typeof(Route));
+
+            var result = routes.Select(x => x.Name).ToList();
+            return result;
         }
 
         public async Task<List<RouteFullModel>> GetAllForPageAsync()

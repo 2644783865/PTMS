@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PTMS.Api.Attributes;
 using PTMS.BusinessLogic.IServices;
 using PTMS.BusinessLogic.Models;
+using PTMS.BusinessLogic.Models.Shared;
 using PTMS.Common;
 
 namespace PTMS.Api.Controllers
@@ -31,6 +33,14 @@ namespace PTMS.Api.Controllers
         {
             var result = await _routeService.GetByIdAsync(id);
             return result;
+        }
+
+        [AllowAnonymous]
+        [HttpGet("/routes/names")]
+        public async Task<ActionResult<TResultModel<List<string>>>> GetAllNames()
+        {
+            var routeNames = await _routeService.GetAllNamesAsync();
+            return new TResultModel<List<string>>(routeNames);
         }
 
         [PtmsAuthorize(RoleNames.Dispatcher)]

@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PTMS.Api.Attributes;
 using PTMS.BusinessLogic.IServices;
 using PTMS.BusinessLogic.Models;
+using PTMS.BusinessLogic.Models.Shared;
 using PTMS.Common;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -17,12 +19,20 @@ namespace PTMS.Api.Controllers
             _busStationService = busStationService;
         }
 
-        [PtmsAuthorize(RoleNames.Dispatcher)]
+        [AllowAnonymous]
         [HttpGet("/busStations")]
         public async Task<ActionResult<List<BusStationModel>>> GetAll()
         {
             var result = await _busStationService.GetAllAsync();
             return result;
+        }
+
+        [AllowAnonymous]
+        [HttpGet("/busStationsResult")]
+        public async Task<ActionResult<TResultModel<List<BusStationModel>>>> GetAllResult()
+        {
+            var result = await _busStationService.GetAllAsync();
+            return new TResultModel<List<BusStationModel>>(result);
         }
 
         [PtmsAuthorize(RoleNames.Dispatcher)]
