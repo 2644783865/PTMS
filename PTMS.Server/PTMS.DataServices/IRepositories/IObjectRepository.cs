@@ -42,6 +42,8 @@ namespace PTMS.DataServices.IRepositories
         
         Task<List<Objects>> FindForReportingAsync(DateTime onlineStartDate, DateTime onlineEndDate);
 
+        Task<List<Objects>> GetAllTrolleybuses();
+
         Task<short> GetNextObjectIdAsync();
 
         Task<List<Objects>> FindAllForPdfAsync(

@@ -25,6 +25,7 @@ namespace PTMS.DI
             services.AddScoped<IBusStationService, BusStationService>();
             services.AddScoped<IBusStationRouteService, BusStationRouteService>();
             services.AddScoped<IEventLogService, EventLogService>();
+            services.AddScoped<IDispatchService, DispatchService>();
 
             services.AddScoped<EventLogCreator>();
 

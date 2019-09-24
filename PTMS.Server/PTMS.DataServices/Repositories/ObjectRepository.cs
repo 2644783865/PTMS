@@ -177,6 +177,11 @@ namespace PTMS.DataServices.Repositories
                 && x.Route.RouteActive);
         }
 
+        public Task<List<Objects>> GetAllTrolleybuses()
+        {
+            return FindAsync(x => x.Route.Name.StartsWith("Т"));
+        }
+
         public override async Task<Objects> AddAsync(Objects entity)
         {
             PrepareObject(entity);

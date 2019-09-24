@@ -85,8 +85,8 @@ namespace PTMS.DataServices.Repositories
                     var firstLetters = Regex.Replace(first.Name, @"[\d-]", string.Empty);
                     var secondLetters = Regex.Replace(second.Name, @"[\d-]", string.Empty);
 
-                    var isFirstTroll = firstLetters.Contains("тр", StringComparison.InvariantCultureIgnoreCase);
-                    var isSecondTroll = secondLetters.Contains("тр", StringComparison.InvariantCultureIgnoreCase);
+                    var isFirstTroll = firstLetters.StartsWith("т", StringComparison.InvariantCultureIgnoreCase);
+                    var isSecondTroll = secondLetters.StartsWith("т", StringComparison.InvariantCultureIgnoreCase);
 
                     compareResult = isFirstTroll.CompareTo(isSecondTroll);
 
