@@ -4,6 +4,7 @@ export * from './bus-station-route.data.service';
 export * from './bus-station.data.service';
 export * from './car-brand.data.service';
 export * from './car-type.data.service';
+export * from './dispatch.data.service';
 export * from './event-log.data.service';
 export * from './object.data.service';
 export * from './plan.data.service';

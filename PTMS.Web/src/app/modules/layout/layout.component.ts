@@ -34,7 +34,8 @@ export class LayoutComponent implements OnInit {
           { link: 'busStations', label: 'Остановки', visible: this.authService.isInRole(RoleEnum.Administrator, RoleEnum.Dispatcher) },
           { link: 'change-route', label: 'Сменить Маршрут ТС', visible: this.authService.isInRole(RoleEnum.Transporter, RoleEnum.Mechanic) },
           { link: 'users', label: 'Пользователи', visible: this.authService.isInRole(RoleEnum.Administrator) },
-          { link: 'eventLogs', label: 'Журнал событий', visible: this.authService.isInRole(RoleEnum.Administrator) }
+          { link: 'eventLogs', label: 'Журнал событий', visible: this.authService.isInRole(RoleEnum.Administrator) },
+          { link: 'trolleyTodayStatus', label: 'Троллейбусы сегодня', visible: this.authService.isInRole(RoleEnum.Administrator) }
         ];
 
         this.allNavigation = routes.filter(x => x.visible);
@@ -47,7 +48,8 @@ export class LayoutComponent implements OnInit {
 
   get navigation() {
     let dropdownNavigationItems = this.dictionariesNavigation
-      .concat(this.adminNavigation);
+      .concat(this.adminNavigation)
+      .concat(this.dispatchNavigation);
 
     return this.allNavigation.filter(x => {
       return !dropdownNavigationItems.some(d => d.link == x.link);
@@ -60,6 +62,10 @@ export class LayoutComponent implements OnInit {
 
   get adminNavigation() {
     return this.allNavigation.filter(x => ['users', 'eventLogs'].includes(x.link));
+  }
+
+  get dispatchNavigation() {
+    return this.allNavigation.filter(x => ['trolleyTodayStatus'].includes(x.link));
   }
 
   onLogoutClick() {

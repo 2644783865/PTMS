@@ -14,6 +14,7 @@ import { ChangeRouteModule } from './modules/change-route/change-route.module';
 import { CoreModule } from './core/core.module';
 import { BusStationModule } from './modules/bus-station/bus-station.module';
 import { EventLogsModule } from './modules/event-logs/event-log.module';
+import { TrolleyTodayStatusModule } from './modules/trolley-today-status/trolley-today-status.module';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { EventLogsModule } from './modules/event-logs/event-log.module';
     ChangeRouteModule,
     BusStationModule,
     EventLogsModule,
+    TrolleyTodayStatusModule,
 
     //app
     AppRoutingModule

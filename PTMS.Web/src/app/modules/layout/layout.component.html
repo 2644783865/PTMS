@@ -42,6 +42,21 @@
               </button>
             </span>
 
+            <span class="toolbar-nav-button" *ngIf="dispatchNavigation.length > 0">
+                <button mat-button [matMenuTriggerFor]="dispatchMenu">
+                  <span>Диспетчеризация</span>
+                  <mat-icon style="margin: 0 0 0 4px">arrow_drop_down</mat-icon>
+                </button>
+                <mat-menu #dispatchMenu="matMenu">
+                  <button *ngFor="let item of dispatchNavigation"
+                          mat-menu-item
+                          [routerLink]="[item.link]"
+                          routerLinkActive="active">
+                      {{item.label}}
+                  </button>
+                </mat-menu>
+              </span>
+
             <span class="toolbar-nav-button" *ngIf="dictionariesNavigation.length > 0">
               <button mat-button [matMenuTriggerFor]="dictionariesMenu">
                 <span>Справочники</span>

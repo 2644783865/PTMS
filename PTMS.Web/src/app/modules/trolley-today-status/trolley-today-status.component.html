@@ -1,0 +1,42 @@
+<app-page-header>Троллейбусы сегодня</app-page-header>
+
+<app-loading-overlay [isLoading]="dataLoading$ | async">
+    <div *ngIf="(list$ | async).length > 0">
+      <div class="table-wrapper table-editable table-mobile mat-elevation-z8">
+        <mat-table [dataSource]="list$ | async">
+          <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef> Номер </mat-header-cell>
+            <mat-cell *matCellDef="let status" mobile-label="Номер"> {{status.trolleybus.name}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="route">
+            <mat-header-cell *matHeaderCellDef> Маршрут </mat-header-cell>
+            <mat-cell *matCellDef="let status" mobile-label="Маршрут"> {{status.trolleybus.route.name}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="place">
+            <mat-header-cell *matHeaderCellDef> Место </mat-header-cell>
+            <mat-cell *matCellDef="let status" mobile-label="Место"> {{status.place}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="coordTime">
+            <mat-header-cell *matHeaderCellDef> Время <app-hint-icon hint="Время координаты, которая однозначано определила маршрут"></app-hint-icon> </mat-header-cell>
+            <mat-cell *matCellDef="let status" mobile-label="Время"> {{status.coordTime | RusDateTime}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="controls">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let status" class="table-controls">
+              <!--<button mat-raised-button 
+                color="primary"
+                *ngIf="status.newRoute">
+                Сменить на {{status.newRoute.name}}
+              </button>-->
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"
+                    [class.bg-error]="row.newRoute">
+          </mat-row>
+        </mat-table>
+      </div>
+    </div>
+</app-loading-overlay>
+
+

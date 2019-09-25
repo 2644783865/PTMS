@@ -23,6 +23,7 @@ export * from './RegisterDto';
 export * from './RoleDto';
 export * from './RouteDto';
 export * from './RouteFullDto';
+export * from './TrolleybusTodayStatusDto';
 export * from './UserDto';
 export * from './UserLightDto';
 export * from './UserStatusDto';
