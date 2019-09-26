@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using PTMS.BusinessLogic.Models.Object;
+using PTMS.Common;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using PTMS.BusinessLogic.Models;
-using PTMS.Common;
 
 namespace PTMS.BusinessLogic.IServices
 {
@@ -55,7 +55,8 @@ namespace PTMS.BusinessLogic.IServices
         Task<ObjectModel> ChangeRouteAsync(
             int ids,
             int newRouteId,
-            ClaimsPrincipal principal);
+            ClaimsPrincipal principal,
+            bool updateBusRoutes);
 
         Task<ObjectModel> EnableAsync(
             int ids,

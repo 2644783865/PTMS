@@ -2,6 +2,7 @@
 using PTMS.BusinessLogic.IServices;
 using PTMS.BusinessLogic.Models;
 using PTMS.BusinessLogic.Models.Dispatch;
+using PTMS.BusinessLogic.Models.Object;
 using PTMS.DataServices.IRepositories;
 using System;
 using System.Collections.Generic;
@@ -64,14 +65,17 @@ namespace PTMS.BusinessLogic.Services
                 return item;
             })
             .ToList();
-
+            
             result.Sort((a, b) =>
             {
-                var compareResult = (a.NewRoute != null).CompareTo(b.NewRoute != null);
+                var compareResult = -(a.NewRoute != null).CompareTo(b.NewRoute != null);
 
                 if (compareResult == 0)
                 {
-                    compareResult = a.Trolleybus.Route.Name.CompareTo(b.Trolleybus.Route.Name);
+                    var aRouteNumber = int.Parse(Regex.Match(a.Trolleybus.Route.Name, @"\d+").Value);
+                    var bRouteNumber = int.Parse(Regex.Match(b.Trolleybus.Route.Name, @"\d+").Value);
+
+                    compareResult = aRouteNumber.CompareTo(bRouteNumber);
 
                     if (compareResult == 0)
                     {

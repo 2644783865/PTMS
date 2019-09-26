@@ -2,7 +2,7 @@
 using PTMS.BusinessLogic.Helpers;
 using PTMS.BusinessLogic.Infrastructure;
 using PTMS.BusinessLogic.IServices;
-using PTMS.BusinessLogic.Models;
+using PTMS.BusinessLogic.Models.Object;
 using PTMS.Common;
 using PTMS.DataServices.IRepositories;
 using PTMS.Domain.Entities;
@@ -154,7 +154,8 @@ namespace PTMS.BusinessLogic.Services
         public async Task<ObjectModel> ChangeRouteAsync(
             int id, 
             int newRouteId,
-            ClaimsPrincipal principal)
+            ClaimsPrincipal principal,
+            bool updateBusRoutes)
         {
             var userRoutesModel = await _userManager.GetAvailableRoutesModel(principal);
             var entity = await _objectRepository.GetByIdAsync(id);
@@ -183,6 +184,11 @@ namespace PTMS.BusinessLogic.Services
             var updatedEntity = await _objectRepository.UpdateAsync(entity);
 
             await _eventLogCreator.CreateLog(principal, EventEnum.ChangeObjectRoute, oldEntity, updatedEntity);
+
+            if (updateBusRoutes)
+            {
+                await _busDataRepository.UpdateBusRoutes(updatedEntity);
+            }
 
             var result = await _objectRepository.GetFullByIdAsync(updatedEntity.Id);
             return MapToModel<ObjectModel>(result);

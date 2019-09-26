@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PTMS.BusinessLogic.Models
+namespace PTMS.BusinessLogic.Models.Object
 {
     public class ObjectAddEditRequest
     {

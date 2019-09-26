@@ -22,7 +22,7 @@ namespace PTMS.DataServices.Repositories
         public async Task<List<TrolleybusTodayStatus>> GetTrolleybusTodayStatus()
         {
             var result = new List<TrolleybusTodayStatus>();
-            var sql = "EXECUTE PROCEDURE TROLL_V3009";
+            var sql = "select * from TROLL_V3009";
 
             using (var connection = new FbConnection(_dataConnectionString))
             {

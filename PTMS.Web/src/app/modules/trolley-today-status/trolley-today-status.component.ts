@@ -5,7 +5,8 @@ import { TrolleybusStatusQuery } from './trolley-today-status.state';
 import { TrolleybusTodayStatusDto } from '@app/core/dtos';
 
 @Component({
-  templateUrl: './trolley-today-status.component.html'
+  templateUrl: './trolley-today-status.component.html',
+  styleUrls: ['./trolley-today-status.component.scss']
 })
 export class TrolleyTodayStatusComponent implements OnInit {
   list$: Observable<TrolleybusTodayStatusDto[]>;
@@ -21,6 +22,10 @@ export class TrolleyTodayStatusComponent implements OnInit {
     this.dataLoading$ = this.trolleybusStatusQuery.dataLoading$;
 
     this.trolleybusTodayStatusService.loadData();
+  }
+
+  async changeRoute(status: TrolleybusTodayStatusDto){
+    await this.trolleybusTodayStatusService.changeRoute(status);
   }
   
   ngOnDestroy() {

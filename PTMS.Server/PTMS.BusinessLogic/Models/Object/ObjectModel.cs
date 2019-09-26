@@ -1,7 +1,7 @@
 ﻿using PTMS.Common;
 using System;
 
-namespace PTMS.BusinessLogic.Models
+namespace PTMS.BusinessLogic.Models.Object
 {
     public class ObjectModel
     {

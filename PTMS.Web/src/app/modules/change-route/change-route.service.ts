@@ -36,7 +36,7 @@ export class ChangeRouteService {
     try {
       this.changeRouteStore.setLoading(true);
 
-      let updateItem = await this.objectDataService.changeRoute(vehicle.id, newRoute.id);
+      let updateItem = await this.objectDataService.changeRoute(vehicle.id, newRoute.id, false);
       this.changeRouteStore.set([]);
 
       this.notificationService.success(`Маршрут автобуса номер ${updateItem.name} был успешно изменён`);

@@ -97,7 +97,7 @@ export class ObjectService {
     try {
       this.objectStore.setModalLoading(true);
 
-      let updateItem = await this.objectDataService.changeRoute(vehicle.id, newRoute.id);
+      let updateItem = await this.objectDataService.changeRoute(vehicle.id, newRoute.id, false);
 
       this.objectStore.update(updateItem.id, this.mapToModel(updateItem));
 

@@ -2,7 +2,7 @@
 
 <app-loading-overlay [isLoading]="dataLoading$ | async">
     <div *ngIf="(list$ | async).length > 0">
-      <div class="table-wrapper table-editable table-mobile mat-elevation-z8">
+      <div class="table-wrapper table-mobile mat-elevation-z8">
         <mat-table [dataSource]="list$ | async">
           <ng-container matColumnDef="name">
             <mat-header-cell *matHeaderCellDef> Номер </mat-header-cell>
@@ -18,21 +18,23 @@
           </ng-container>
           <ng-container matColumnDef="coordTime">
             <mat-header-cell *matHeaderCellDef> Время <app-hint-icon hint="Время координаты, которая однозначано определила маршрут"></app-hint-icon> </mat-header-cell>
-            <mat-cell *matCellDef="let status" mobile-label="Время"> {{status.coordTime | RusDateTime}} </mat-cell>
+            <mat-cell *matCellDef="let status" mobile-label="Время"> {{status.coordinationTime | RusDateTime}} </mat-cell>
           </ng-container>
           <ng-container matColumnDef="controls">
             <mat-header-cell *matHeaderCellDef></mat-header-cell>
             <mat-cell *matCellDef="let status" class="table-controls">
-              <!--<button mat-raised-button 
+              <button mat-raised-button 
                 color="primary"
-                *ngIf="status.newRoute">
+                *ngIf="status.newRoute"
+                (click)="changeRoute(status)">
                 Сменить на {{status.newRoute.name}}
-              </button>-->
+              </button>
             </mat-cell>
           </ng-container>
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
           <mat-row *matRowDef="let row; columns: displayedColumns;"
-                    [class.bg-error]="row.newRoute">
+                    [class.bg-error]="row.newRoute"
+                    [appUpdatedRow]="row.id">
           </mat-row>
         </mat-table>
       </div>

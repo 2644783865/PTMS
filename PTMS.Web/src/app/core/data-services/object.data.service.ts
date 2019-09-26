@@ -33,8 +33,8 @@ export class ObjectDataService {
     return this.http.put<ObjectDto>(`object/${id}`, item);
   }
 
-  changeRoute(id: number, newRouteId: number): Promise<ObjectDto> {
-    return this.http.post<ObjectDto>(`object/${id}/changeRoute/${newRouteId}`);
+  changeRoute(id: number, newRouteId: number, updateBusRoutes: boolean): Promise<ObjectDto> {
+    return this.http.post<ObjectDto>(`object/${id}/changeRoute/${newRouteId}`, {updateBusRoutes});
   }
 
   changeProvider(id: number, newProviderId: number): Promise<ObjectDto> {

@@ -66,6 +66,12 @@ namespace PTMS.BusinessLogic.Helpers
                     var entityId = oldVehicle != null ? oldVehicle.Id : newVehicle.Id;
                     var entityType = nameof(Objects);
 
+                    if ((fields.Count == 1 && fields[0].FieldName == nameof(Objects.LastRout))
+                        || fields.Count == 2 && fields.Any(x => x.FieldName == nameof(Objects.LastRout)) && fields.Any(x => x.FieldName == nameof(Objects.ProjId)))
+                    {
+                        eventEnum = EventEnum.ChangeObjectRoute;
+                    }
+
                     string message = null;
 
                     switch (eventEnum)

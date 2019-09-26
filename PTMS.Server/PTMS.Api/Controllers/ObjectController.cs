@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PTMS.Api.Attributes;
 using PTMS.BusinessLogic.IServices;
-using PTMS.BusinessLogic.Models;
+using PTMS.BusinessLogic.Models.Object;
 using PTMS.Common;
 using System;
 using System.Collections.Generic;
@@ -77,12 +77,13 @@ namespace PTMS.Api.Controllers
 
         [PtmsAuthorize(RoleNames.Dispatcher, RoleNames.Transporter, RoleNames.Mechanic)]
         [HttpPost("/object/{ids}/changeRoute/{newRouteId}")]
-        public async Task<ObjectModel> ChangeRoute(int ids, int newRouteId)
+        public async Task<ObjectModel> ChangeRoute(int ids, int newRouteId, [FromBody]ObjectChangeRouteRequest request)
         {
             var result = await _objectService.ChangeRouteAsync(
                 ids,
                 newRouteId,
-                User);
+                User,
+                request.UpdateBusRoutes);
 
             return result;
         }

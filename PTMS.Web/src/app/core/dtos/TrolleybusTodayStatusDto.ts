@@ -3,6 +3,7 @@ import { RouteDto } from './RouteDto';
 
 export interface TrolleybusTodayStatusDto
 {
+    id: number;
     trolleybus: ObjectDto;
     place: string;
     newRoute: RouteDto;
