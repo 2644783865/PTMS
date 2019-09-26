@@ -223,9 +223,9 @@ export class ObjectService {
     let vehicle = item as ObjectUI;
 
     vehicle.canUpdate = this.authService.isInRole(RoleEnum.Administrator, RoleEnum.Dispatcher);
-    vehicle.canChangeRoute = !vehicle.objOutput && this.isTransporter;
-    vehicle.canEnable = vehicle.objOutput && this.authService.isInRole(RoleEnum.Administrator, RoleEnum.Dispatcher);
-    vehicle.canDisable = !vehicle.objOutput && this.authService.isInRole(RoleEnum.Administrator, RoleEnum.Dispatcher);
+    vehicle.canChangeRoute = !vehicle.objectOutput && this.isTransporter;
+    vehicle.canEnable = vehicle.objectOutput && this.authService.isInRole(RoleEnum.Administrator, RoleEnum.Dispatcher);
+    vehicle.canDisable = !vehicle.objectOutput && this.authService.isInRole(RoleEnum.Administrator, RoleEnum.Dispatcher);
 
     vehicle.showMenu = vehicle.canChangeRoute
       || vehicle.canUpdate
@@ -235,11 +235,11 @@ export class ObjectService {
     let state = this.objectStore.getValue();
 
     if (state.routes.length > 0) {
-      vehicle.route = state.routes.find(x => x.id == vehicle.lastRout);
+      vehicle.route = state.routes.find(x => x.id == vehicle.lastRouteId);
     }
 
     if (state.projects.length > 0) {
-      vehicle.project = state.projects.find(x => x.id == vehicle.projId);
+      vehicle.project = state.projects.find(x => x.id == vehicle.projectId);
     }
 
     if (state.providers.length > 0) {

@@ -52,7 +52,7 @@ namespace PTMS.BusinessLogic.Services
                 }
 
                 var vehicle = trolleybuses.First(x => x.Name.Equals(s.Name, compType));
-                vehicle.Route = routes.First(x => x.Id == vehicle.LastRout.Value);
+                vehicle.Route = routes.First(x => x.Id == vehicle.LastRouteId.Value);
 
                 var item = new TrolleybusTodayStatusModel
                 {

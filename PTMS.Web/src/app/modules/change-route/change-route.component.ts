@@ -36,7 +36,7 @@ export class ChangeRouteComponent implements OnInit {
         let selectedVehicle = this.routeForm.get('vehicle').value as ObjectDto;
 
         if (selectedVehicle) {
-          return routes.filter(r => r.id != selectedVehicle.lastRout);
+          return routes.filter(r => r.id != selectedVehicle.lastRouteId);
         }
         else {
           return routes;

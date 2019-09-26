@@ -66,7 +66,7 @@ export class ObjectAddEditDialogComponent {
         updateBusRoutes: false
       });
 
-      if (!vehicle.objOutput) {
+      if (!vehicle.objectOutput) {
         this.modalForm.get('route').setValidators(Validators.required);
         this.showRouteRequired = true;
       }

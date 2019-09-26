@@ -10,7 +10,6 @@ namespace PTMS.DataServices.Repositories
         public EventLogFieldRepository(ApplicationDbContext context)
             : base(context)
         {
-
         }
     }
 }

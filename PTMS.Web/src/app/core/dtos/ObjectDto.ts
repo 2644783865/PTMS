@@ -5,31 +5,31 @@ import { ProviderDto } from './ProviderDto';
 import { GranitDto } from './GranitDto';
 
 export interface ObjectDto {
-  name: string
-  objId: number
-  lastTime: Date
-  lastLon: number
-  lastLat: number
-  lastSpeed: number
-  projId: number
-  lastStation: number
-  lastStationTime: Date
-  lastRout: number
-  vehicleType: number
-  azmth: number
-  providerId: number
-  id: number
-  carBrandId: number
-  userComment: string
-  dateInserted: Date
-  objOutput: number
-  objOutputDate: Date
-  phone: number
-  yearRelease: number
-  dispRoute: number
-  lastAddInfo: number
-  lowfloor: number
-  statusName: string
+  id: number;
+  name: string;
+  objId: number;
+  lastTime: Date | string | null;
+  lastLongitude: number | null;
+  lastLatitude: number | null;
+  lastSpeed: number | null;
+  projectId: number;
+  lastStationId: number | null;
+  lastStationTime: Date | string | null;
+  lastRouteId: number | null;
+  carTypeId: number | null;
+  azimuth: number | null;
+  providerId: number;
+  carBrandId: number | null;
+  userComment: string;
+  dateInserted: Date | string | null;
+  objectOutput: boolean;
+  objectOutputDate: Date | string | null;
+  phone: number;
+  yearRelease: number | null;
+  dispRouteId: number | null;
+  lastAddInfo: number | null;
+  lowfloor: boolean;
+  statusName: string;
 
   carBrand: CarBrandDto
   provider: ProviderDto

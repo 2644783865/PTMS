@@ -43,15 +43,15 @@ namespace PTMS.BusinessLogic.Helpers
             {
                 var trackableProperties = new string[]
                 {
-                    nameof(Objects.ProjId),
+                    nameof(Objects.ProjectId),
                     nameof(Objects.ObjId),
                     nameof(Objects.CarTypeId),
                     nameof(Objects.Name),
                     nameof(Objects.CarBrandId),
                     nameof(Objects.ProviderId),
-                    nameof(Objects.LastRout),
-                    nameof(Objects.ObjOutput),
-                    nameof(Objects.ObjOutputDate),
+                    nameof(Objects.LastRouteId),
+                    nameof(Objects.ObjectOutput),
+                    nameof(Objects.ObjectOutputDate),
                     nameof(Objects.Phone),
                     nameof(Objects.YearRelease)
                 };
@@ -66,8 +66,8 @@ namespace PTMS.BusinessLogic.Helpers
                     var entityId = oldVehicle != null ? oldVehicle.Id : newVehicle.Id;
                     var entityType = nameof(Objects);
 
-                    if ((fields.Count == 1 && fields[0].FieldName == nameof(Objects.LastRout))
-                        || fields.Count == 2 && fields.Any(x => x.FieldName == nameof(Objects.LastRout)) && fields.Any(x => x.FieldName == nameof(Objects.ProjId)))
+                    if ((fields.Count == 1 && fields[0].FieldName == nameof(Objects.LastRouteId))
+                        || fields.Count == 2 && fields.Any(x => x.FieldName == nameof(Objects.LastRouteId)) && fields.Any(x => x.FieldName == nameof(Objects.ProjectId)))
                     {
                         eventEnum = EventEnum.ChangeObjectRoute;
                     }
@@ -86,12 +86,12 @@ namespace PTMS.BusinessLogic.Helpers
                             message = $"ТС {oldVehicle.Name} было удалёно";
                             break;
                         case EventEnum.ChangeObjectRoute:
-                            var oldRoute = await _routeRepository.GetByIdAsync(oldVehicle.LastRout.Value);
-                            var newRoute = await _routeRepository.GetByIdAsync(newVehicle.LastRout.Value);
+                            var oldRoute = await _routeRepository.GetByIdAsync(oldVehicle.LastRouteId.Value);
+                            var newRoute = await _routeRepository.GetByIdAsync(newVehicle.LastRouteId.Value);
                             message = $"Маршрут ТС {newVehicle.Name} был изменён с {oldRoute.Name} на {newRoute.Name}";
                             break;
                         case EventEnum.EnableObject:
-                            newRoute = await _routeRepository.GetByIdAsync(newVehicle.LastRout.Value);
+                            newRoute = await _routeRepository.GetByIdAsync(newVehicle.LastRouteId.Value);
                             message = $"ТС {newVehicle.Name} было введено в эксплуатацию. Маршрут - {newRoute.Name}";
                             break;
                         case EventEnum.DisableObject:

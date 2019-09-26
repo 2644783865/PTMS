@@ -27,14 +27,14 @@ namespace PTMS.Persistance.EntityConfigurations
                 entity.HasIndex(e => e.Id)
                     .HasName("UNQ_IDS");
 
-                entity.HasIndex(e => e.LastRout)
+                entity.HasIndex(e => e.LastRouteId)
                     .HasName("IDX_LAST_ROUT")
                     .IsUnique();
 
                 entity.HasIndex(e => e.Name)
                     .HasName("UNQ1_OBJECTS");
 
-                entity.HasIndex(e => e.ObjOutput)
+                entity.HasIndex(e => e.ObjectOutput)
                     .HasName("IDX_OBJ_OUTPUT")
                     .IsUnique();
 
@@ -49,10 +49,10 @@ namespace PTMS.Persistance.EntityConfigurations
                     .HasName("FK_OBJECTS_2")
                     .IsUnique();
 
-                entity.HasIndex(e => new { e.ObjId, e.ProjId })
+                entity.HasIndex(e => new { e.ObjId, e.ProjectId })
                     .HasName("PK_OBJECTS");
 
-                entity.Property(e => e.ProjId)
+                entity.Property(e => e.ProjectId)
                     .HasColumnName("PROJ_ID_")
                     .HasAnnotation("Description", "Перевозчик");
 
@@ -60,7 +60,7 @@ namespace PTMS.Persistance.EntityConfigurations
                     .HasColumnName("OBJ_ID_")
                     .HasAnnotation("Description", "Объект");
 
-                entity.Property(e => e.Azmth)
+                entity.Property(e => e.Azimuth)
                     .HasColumnName("AZMTH_")
                     .HasDefaultValueSql("DEFAULT 0");
 
@@ -73,7 +73,7 @@ namespace PTMS.Persistance.EntityConfigurations
                     .HasColumnName("DATE_INSERTED_")
                     .HasAnnotation("Description", "Дата ввода");
 
-                entity.Property(e => e.DispRoute)
+                entity.Property(e => e.DispRouteId)
                     .HasColumnName("DISP_ROUTE_")
                     .HasAnnotation("Description", "Транслятор");
 
@@ -90,17 +90,17 @@ namespace PTMS.Persistance.EntityConfigurations
                 entity.Property(e => e.LastAddInfo)
                     .HasColumnName("LAST_ADD_INFO_");
 
-                entity.Property(e => e.LastLat)
+                entity.Property(e => e.LastLatitude)
                     .HasColumnName("LAST_LAT_")
                     .HasDefaultValueSql("DEFAULT 0")
                     .HasAnnotation("Description", "Долгота");
 
-                entity.Property(e => e.LastLon)
+                entity.Property(e => e.LastLongitude)
                     .HasColumnName("LAST_LON_")
                     .HasDefaultValueSql("DEFAULT 0")
                     .HasAnnotation("Description", "Широта");
 
-                entity.Property(e => e.LastRout)
+                entity.Property(e => e.LastRouteId)
                     .HasColumnName("LAST_ROUT_")
                     .HasAnnotation("Description", "Последний маршрут");
 
@@ -109,7 +109,7 @@ namespace PTMS.Persistance.EntityConfigurations
                     .HasDefaultValueSql("DEFAULT 0")
                     .HasAnnotation("Description", "Последняя скорость");
 
-                entity.Property(e => e.LastStation)
+                entity.Property(e => e.LastStationId)
                     .HasColumnName("LAST_STATION_")
                     .HasAnnotation("Description", "Последняя остановка");
 
@@ -130,13 +130,13 @@ namespace PTMS.Persistance.EntityConfigurations
                     .HasMaxLength(20)
                     .HasAnnotation("Description", "Гос.номер");
 
-                entity.Property(e => e.ObjOutput)
+                entity.Property(e => e.ObjectOutput)
                     .HasColumnName("OBJ_OUTPUT_")
                     .HasDefaultValueSql("DEFAULT 1")
                     .HasAnnotation("Description", "Статус вывода")
                     .HasConversion(new IntToBooleanConverter());
 
-                entity.Property(e => e.ObjOutputDate)
+                entity.Property(e => e.ObjectOutputDate)
                     .HasColumnName("OBJ_OUTPUT_DATE_")
                     .HasAnnotation("Description", "Время вывода");
 
@@ -172,11 +172,11 @@ namespace PTMS.Persistance.EntityConfigurations
 
                 entity.HasOne(e => e.Project)
                     .WithMany()
-                    .HasForeignKey(e => e.ProjId);
+                    .HasForeignKey(e => e.ProjectId);
 
                 entity.HasOne(e => e.Route)
                     .WithMany()
-                    .HasForeignKey(e => e.LastRout);
+                    .HasForeignKey(e => e.LastRouteId);
 
                 entity.HasOne(e => e.Block)
                     .WithOne(e => e.Object)

@@ -67,7 +67,7 @@ export class NotificationService {
     let config = {
       duration: this.configTimeout,
       verticalPosition: 'top',
-      horizontalPosition: 'center',
+      horizontalPosition: 'right',
       ...configuration
     } as MatSnackBarConfig;
 

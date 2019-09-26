@@ -161,25 +161,25 @@ namespace PTMS.BusinessLogic.Services
             var entity = await _objectRepository.GetByIdAsync(id);
             var oldEntity = entity.Clone();
 
-            if (userRoutesModel.ProjectId.HasValue && userRoutesModel.ProjectId != entity.ProjId)
+            if (userRoutesModel.ProjectId.HasValue && userRoutesModel.ProjectId != entity.ProjectId)
             {
                 throw new InvalidOperationException("Invalid user with invalid project id");
             }
 
-            if (userRoutesModel.RouteIds != null && !(entity.LastRout.HasValue && userRoutesModel.RouteIds.Contains(entity.LastRout.Value)))
+            if (userRoutesModel.RouteIds != null && !(entity.LastRouteId.HasValue && userRoutesModel.RouteIds.Contains(entity.LastRouteId.Value)))
             {
                 throw new InvalidOperationException("Invalid user with invalid route ids");
             }
 
-            if (entity.ObjOutput)
+            if (entity.ObjectOutput)
             {
                 throw new InvalidOperationException("Object should be active");
             }
 
             var project = await _projectRepository.GetProjectByRouteIdAsync(newRouteId);
 
-            entity.LastRout = newRouteId;
-            entity.ProjId = project.Id;
+            entity.LastRouteId = newRouteId;
+            entity.ProjectId = project.Id;
 
             var updatedEntity = await _objectRepository.UpdateAsync(entity);
 
@@ -202,18 +202,18 @@ namespace PTMS.BusinessLogic.Services
             var entity = await _objectRepository.GetByIdAsync(id);
             var oldEntity = entity.Clone();
 
-            if (!entity.ObjOutput)
+            if (!entity.ObjectOutput)
             {
                 throw new InvalidOperationException("Object should be disabled");
             }
 
             var project = await _projectRepository.GetProjectByRouteIdAsync(newRouteId);
 
-            entity.LastRout = newRouteId;
-            entity.ProjId = project.Id;
-            entity.ObjOutput = false;
+            entity.LastRouteId = newRouteId;
+            entity.ProjectId = project.Id;
+            entity.ObjectOutput = false;
             
-            if (await _objectRepository.AnyByObjIdProjIdAsync(entity.ObjId, entity.ProjId, entity.Id))
+            if (await _objectRepository.AnyByObjIdProjIdAsync(entity.ObjId, entity.ProjectId, entity.Id))
             {
                 entity.ObjId = await _objectRepository.GetNextObjectIdAsync();
             }
@@ -230,13 +230,13 @@ namespace PTMS.BusinessLogic.Services
             var entity = await _objectRepository.GetByIdAsync(id);
             var oldEntity = entity.Clone();
 
-            if (entity.ObjOutput)
+            if (entity.ObjectOutput)
             {
                 throw new InvalidOperationException("Object should be active");
             }
 
-            entity.ObjOutput = true;
-            entity.ObjOutputDate = DateTime.Now;
+            entity.ObjectOutput = true;
+            entity.ObjectOutputDate = DateTime.Now;
 
             var result = await _objectRepository.UpdateAsync(entity);
             await _eventLogCreator.CreateLog(principal, EventEnum.DisableObject, oldEntity, result);
@@ -267,9 +267,9 @@ namespace PTMS.BusinessLogic.Services
 
             var entity = new Objects()
             {
-                ObjOutput = true,
+                ObjectOutput = true,
                 DateInserted = DateTime.Now,
-                ObjOutputDate = DateTime.Now
+                ObjectOutputDate = DateTime.Now
             };
 
             await SetNewValues(entity, request);
@@ -356,18 +356,18 @@ namespace PTMS.BusinessLogic.Services
                 entity.CarTypeId = null;
             }
             
-            if (entity.LastRout != request.RouteId)
+            if (entity.LastRouteId != request.RouteId)
             {
-                entity.LastRout = request.RouteId;
+                entity.LastRouteId = request.RouteId;
 
-                if (entity.LastRout.HasValue)
+                if (entity.LastRouteId.HasValue)
                 {
-                    var project = await _projectRepository.GetProjectByRouteIdAsync(entity.LastRout.Value);
-                    entity.ProjId = project.Id;
+                    var project = await _projectRepository.GetProjectByRouteIdAsync(entity.LastRouteId.Value);
+                    entity.ProjectId = project.Id;
                 }
                 else
                 {
-                    entity.ProjId = 0;
+                    entity.ProjectId = 0;
                 }
             }
 
@@ -378,7 +378,7 @@ namespace PTMS.BusinessLogic.Services
             else
             {
                 var entityId = entity.Id > 0 ? entity.Id : (int?)null;
-                var needUpdateObjId = await _objectRepository.AnyByObjIdProjIdAsync(entity.ObjId, entity.ProjId, entityId);
+                var needUpdateObjId = await _objectRepository.AnyByObjIdProjIdAsync(entity.ObjId, entity.ProjectId, entityId);
 
                 if (needUpdateObjId)
                 {

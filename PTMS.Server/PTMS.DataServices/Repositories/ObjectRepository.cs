@@ -170,7 +170,7 @@ namespace PTMS.DataServices.Repositories
 
         public Task<List<Objects>> FindForReportingAsync(DateTime onlineStartDate, DateTime onlineEndDate)
         {
-            return FindAsync(x => !x.ObjOutput
+            return FindAsync(x => !x.ObjectOutput
                 && x.LastStationTime.HasValue
                 && x.LastStationTime.Value >= onlineStartDate
                 && x.LastStationTime.Value <= onlineEndDate
@@ -214,7 +214,7 @@ namespace PTMS.DataServices.Repositories
 
         public async Task<bool> AnyByObjIdProjIdAsync(long objId, long projId, int? currentEntityId)
         {
-            var vehicle = await GetAsync(x => x.ObjId == objId && x.ProjId == projId
+            var vehicle = await GetAsync(x => x.ObjId == objId && x.ProjectId == projId
                 && (!currentEntityId.HasValue || x.Id != currentEntityId));
 
             return vehicle != null;
@@ -264,16 +264,16 @@ namespace PTMS.DataServices.Repositories
             }
 
             Expression<Func<Objects, bool>> filter = x => (string.IsNullOrEmpty(plateNumber) || x.Name.Contains(plateNumber))
-                && (!projectId.HasValue || x.ProjId == projectId)
+                && (!projectId.HasValue || x.ProjectId == projectId)
                 && (!carBrandId.HasValue || x.CarBrandId == carBrandId)
                 && (!providerId.HasValue || x.ProviderId == providerId)
                 && (string.IsNullOrEmpty(routeName) || x.Route.Name.Equals(routeName))
                 && (!carTypeId.HasValue || x.CarBrand.CarTypeId == carTypeId)
-                && (!locked.HasValue || x.ObjOutput == locked.Value)
+                && (!locked.HasValue || x.ObjectOutput == locked.Value)
                 && (!yearRelease.HasValue || x.YearRelease == yearRelease)
                 && (string.IsNullOrEmpty(blockNumber) || x.Phone.ToString().Contains(blockNumber) || x.Block.BlockNumber.ToString().Contains(blockNumber))
                 && (!blockTypeId.HasValue || x.Block.BlockTypeId == blockTypeId)
-                && (userRoutesModel.RouteIds == null || (x.LastRout.HasValue && userRoutesModel.RouteIds.Contains(x.LastRout.Value)));
+                && (userRoutesModel.RouteIds == null || (x.LastRouteId.HasValue && userRoutesModel.RouteIds.Contains(x.LastRouteId.Value)));
 
             return filter;
         }
@@ -309,7 +309,7 @@ namespace PTMS.DataServices.Repositories
                     sortByFilter = x => x.Phone;
                     break;
                 case "status":
-                    sortByFilter = x => x.ObjOutput ? 1 : 0;
+                    sortByFilter = x => x.ObjectOutput ? 1 : 0;
                     break;
                 case "yearrelease":
                     sortByFilter = x => x.YearRelease;

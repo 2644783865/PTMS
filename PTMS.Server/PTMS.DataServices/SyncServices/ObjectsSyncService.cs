@@ -21,15 +21,15 @@ namespace PTMS.DataServices.SyncServices
             var result = new List<string>
             {
                 nameof(Objects.Id),
-                nameof(Objects.ProjId),
+                nameof(Objects.ProjectId),
                 nameof(Objects.ObjId),
                 nameof(Objects.CarTypeId),
                 nameof(Objects.Name),
                 nameof(Objects.CarBrandId),
                 nameof(Objects.ProviderId),
-                nameof(Objects.LastRout),
+                nameof(Objects.LastRouteId),
                 nameof(Objects.LastTime),
-                nameof(Objects.ObjOutput),
+                nameof(Objects.ObjectOutput),
                 nameof(Objects.Phone)
             };
 

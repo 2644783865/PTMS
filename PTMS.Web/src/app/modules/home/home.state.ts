@@ -117,7 +117,7 @@ export class HomeQuery extends AppQueryEntity<HomeState, ObjectDto> {
           project,
           factNumber: filteredPlans.length > 0 ? factNumber : undefined,
           plannedNumber: filteredPlans.length > 0 ? plannedNumber : undefined,
-          onlineNumber: objects.filter(x => x.projId == project.id).length,
+          onlineNumber: objects.filter(x => x.projectId == project.id).length,
           hasError: false,
           hasWarning: false
         };
@@ -149,7 +149,7 @@ export class HomeQuery extends AppQueryEntity<HomeState, ObjectDto> {
     switchMap(([objects, providers, plansByRoutes, routeStatFilters]) => {
       if (routeStatFilters.projectId) {
         let routeIds = plansByRoutes.filter(x => x.projectId == routeStatFilters.projectId).map(x => x.routeId);
-        objects = objects.filter(x => routeIds.includes(x.lastRout));
+        objects = objects.filter(x => routeIds.includes(x.lastRouteId));
       }
 
       let result = providers.map(provider => {
@@ -179,7 +179,7 @@ export class HomeQuery extends AppQueryEntity<HomeState, ObjectDto> {
           route,
           factNumber: planByRoute ? planByRoute.factNumber : undefined,
           plannedNumber: planByRoute ? planByRoute.plannedNumber : undefined,
-          onlineNumber: objects.filter(x => x.lastRout == route.id).length,
+          onlineNumber: objects.filter(x => x.lastRouteId == route.id).length,
           hasError: false,
           hasWarning: false
         };

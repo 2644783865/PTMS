@@ -57,11 +57,11 @@ namespace PTMS.DataServices.Repositories
         {
             var sql = $@"
 UPDATE busdata b 
-SET b.rout_ = {vehicle.LastRout} 
+SET b.rout_ = {vehicle.LastRouteId} 
 WHERE b.obj_id_ = {vehicle.ObjId} 
-    AND b.proj_id_ = {vehicle.ProjId} 
+    AND b.proj_id_ = {vehicle.ProjectId} 
     AND b.time_ BETWEEN CURRENT_DATE AND CURRENT_DATE + 1 
-    AND b.rout_ != {vehicle.LastRout}
+    AND b.rout_ != {vehicle.LastRouteId}
 ";
 
             using (var connection = new FbConnection(_dataConnectionString))

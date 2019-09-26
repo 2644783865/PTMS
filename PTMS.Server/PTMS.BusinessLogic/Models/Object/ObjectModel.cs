@@ -1,5 +1,4 @@
-﻿using PTMS.Common;
-using System;
+﻿using System;
 
 namespace PTMS.BusinessLogic.Models.Object
 {
@@ -9,26 +8,26 @@ namespace PTMS.BusinessLogic.Models.Object
         public string Name { get; set; }
         public short ObjId { get; set; }
         public DateTime? LastTime { get; set; }
-        public double? LastLon { get; set; }
-        public double? LastLat { get; set; }
+        public double? LastLongitude { get; set; }
+        public double? LastLatitude { get; set; }
         public short? LastSpeed { get; set; }
-        public int ProjId { get; set; }
-        public short? LastStation { get; set; }
+        public int ProjectId { get; set; }
+        public short? LastStationId { get; set; }
         public DateTime? LastStationTime { get; set; }
-        public short? LastRout { get; set; }
-        public short? VehicleType { get; set; }
-        public short? Azmth { get; set; }
-        public short ProviderId { get; set; }
+        public int? LastRouteId { get; set; }
+        public int? CarTypeId { get; set; }
+        public int? Azimuth { get; set; }
+        public int ProviderId { get; set; }
         public int? CarBrandId { get; set; }
         public string UserComment { get; set; }
         public DateTime? DateInserted { get; set; }
-        public bool ObjOutput { get; set; }
-        public DateTime? ObjOutputDate { get; set; }
+        public bool ObjectOutput { get; set; }
+        public DateTime? ObjectOutputDate { get; set; }
         public long Phone { get; set; }
         public int? YearRelease { get; set; }
-        public int? DispRoute { get; set; }
+        public int? DispRouteId { get; set; }
         public short? LastAddInfo { get; set; }
-        public short? Lowfloor { get; set; }
+        public bool? Lowfloor { get; set; }
         public string StatusName { get; set; }
 
         public CarBrandModel CarBrand { get; set; }
