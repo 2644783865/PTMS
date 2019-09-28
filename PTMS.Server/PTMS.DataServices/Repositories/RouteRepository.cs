@@ -82,13 +82,7 @@ namespace PTMS.DataServices.Repositories
 
                 if (compareResult == 0)
                 {
-                    var firstLetters = Regex.Replace(first.Name, @"[\d-]", string.Empty);
-                    var secondLetters = Regex.Replace(second.Name, @"[\d-]", string.Empty);
-
-                    var isFirstTroll = firstLetters.StartsWith("т", StringComparison.InvariantCultureIgnoreCase);
-                    var isSecondTroll = secondLetters.StartsWith("т", StringComparison.InvariantCultureIgnoreCase);
-
-                    compareResult = isFirstTroll.CompareTo(isSecondTroll);
+                    compareResult = first.IsTrolleybus.CompareTo(second.IsTrolleybus);
 
                     if (compareResult == 0)
                     {
@@ -104,6 +98,8 @@ namespace PTMS.DataServices.Repositories
 
                             if (compareResult == 0)
                             {
+                                var firstLetters = Regex.Replace(first.Name, @"[\d-]", string.Empty);
+                                var secondLetters = Regex.Replace(second.Name, @"[\d-]", string.Empty);
                                 compareResult = firstLetters.CompareTo(secondLetters);
                             }
                         }

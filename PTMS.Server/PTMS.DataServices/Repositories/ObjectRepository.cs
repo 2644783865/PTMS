@@ -179,7 +179,7 @@ namespace PTMS.DataServices.Repositories
 
         public Task<List<Objects>> GetAllTrolleybuses()
         {
-            return FindAsync(x => x.Route.Name.StartsWith("Т"));
+            return FindAsync(x => x.Route.IsTrolleybus);
         }
 
         public override async Task<Objects> AddAsync(Objects entity)

@@ -43,7 +43,7 @@ namespace PTMS.BusinessLogic.Services
             {
                 var currentRoute = routes.First(x => x.Name.Equals(s.RouteName, compType));
                 var newRoute = !string.IsNullOrEmpty(s.NewTrolleyNumber)
-                    ? routes.First(x => x.Name.StartsWith("т", compType) && Regex.Match(x.Name, @"\d+").Value.Equals(s.NewTrolleyNumber, compType))
+                    ? routes.First(x => x.IsTrolleybus && Regex.Match(x.Name, @"\d+").Value.Equals(s.NewTrolleyNumber, compType))
                     : null;
 
                 if (currentRoute == newRoute)

@@ -14,7 +14,12 @@ namespace PTMS.DataServices.Models
             {
                 if (!string.IsNullOrEmpty(Place) && Place.Contains("-"))
                 {
-                    var array = Place.Split("-")[0];
+                    var array = Place.Split("-");
+
+                    if (array.Length > 0)
+                    {
+                        return array[0];
+                    }
                 }
 
                 return null;
