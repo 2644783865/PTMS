@@ -74,6 +74,20 @@ namespace PTMS.DataServices.Repositories
             return GetByIdAsync(id, includes);
         }
 
+        public async Task<List<Route>> GetActiveWithStationsAsync()
+        {
+            var includes = new[]
+            {
+                nameof(Route.BusStationRoutes),
+                nameof(Route.BusStationRoutes) + "." + nameof(BusStationRoute.BusStation)
+            };
+
+            var result = await FindAsync(x => x.RouteActive, includes);
+
+            SortRoutes(result);
+            return result;
+        }
+
         private void SortRoutes(List<Route> routes)
         {
             routes.Sort((first, second) =>

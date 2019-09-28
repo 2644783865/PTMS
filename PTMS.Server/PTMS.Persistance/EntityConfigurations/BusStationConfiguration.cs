@@ -16,11 +16,11 @@ namespace PTMS.Persistance.EntityConfigurations
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
-                entity.Property(e => e.Azmth).HasColumnName("AZMTH");
+                entity.Property(e => e.Azimuth).HasColumnName("AZMTH");
 
-                entity.Property(e => e.Lat).HasColumnName("LAT");
+                entity.Property(e => e.Latitude).HasColumnName("LAT");
 
-                entity.Property(e => e.Lon).HasColumnName("LON");
+                entity.Property(e => e.Longitude).HasColumnName("LON");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -50,6 +50,10 @@ namespace PTMS.Persistance.EntityConfigurations
                 entity.Property(e => e.IsEndingStation)
                     .HasColumnName("Control")
                     .HasDefaultValue(false);
+
+                entity.HasOne(e => e.BusStation)
+                    .WithMany()
+                    .HasForeignKey(e => e.BusStationId);
             });
         }
     }

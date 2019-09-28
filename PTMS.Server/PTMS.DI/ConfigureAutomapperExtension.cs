@@ -53,6 +53,7 @@ namespace PTMS.DI
                 CreateMap<GranitModel, Granit>();
 
                 CreateMap<BusStation, BusStationModel>();
+                CreateMap<BusStation, BusStationForRouteModel>();
                 CreateMap<BusStationModel, BusStation>();
 
                 CreateMap<BusStationRoute, BusStationRouteModel>();

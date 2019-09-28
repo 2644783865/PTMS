@@ -28,9 +28,9 @@ export class BusStationAddEditDialogComponent {
     this.modalForm = this.fb.group({
       id: [],
       name: ['', Validators.required],
-      lon: ['', Validators.required],
-      lat: ['', Validators.required],
-      azmth: ['', Validators.required]
+      longitude: ['', Validators.required],
+      latitude: ['', Validators.required],
+      azimuth: ['', Validators.required]
     });
 
     if (this.station) {

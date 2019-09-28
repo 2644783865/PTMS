@@ -59,27 +59,33 @@ namespace PTMS.BusinessLogic.Services
                     Place = s.Place,
                     CoordinationTime = s.CoordTime,
                     Trolleybus = _mapper.Map<ObjectModel>(vehicle),
-                    NewRoute = _mapper.Map<RouteModel>(newRoute)
+                    NewRoute = _mapper.Map<RouteModel>(newRoute),
+                    IsNotDefined = string.IsNullOrEmpty(s.NewTrolleyNumber)
                 };
 
                 return item;
             })
             .ToList();
-            
+
             result.Sort((a, b) =>
             {
                 var compareResult = -(a.NewRoute != null).CompareTo(b.NewRoute != null);
 
                 if (compareResult == 0)
                 {
-                    var aRouteNumber = int.Parse(Regex.Match(a.Trolleybus.Route.Name, @"\d+").Value);
-                    var bRouteNumber = int.Parse(Regex.Match(b.Trolleybus.Route.Name, @"\d+").Value);
-
-                    compareResult = aRouteNumber.CompareTo(bRouteNumber);
+                    compareResult = a.IsNotDefined.CompareTo(b.IsNotDefined);
 
                     if (compareResult == 0)
                     {
-                        compareResult = a.Trolleybus.Name.CompareTo(b.Trolleybus.Name);
+                        var aRouteNumber = int.Parse(Regex.Match(a.Trolleybus.Route.Name, @"\d+").Value);
+                        var bRouteNumber = int.Parse(Regex.Match(b.Trolleybus.Route.Name, @"\d+").Value);
+
+                        compareResult = aRouteNumber.CompareTo(bRouteNumber);
+
+                        if (compareResult == 0)
+                        {
+                            compareResult = a.Trolleybus.Name.CompareTo(b.Trolleybus.Name);
+                        }
                     }
                 }
 

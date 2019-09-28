@@ -44,14 +44,57 @@ namespace PTMS.BusinessLogic.Services
             return MapToModel<RouteModel>(result);
         }
 
-        public async Task<List<string>> GetAllNamesAsync()
+        public async Task<List<RouteWithStationsModel>> GetAllActiveRoutesWithStationsAsync()
         {
-            var routes = await _appCacheHelper.GetCachedAsync(
-               "GetAllActiveRoutes",
-               () => _routeRepository.GetAllAsync(null, null, true),
-               typeof(Route));
+            var result = await _appCacheHelper.GetCachedAsync(
+               "GetAllActiveRoutesWithStations",
+               async () => {
+                   var routes = await _routeRepository.GetActiveWithStationsAsync();
 
-            var result = routes.Select(x => x.Name).ToList();
+                   var routesWithStations = new List<RouteWithStationsModel>();
+
+                   foreach (var route in routes)
+                   {
+                       var item = new RouteWithStationsModel
+                       {
+                           Id = route.Id,
+                           Name = route.Name,
+                           ForwardDirectionStations = new List<BusStationForRouteModel>(),
+                           BackDirectionStations = new List<BusStationForRouteModel>()
+                       };
+
+                       var allStations = route.BusStationRoutes
+                            .Select(x =>
+                            {
+                                var station = _mapper.Map<BusStationForRouteModel>(x.BusStation);
+                                station.IsEndingStation = x.IsEndingStation;
+                                station.Num = x.Num;
+                                return station;
+                            })
+                            .DistinctBy(x => x.Id)
+                            .OrderBy(x => x.Num)
+                            .ToList();
+
+                       var firstEndStationIndex = allStations.FindIndex(x => x.IsEndingStation);
+                       var secondEndStationIndex = allStations.FindIndex(firstEndStationIndex + 1, x => x.IsEndingStation);
+
+                       if (secondEndStationIndex != -1)
+                       {
+                           item.ForwardDirectionStations = allStations.GetRange(firstEndStationIndex, secondEndStationIndex - firstEndStationIndex);
+                           item.BackDirectionStations = allStations.Where(x => !item.ForwardDirectionStations.Contains(x)).ToList();
+                       }
+                       else
+                       {
+                           item.ForwardDirectionStations = allStations;
+                       }
+
+                       routesWithStations.Add(item);
+                   }
+
+                   return routesWithStations;
+               },
+               typeof(Route), typeof(BusStation), typeof(BusStationRoute));
+
             return result;
         }
 

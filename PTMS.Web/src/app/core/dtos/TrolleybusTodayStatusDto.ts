@@ -8,4 +8,5 @@ export interface TrolleybusTodayStatusDto
     place: string;
     newRoute: RouteDto;
     coordinationTime: Date | string | null;
+    isNotDefined: boolean;
 }

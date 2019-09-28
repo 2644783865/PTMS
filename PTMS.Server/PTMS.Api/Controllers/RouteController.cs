@@ -36,11 +36,11 @@ namespace PTMS.Api.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("/routes/names")]
-        public async Task<ActionResult<TResultModel<List<string>>>> GetAllNames()
+        [HttpGet("/routes/withStations")]
+        public async Task<ActionResult<List<RouteWithStationsModel>>> GetAllActiveRoutesWithStations()
         {
-            var routeNames = await _routeService.GetAllNamesAsync();
-            return new TResultModel<List<string>>(routeNames);
+            var routes = await _routeService.GetAllActiveRoutesWithStationsAsync();
+            return routes;
         }
 
         [PtmsAuthorize(RoleNames.Dispatcher)]

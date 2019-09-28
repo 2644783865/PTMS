@@ -34,6 +34,7 @@
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
           <mat-row *matRowDef="let row; columns: displayedColumns;"
                     [class.bg-error]="row.newRoute"
+                    [class.bg-warning]="row.isNotDefined"
                     [appUpdatedRow]="row.id">
           </mat-row>
         </mat-table>

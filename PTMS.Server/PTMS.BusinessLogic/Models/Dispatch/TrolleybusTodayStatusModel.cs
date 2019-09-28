@@ -10,5 +10,6 @@ namespace PTMS.BusinessLogic.Models.Dispatch
         public string Place { get; set; }
         public RouteModel NewRoute { get; set; }
         public DateTime? CoordinationTime { get; set; }
+        public bool IsNotDefined { get; set; }
     }
 }

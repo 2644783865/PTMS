@@ -16,5 +16,7 @@ namespace PTMS.DataServices.IRepositories
         Task<Route> GetForEditByIdAsync(int id);
 
         Task<List<Route>> GetAllForPageAsync();
+
+        Task<List<Route>> GetActiveWithStationsAsync();
     }
 }
