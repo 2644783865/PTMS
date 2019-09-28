@@ -35,6 +35,7 @@ namespace PTMS.DataServices.Repositories
             DateTime? endDate,
             string fieldName,
             string fieldValue,
+            bool onlyProject,
             OrderByEnum orderBy,
             int? page,
             int? pageSize)
@@ -47,7 +48,8 @@ namespace PTMS.DataServices.Repositories
                 && (!startDate.HasValue || x.TimeStamp >= startDate.Value)
                 && (!endDate.HasValue || x.TimeStamp <= endDate.Value)
                 && (string.IsNullOrEmpty(fieldName) || x.EventLogFields.Any(y => y.FieldName == fieldName))
-                && (string.IsNullOrEmpty(fieldValue) || x.EventLogFields.Any(y => y.OldFieldValue == fieldValue || y.NewFieldValue == fieldValue));
+                && (string.IsNullOrEmpty(fieldValue) || x.EventLogFields.Any(y => y.OldFieldValue == fieldValue || y.NewFieldValue == fieldValue))
+                && (!onlyProject || x.User.ProjectId > 0);
 
             return FindPagedAsync(
                 filter,

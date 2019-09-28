@@ -17,6 +17,7 @@ namespace PTMS.BusinessLogic.IServices
             DateTime? endDate,
             string fieldName,
             string fieldValue,
+            bool onlyProject,
             OrderByEnum orderBy,
             int? page,
             int? pageSize);

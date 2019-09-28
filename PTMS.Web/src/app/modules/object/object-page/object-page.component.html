@@ -194,7 +194,7 @@
           <mat-header-cell *matHeaderCellDef mat-sort-header> Статус </mat-header-cell>
           <mat-cell *matCellDef="let vehicle" mobile-label="Статус">
             <span class="label-pill label-pill-full-width"
-                  [ngClass]="vehicle.objOutput ? 'label-pill-error' : 'label-pill-success'">
+                  [ngClass]="vehicle.objectOutput ? 'label-pill-error' : 'label-pill-success'">
               {{vehicle.statusName}}
             </span>
           </mat-cell>

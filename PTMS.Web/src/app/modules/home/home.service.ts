@@ -66,7 +66,8 @@ export class HomeService {
 
       let params = {
         eventEnum: 4, //"ChangeObjectRoute",
-        startDate: toDateTime(startDate)
+        startDate: toDateTime(startDate),
+        onlyProject: true
       }
 
       let result = await this.eventLogDataService.getAll(1, 25, params);

@@ -23,16 +23,17 @@ namespace PTMS.Api.Controllers
         [PtmsAuthorize(RoleNames.Dispatcher)]
         [HttpGet("/eventLogs")]
         public async Task<ActionResult<PageResult<EventLogModel>>> GetAll(
-            string entityType,
-            int? entityId,
-            EventEnum? eventEnum,
-            int? userId,
-            DateTime? startDate,
-            DateTime? endDate,
-            string fieldName,
-            string fieldValue,
-            int? page,
-            int? pageSize,
+            string entityType = null,
+            int? entityId = null,
+            EventEnum? eventEnum = null,
+            int? userId = null,
+            DateTime? startDate = null,
+            DateTime? endDate = null,
+            string fieldName = null,
+            string fieldValue = null,
+            int? page = null,
+            int? pageSize = null,
+            bool onlyProject = false,
             OrderByEnum orderBy = OrderByEnum.Desc)
         {
             var result = await _eventLogService.FindByParams(
@@ -44,6 +45,7 @@ namespace PTMS.Api.Controllers
                 endDate,
                 fieldName,
                 fieldValue,
+                onlyProject,
                 orderBy,
                 page,
                 pageSize);
