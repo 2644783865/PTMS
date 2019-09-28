@@ -15,6 +15,7 @@ namespace PTMS.BusinessLogic.Models.EventLog
         public string EventName => EnumHelper.GetDescription(Event);
         public string EntityType { get; set; }
         public int EntityId { get; set; }
+        public string EntityName { get; set; }
         public string Message { get; set; }
         public List<EventLogFieldModel> EventLogFields { get; set; }
     }

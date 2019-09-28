@@ -25,6 +25,7 @@ namespace PTMS.Api.Controllers
         public async Task<ActionResult<PageResult<EventLogModel>>> GetAll(
             string entityType = null,
             int? entityId = null,
+            string entityName = null,
             EventEnum? eventEnum = null,
             int? userId = null,
             DateTime? startDate = null,
@@ -39,6 +40,7 @@ namespace PTMS.Api.Controllers
             var result = await _eventLogService.FindByParams(
                 entityType,
                 entityId,
+                entityName,
                 eventEnum,
                 userId,
                 startDate,

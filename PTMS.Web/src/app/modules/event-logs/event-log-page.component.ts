@@ -57,13 +57,15 @@ export class EventLogPageComponent implements OnInit {
     this.filters = this.fb.group({
       eventEnum: [],
       entityId: [entityId],
+      entityName: [],
       startDate: [],
       endDate: [],
       orderBy: ['desc']
     });
     
     merge(
-      this.filters.get('entityId').valueChanges
+      this.filters.get('entityId').valueChanges,
+      this.filters.get('entityName').valueChanges
     )
       .pipe(debounceTime(400))
       .subscribe(_ => this.search());

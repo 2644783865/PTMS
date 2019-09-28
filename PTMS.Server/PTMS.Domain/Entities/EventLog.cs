@@ -10,6 +10,7 @@ namespace PTMS.Domain.Entities
         public int UserId { get; set; }
         public DateTime TimeStamp { get; set; }
         public EventEnum Event { get; set; }
+        public string EntityName { get; set; }
         public string EntityType { get; set; }
         public int EntityId { get; set; }
         public string Message { get; set; }

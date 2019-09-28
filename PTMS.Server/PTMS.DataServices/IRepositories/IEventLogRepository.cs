@@ -12,6 +12,7 @@ namespace PTMS.DataServices.IRepositories
         Task<PageResult<EventLog>> FindByParamsAsync(
             string entityType,
             int? entityId,
+            string entityName,
             EventEnum? eventEnum,
             int? userId,
             DateTime? startDate,

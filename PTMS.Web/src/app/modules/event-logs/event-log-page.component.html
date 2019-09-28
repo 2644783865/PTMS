@@ -19,7 +19,14 @@
           </div>
           <div class="col">
             <mat-form-field>
-              <input matInput placeholder="ID записи" type="text"
+              <input matInput placeholder="Имя записи" type="text"
+                    formControlName="entityName" />
+              <app-input-clear-icon matSuffix controlName="entityName"></app-input-clear-icon>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field>
+              <input matInput placeholder="ID записи" type="number"
                     formControlName="entityId" />
               <app-input-clear-icon matSuffix controlName="entityId"></app-input-clear-icon>
             </mat-form-field>
@@ -76,8 +83,9 @@
 
           <ng-container matColumnDef="entity">
               <mat-header-cell *matHeaderCellDef> Сущность </mat-header-cell>
-              <mat-cell *matCellDef="let eventLog" mobile-label="Сущность"> 
-                {{eventLog.entityType}} {{eventLog.entityId}}  
+              <mat-cell *matCellDef="let eventLog" mobile-label="Сущность">
+                  {{eventLog.entityName}} <br/> 
+                  ({{eventLog.entityType}} {{eventLog.entityId}})
               </mat-cell>
             </ng-container>
 

@@ -11,6 +11,7 @@ namespace PTMS.BusinessLogic.IServices
         Task<PageResult<EventLogModel>> FindByParams(
             string entityType,
             int? entityId,
+            string entityName,
             EventEnum? eventEnum,
             int? userId,
             DateTime? startDate,

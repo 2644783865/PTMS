@@ -14,7 +14,7 @@ export interface HomeState extends AppEntityState<ObjectDto> {
   eventLogs: EventLogDto[];
   routeStatFilters: {
     showOnlyErrors: boolean,
-    projectId: number,
+    projectIds: number[],
     intervalId: string
   }
 }
@@ -85,7 +85,7 @@ export class HomeStore extends AppEntityStore<HomeState, ObjectDto> {
       eventLogs: [],
       routeStatFilters: {
         showOnlyErrors: false,
-        projectId: null,
+        projectIds: null,
         intervalId: 'today'
       }
     } as HomeState;
@@ -132,8 +132,8 @@ export class HomeQuery extends AppQueryEntity<HomeState, ObjectDto> {
         result = result.filter(x => x.hasError || x.hasWarning);
       }
 
-      if (routeStatFilters.projectId) {
-        result = result.filter(x => x.project.id == routeStatFilters.projectId);
+      if (routeStatFilters.projectIds && routeStatFilters.projectIds.length > 0) {
+        result = result.filter(x => routeStatFilters.projectIds.includes(x.project.id));
       }
 
       return of(result);
@@ -147,8 +147,8 @@ export class HomeQuery extends AppQueryEntity<HomeState, ObjectDto> {
     this.select(s => s.routeStatFilters)
   ).pipe(
     switchMap(([objects, providers, plansByRoutes, routeStatFilters]) => {
-      if (routeStatFilters.projectId) {
-        let routeIds = plansByRoutes.filter(x => x.projectId == routeStatFilters.projectId).map(x => x.routeId);
+      if (routeStatFilters.projectIds && routeStatFilters.projectIds.length > 0) {
+        let routeIds = plansByRoutes.filter(x => routeStatFilters.projectIds.includes(x.projectId)).map(x => x.routeId);
         objects = objects.filter(x => routeIds.includes(x.lastRouteId));
       }
 
@@ -194,8 +194,8 @@ export class HomeQuery extends AppQueryEntity<HomeState, ObjectDto> {
         result = result.filter(x => x.hasError || x.hasWarning);
       }
 
-      if (routeStatFilters.projectId) {
-        let routeIds = plansByRoutes.filter(x => x.projectId == routeStatFilters.projectId).map(x => x.routeId);
+      if (routeStatFilters.projectIds && routeStatFilters.projectIds.length > 0) {
+        let routeIds = plansByRoutes.filter(x => routeStatFilters.projectIds.includes(x.projectId)).map(x => x.routeId);
         result = result.filter(x => routeIds.includes(x.route.id));
       }
 

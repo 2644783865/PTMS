@@ -64,6 +64,7 @@ namespace PTMS.BusinessLogic.Helpers
                 if (fields.Any())
                 {
                     var entityId = oldVehicle != null ? oldVehicle.Id : newVehicle.Id;
+                    var entityName = newVehicle != null ? newVehicle.Name : oldVehicle.Name;
                     var entityType = nameof(Objects);
 
                     if ((fields.Count == 1 && fields[0].FieldName == nameof(Objects.LastRouteId))
@@ -105,6 +106,7 @@ namespace PTMS.BusinessLogic.Helpers
                         message,
                         entityType,
                         entityId,
+                        entityName,
                         fields);
                 }
             });
@@ -128,6 +130,7 @@ namespace PTMS.BusinessLogic.Helpers
             string message,
             string entityType,
             int entityId,
+            string entityName,
             List<EventLogField> fields)
         {
             if (string.IsNullOrEmpty(message))

@@ -27,6 +27,7 @@ namespace PTMS.BusinessLogic.Services
         public async Task<PageResult<EventLogModel>> FindByParams(
             string entityType,
             int? entityId,
+            string entityName,
             EventEnum? eventEnum,
             int? userId,
             DateTime? startDate,
@@ -41,6 +42,7 @@ namespace PTMS.BusinessLogic.Services
             var dataResult = await _eventLogRepository.FindByParamsAsync(
                 entityType,
                 entityId,
+                entityName,
                 eventEnum,
                 userId,
                 startDate,

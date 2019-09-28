@@ -29,6 +29,7 @@ namespace PTMS.DataServices.Repositories
         public Task<PageResult<EventLog>> FindByParamsAsync(
             string entityType,
             int? entityId,
+            string entityName,
             EventEnum? eventEnum,
             int? userId,
             DateTime? startDate,
@@ -42,6 +43,7 @@ namespace PTMS.DataServices.Repositories
         {
             Expression<Func<EventLog, bool>> filter = x =>
                 (string.IsNullOrEmpty(entityType) || x.EntityType == entityType)
+                && (string.IsNullOrEmpty(entityName) || x.EntityName == entityName)
                 && (!entityId.HasValue || x.EntityId == entityId.Value)
                 && (!eventEnum.HasValue || x.Event == eventEnum.Value)
                 && (!userId.HasValue || x.UserId == userId.Value)

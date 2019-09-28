@@ -36,7 +36,7 @@ export class HomeComponent implements OnInit {
   displayedColumnsProject = ['project', 'onlineNumber'];
   displayedColumnsProvider = ['provider', 'onlineNumber'];
   displayedColumnsRoute = ['route', 'onlineNumber'];
-  displayedColumnsLogs = ['timeStamp', 'user', 'message'];
+  displayedColumnsLogs = ['timeStamp', 'user', 'entityName', 'message'];
   
   constructor(
     private homeQuery: HomeQuery,
@@ -98,7 +98,7 @@ export class HomeComponent implements OnInit {
 
     this.routeStatFilters = this.fb.group({
       showOnlyErrors: [routeStatFilters.showOnlyErrors],
-      projectId: [routeStatFilters.projectId],
+      projectIds: [routeStatFilters.projectIds],
       intervalId: [routeStatFilters.intervalId]
     });
 
