@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PTMS.Common;
+using PTMS.Common.Enums;
 using PTMS.DataServices.Infrastructure;
 using PTMS.DataServices.IRepositories;
 using PTMS.DataServices.Models;
@@ -114,7 +115,7 @@ namespace PTMS.DataServices.Repositories
                 includes);
         }
 
-        public Task<List<Objects>> FindAllForPdfAsync(
+        public Task<List<Objects>> FindAllForFileAsync(
             string plateNumber,
             string routeName,
             int? carTypeId,

@@ -1,5 +1,6 @@
 ﻿using PTMS.BusinessLogic.Models.EventLog;
 using PTMS.Common;
+using PTMS.Common.Enums;
 using PTMS.Domain.Enums;
 using System;
 using System.Threading.Tasks;

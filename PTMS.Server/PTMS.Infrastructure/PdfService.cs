@@ -1,5 +1,5 @@
 ﻿using Balbarak.WeasyPrint;
-using PTMS.BusinessLogic.IServices;
+using PTMS.BusinessLogic.Infrastructure;
 
 namespace PTMS.Infrastructure
 {

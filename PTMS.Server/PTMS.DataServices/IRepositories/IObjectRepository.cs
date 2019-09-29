@@ -1,4 +1,5 @@
 ﻿using PTMS.Common;
+using PTMS.Common.Enums;
 using PTMS.DataServices.Infrastructure;
 using PTMS.DataServices.Models;
 using PTMS.Domain.Entities;
@@ -46,7 +47,7 @@ namespace PTMS.DataServices.IRepositories
 
         Task<short> GetNextObjectIdAsync();
 
-        Task<List<Objects>> FindAllForPdfAsync(
+        Task<List<Objects>> FindAllForFileAsync(
             string plateNumber,
             string routeName,
             int? carTypeId,

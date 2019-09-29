@@ -129,9 +129,9 @@ export class ObjectPageComponent implements OnInit {
     this.search();
   }
 
-  print() {
+  convertToFile(isPdf: boolean) {
     let totalCount = this.objectQuery.getValue().total;
-    this.objectService.print(this.filters.value, totalCount);
+    this.objectService.convertToFile(this.filters.value, totalCount, isPdf);
   }
 
   ngOnDestroy() {

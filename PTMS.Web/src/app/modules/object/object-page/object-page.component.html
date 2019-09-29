@@ -8,9 +8,14 @@
     Добавить новое ТС
   </button>
   <button mat-raised-button
-          (click)="print()"
+          (click)="convertToFile(true)"
           [disabled]="!(pagination$ | async).total">
     Печать <mat-icon>print</mat-icon>
+  </button>
+  <button mat-raised-button
+          (click)="convertToFile(false)"
+          [disabled]="!(pagination$ | async).total">
+    Конвертировать в Excel <mat-icon>insert_drive_file</mat-icon>
   </button>
 </div>
 

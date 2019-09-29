@@ -1,5 +1,5 @@
 ﻿using PTMS.BusinessLogic.Models.User;
-using PTMS.Common;
+using PTMS.Common.Enums;
 using PTMS.Domain.Enums;
 using System;
 using System.Collections.Generic;

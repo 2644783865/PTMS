@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-
-namespace PTMS.BusinessLogic.IServices
+﻿namespace PTMS.BusinessLogic.Infrastructure
 {
     public interface IPdfService
     {

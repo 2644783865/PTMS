@@ -3,6 +3,7 @@ using PTMS.Api.Attributes;
 using PTMS.BusinessLogic.IServices;
 using PTMS.BusinessLogic.Models.Object;
 using PTMS.Common;
+using PTMS.Common.Enums;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -133,7 +134,7 @@ namespace PTMS.Api.Controllers
         }
 
         [PtmsAuthorize(RoleNames.Dispatcher, RoleNames.Transporter, RoleNames.Mechanic)]
-        [HttpGet("/objects/pdf")]
+        [HttpGet("/objects/file")]
         public async Task<IActionResult> GetPdf(
             string plateNumber = null,
             string routeName = null,
@@ -146,9 +147,10 @@ namespace PTMS.Api.Controllers
             int? blockType = null,
             bool? active = null,
             string sortBy = "lastTime",
-            OrderByEnum orderBy = OrderByEnum.Desc)
+            OrderByEnum orderBy = OrderByEnum.Desc,
+            FileFormatEnum fileFormat = FileFormatEnum.Pdf)
         {
-            var pdfDoc = await _objectService.GetVehiclesPdfAsync(
+            var fileModel = await _objectService.GetVehiclesFileAsync(
                 User,
                 plateNumber,
                 routeName,
@@ -161,9 +163,10 @@ namespace PTMS.Api.Controllers
                 blockNumber,
                 blockType,
                 sortBy,
-                orderBy);
+                orderBy,
+                fileFormat);
 
-            return CreatePdfResult(pdfDoc, $"Транспортные средства {DateTime.Now.ToDateTimeString()}");
+            return CreateFileResponse(fileModel);
         }
     }
 }

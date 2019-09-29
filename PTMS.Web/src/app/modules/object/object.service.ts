@@ -3,7 +3,7 @@ import { ObjectStore, ObjectUI } from './object.state';
 import { ObjectDataService, ProjectDataService, ProviderDataService, CarBrandDataService, CarTypeDataService, BlockTypeDataService, RouteDataService } from '@app/core/data-services';
 import { AuthService } from '@app/core/auth';
 import { ConfirmDialogService } from '@app/shared/confirm-dialog/confirm-dialog.service';
-import { RoleEnum } from '@app/core/enums';
+import { RoleEnum, FileFormatEnum } from '@app/core/enums';
 import { PaginatorEvent } from '@app/shared/paginator/paginator.event';
 import { AppPaginationResponse } from '@app/core/akita-extensions';
 import { RouteDto, ObjectAddEditRequestDto, ObjectDto } from '@app/core/dtos';
@@ -184,12 +184,14 @@ export class ObjectService {
     }
   }
 
-  print(searchParams: any, totalCount: number) {
-    let dto = this.getFiltersDto(searchParams);
+  convertToFile(searchParams: any, totalCount: number, isPdf: boolean) {
+    let dto = this.getFiltersDto(searchParams);    
+    dto.fileFormat = isPdf ? FileFormatEnum.Pdf : FileFormatEnum.Xlsx
+
     this.authService.setAuthTokenQueryParam(dto);
     let url = this.objectDataService.getPrintUrl(dto);
 
-    if (totalCount > 1000) {
+    if (totalCount > 1000 && isPdf) {
       this.confirmDialogService.openDialog(
         `Необходимо обработать ${totalCount} записей. Это может занять 1-2 минуты.`,
         'Продолжить',

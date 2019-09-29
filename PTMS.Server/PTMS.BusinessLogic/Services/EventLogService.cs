@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using PTMS.BusinessLogic.Infrastructure;
 using PTMS.BusinessLogic.IServices;
-using PTMS.BusinessLogic.Models;
 using PTMS.BusinessLogic.Models.EventLog;
 using PTMS.Common;
+using PTMS.Common.Enums;
 using PTMS.DataServices.IRepositories;
 using PTMS.Domain.Entities;
 using PTMS.Domain.Enums;

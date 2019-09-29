@@ -1,5 +1,7 @@
 ﻿using PTMS.BusinessLogic.Models.Object;
+using PTMS.BusinessLogic.Models.Shared;
 using PTMS.Common;
+using PTMS.Common.Enums;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -26,7 +28,7 @@ namespace PTMS.BusinessLogic.IServices
             int? page,
             int? pageSize);
 
-        Task<byte[]> GetVehiclesPdfAsync(
+        Task<FileModel> GetVehiclesFileAsync(
             ClaimsPrincipal user,
             string plateNumber,
             string routeName,
@@ -39,7 +41,8 @@ namespace PTMS.BusinessLogic.IServices
             string blockNumber,
             int? blockTypeId,
             string sortBy,
-            OrderByEnum orderBy);
+            OrderByEnum orderBy,
+            FileFormatEnum fileFormat);
 
         Task<ObjectModel> GetByIdAsync(int ids);
 

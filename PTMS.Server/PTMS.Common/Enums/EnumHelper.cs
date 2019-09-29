@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using Enum = System.Enum;
 
-namespace PTMS.Common
+namespace PTMS.Common.Enums
 {
     public class EnumHelper
     {

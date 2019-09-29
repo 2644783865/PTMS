@@ -1,4 +1,4 @@
-﻿namespace PTMS.Common
+﻿namespace PTMS.Common.Enums
 {
     public enum ModelFormatsEnum
     {

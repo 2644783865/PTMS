@@ -3,7 +3,9 @@ using PTMS.BusinessLogic.Helpers;
 using PTMS.BusinessLogic.Infrastructure;
 using PTMS.BusinessLogic.IServices;
 using PTMS.BusinessLogic.Models.Object;
+using PTMS.BusinessLogic.Models.Shared;
 using PTMS.Common;
+using PTMS.Common.Enums;
 using PTMS.DataServices.IRepositories;
 using PTMS.Domain.Entities;
 using PTMS.Domain.Enums;
@@ -26,6 +28,7 @@ namespace PTMS.BusinessLogic.Services
         private readonly IBusDataRepository _busDataRepository;
         private readonly EventLogCreator _eventLogCreator;
         private readonly IHtmlBuilder _htmlBuilder;
+        private readonly IXlsxBuilder _xlsxBuilder;
         private readonly IPdfService _pdfService;
 
         public ObjectService(
@@ -38,6 +41,7 @@ namespace PTMS.BusinessLogic.Services
             EventLogCreator eventLogCreator,
             IHtmlBuilder htmlBuilder,
             IPdfService pdfService,
+            IXlsxBuilder xlsxBuilder,
             IMapper mapper)
             : base(mapper)
         {
@@ -50,6 +54,7 @@ namespace PTMS.BusinessLogic.Services
             _eventLogCreator = eventLogCreator;
             _htmlBuilder = htmlBuilder;
             _pdfService = pdfService;
+            _xlsxBuilder = xlsxBuilder;
         }
 
         public async Task<PageResult<ObjectModel>> FindByParamsAsync(
@@ -93,7 +98,7 @@ namespace PTMS.BusinessLogic.Services
             return MapToModel<ObjectModel>(result);
         }
 
-        public async Task<byte[]> GetVehiclesPdfAsync(
+        public async Task<FileModel> GetVehiclesFileAsync(
             ClaimsPrincipal userPrincipal,
             string plateNumber,
             string routeName,
@@ -106,11 +111,12 @@ namespace PTMS.BusinessLogic.Services
             string blockNumber,
             int? blockTypeId,
             string sortBy,
-            OrderByEnum orderBy)
+            OrderByEnum orderBy,
+            FileFormatEnum fileFormat)
         {
             var userRoutesModel = await _userManager.GetAvailableRoutesModel(userPrincipal);
 
-            var vehicles = await _objectRepository.FindAllForPdfAsync(
+            var vehicles = await _objectRepository.FindAllForFileAsync(
                 plateNumber,
                 routeName,
                 carTypeId,
@@ -125,7 +131,7 @@ namespace PTMS.BusinessLogic.Services
                 sortBy,
                 orderBy);
 
-            var htmlModel = new ObjectsPrintModel(vehicles, userPrincipal.GetRoleName())
+            var printFile = new ObjectsPrintModel(vehicles, userPrincipal.GetRoleName())
             {
                 PlateNumber = plateNumber,
                 RouteName = routeName,
@@ -138,11 +144,28 @@ namespace PTMS.BusinessLogic.Services
                 BlockNumber = blockNumber,
                 BlockTypeId = blockTypeId,
             };
-            var htmlString = await _htmlBuilder.GetObjectsTable(htmlModel);
 
-            var pdfDoc = _pdfService.ConvertHtmlToPdf(htmlString);
+            var result = new FileModel
+            {
+                Name = $"Транспортные средства {DateTime.Now.ToDateTimeString()}",
+                FileFormat = fileFormat
+            };
 
-            return pdfDoc;
+            if (fileFormat == FileFormatEnum.Pdf)
+            {
+                var htmlString = await _htmlBuilder.GetObjectsTable(printFile);
+                result.Bytes = _pdfService.ConvertHtmlToPdf(htmlString);
+            }
+            else if (fileFormat == FileFormatEnum.Xlsx)
+            {
+                result.Bytes = _xlsxBuilder.GetObjectsTable(printFile);
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+
+            return result;
         }
 
         public async Task<ObjectModel> GetByIdAsync(int id)

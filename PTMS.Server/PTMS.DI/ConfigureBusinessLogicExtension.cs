@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PTMS.BusinessLogic.Helpers;
+using PTMS.BusinessLogic.Infrastructure;
 using PTMS.BusinessLogic.IServices;
 using PTMS.BusinessLogic.Services;
 using PTMS.Infrastructure;
@@ -30,6 +31,7 @@ namespace PTMS.DI
             services.AddScoped<EventLogCreator>();
 
             services.AddSingleton<IHtmlBuilder, HtmlBuilder>();
+            services.AddSingleton<IXlsxBuilder, XlsxBuilder>();
             services.AddSingleton<AppCacheHelper>();
 
             services.AddScoped<IPdfService, PdfService>();

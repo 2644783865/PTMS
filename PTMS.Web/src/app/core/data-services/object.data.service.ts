@@ -50,6 +50,6 @@ export class ObjectDataService {
   }
 
   getPrintUrl(params: object = null): string {
-    return this.http.getUrlOnly('objects/pdf', params);
+    return this.http.getUrlOnly('objects/file', params);
   }
 }

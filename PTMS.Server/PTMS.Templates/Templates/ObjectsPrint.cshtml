@@ -78,84 +78,21 @@
 <table>
     <thead>
         <tr>
-            <th>Номер</th>
-            <th>Маршрут</th>
-
-            @if (Model.ShowProjects)
+            @foreach (var column in Model.HeadColumns)
             {
-                <th>Перевозчик</th>
+                <th>@column</th>
             }
-
-            @if (Model.ShowProviders)
-            {
-                <th>Установщик</th>
-            }
-
-            <th>Время посл. отклика</th>
-            <th>Время посл. остановки</th>
-
-            @if (Model.ShowBlocks)
-            {
-                <th>Телефон (IMEI)</th>
-                <th>Блок</th>
-            }
-
-            <th>Марка ТС</th>
-
-            @if (Model.ShowCarType)
-            {
-                <th>Тип ТС</th>
-            }
-
-            <th>Год выпуска</th>
-            <th>Статус</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var vehicle in Model.Vehicles)
+        @foreach (var rowColumns in Model.TableColumns)
         {
-        <tr>
-            <td>@vehicle.Name</td>
-            <td>@(vehicle.Route?.Name ?? Utils.NaString)</td>
-
-            @if (Model.ShowProjects)
-            {
-                <td>@(vehicle.Project?.Name ?? Utils.NaString)</td>
-            }
-
-            @if (Model.ShowProviders)
-            {
-                <td>@(vehicle.Provider?.Name ?? Utils.NaString)</td>
-            }
-
-            <td>@vehicle.LastTime.ToDateTimeString()</td>
-            <td>@vehicle.LastStationTime.ToDateTimeString()</td>
-
-            @if (Model.ShowBlocks)
-            {
-                <td>@(vehicle.Phone > 0 ? vehicle.Phone.ToString() : Utils.NaString)</td>
-                <td>
-                    @if (vehicle.Block != null)
-                    {
-                        @vehicle.Block.BlockType?.Name @vehicle.Block.BlockNumber
-                    }
-                    else
-                    {
-                        @Utils.NaString
-                    }
-                </td>
-            }
-
-            <td>@(vehicle.CarBrand?.Name ?? Utils.NaString)</td>
-
-            @if (Model.ShowCarType)
-            {
-                <td>@(vehicle.CarBrand?.CarType?.Name ?? Utils.NaString)</td>
-            }
-
-            <td>@(vehicle.YearRelease > 0 ? vehicle.YearRelease.ToString() : Utils.NaString)</td>
-            <td>@vehicle.StatusName</td>
-        </tr>
+            <tr>
+                @foreach (var column in rowColumns)
+                {
+                    <td>@column</td>
+                }
+            </tr>
         }
     </tbody>
 </table>

@@ -1,4 +1,4 @@
-﻿using PTMS.Common;
+﻿using PTMS.Common.Enums;
 using PTMS.Domain.Enums;
 
 namespace PTMS.BusinessLogic.Models.User
